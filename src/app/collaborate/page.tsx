@@ -769,7 +769,7 @@ export default function CollaboratePage() {
                 <Card>
                   <CardHeader>
                     <CardTitle>Team Members</CardTitle>
-                    <CardDescription>{team.members.length} active members</CardDescription>
+                    <CardDescription>{currentTeam.members?.length || 0} active members</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
