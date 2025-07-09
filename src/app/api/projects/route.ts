@@ -48,6 +48,8 @@ export const GET = withRateLimit(
 
     // Build orderBy with validated sortBy field
     const orderBy: Record<string, 'asc' | 'desc'> = {};
+    let needsInMemorySort = false;
+    
     switch (sortBy) {
       case 'quality':
         orderBy.qualityScore = sortOrder;
@@ -57,20 +59,21 @@ export const GET = withRateLimit(
         break;
       case 'revenue':
         // Sort by revenue requires custom logic since it's stored as JSON
-        // For now, fallback to createdAt
-        orderBy.createdAt = sortOrder;
+        // We'll fetch all matching records and sort in memory
+        needsInMemorySort = true;
+        orderBy.createdAt = 'desc'; // Default order for fetching
         break;
       default:
         orderBy[sortBy] = sortOrder;
     }
 
-    // Get projects with pagination
+    // Get projects (with or without pagination depending on revenue sorting)
     const [projects, total] = await Promise.all([
       prisma.project.findMany({
         where,
         orderBy,
-        skip: offset,
-        take: limit,
+        skip: needsInMemorySort ? undefined : offset,
+        take: needsInMemorySort ? undefined : limit,
         include: {
           owner: {
             select: {
@@ -92,7 +95,7 @@ export const GET = withRateLimit(
     ]);
 
     // Transform projects to match expected format
-    const transformedProjects: ProjectWithOwner[] = projects.map(project => ({
+    let transformedProjects: ProjectWithOwner[] = projects.map(project => ({
       id: project.id,
       title: project.title,
       problem: project.problem,
@@ -116,6 +119,21 @@ export const GET = withRateLimit(
       comments_count: project._count?.comments || 0,
       activities_count: project._count?.activities || 0
     }));
+
+    // Handle in-memory sorting for revenue
+    if (needsInMemorySort && sortBy === 'revenue') {
+      transformedProjects.sort((a, b) => {
+        const aRevenue = a.revenue_potential?.realistic || 0;
+        const bRevenue = b.revenue_potential?.realistic || 0;
+        const multiplier = sortOrder === 'desc' ? -1 : 1;
+        return (aRevenue - bRevenue) * multiplier;
+      });
+      
+      // Apply pagination after sorting
+      const startIndex = offset;
+      const endIndex = offset + limit;
+      transformedProjects = transformedProjects.slice(startIndex, endIndex);
+    }
 
     // Calculate pagination info
     const page = Math.floor(offset / limit) + 1;
