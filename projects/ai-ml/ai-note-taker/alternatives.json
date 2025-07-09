@@ -1,0 +1,36 @@
+{
+  "project_name": "AI Note Taker",
+  "alternatives": [
+    {
+      "name": "Meeting Minutes Generator",
+      "path": "../meeting-minutes-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "ScholarAI Sidekick",
+      "path": "../scholarai-sidekick/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Research Assistant",
+      "path": "../ai-research-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Smart Reference Finder",
+      "path": "../smart-reference-finder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Meeting Scheduler Widget",
+      "path": "../meeting-scheduler-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

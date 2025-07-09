@@ -1,0 +1,36 @@
+{
+  "project_name": "ContentPopulator",
+  "alternatives": [
+    {
+      "name": "Figma2Notion (Design-to-Docs)",
+      "path": "../figma2notion-design-to-docs/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Localize Preview",
+      "path": "../localize-preview/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "A11y Contrast Pairings",
+      "path": "../a11y-contrast-pairings/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Shopify Product Card Builder",
+      "path": "../shopify-product-card-builder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Layer Path Copier",
+      "path": "../layer-path-copier/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

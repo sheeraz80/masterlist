@@ -1,0 +1,12 @@
+{
+  "project_name": "FocusFlow",
+  "alternatives": [
+    {
+      "name": "Startup OS: The All-in-One Business Hub",
+      "path": "../startup-os-the-all-in-one-business-hub/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

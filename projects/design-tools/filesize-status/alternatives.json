@@ -1,0 +1,36 @@
+{
+  "project_name": "FileSize Status",
+  "alternatives": [
+    {
+      "name": "StyleDoc Generator",
+      "path": "../styledoc-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Code Metrics Lite",
+      "path": "../code-metrics-lite/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Accessibility Checker",
+      "path": "../accessibility-checker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "GitLens Lite",
+      "path": "../gitlens-lite/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Path Intellisense Pro",
+      "path": "../path-intellisense-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

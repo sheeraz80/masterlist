@@ -1,0 +1,12 @@
+{
+  "project_name": "Note Statistics",
+  "alternatives": [
+    {
+      "name": "Encrypted Notes",
+      "path": "../encrypted-notes/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

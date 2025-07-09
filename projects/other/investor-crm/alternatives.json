@@ -1,0 +1,36 @@
+{
+  "project_name": "Investor CRM",
+  "alternatives": [
+    {
+      "name": "Token Tracker",
+      "path": "../token-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Secure Password Manager",
+      "path": "../secure-password-manager/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Freelancer Finance Tracker",
+      "path": "../freelancer-finance-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Advanced CRM & Sales Pipeline",
+      "path": "../advanced-crm-sales-pipeline/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Personal Finance & Budgeting OS",
+      "path": "../personal-finance-budgeting-os/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

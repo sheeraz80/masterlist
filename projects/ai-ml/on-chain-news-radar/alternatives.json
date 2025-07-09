@@ -1,0 +1,12 @@
+{
+  "project_name": "On-chain News Radar",
+  "alternatives": [
+    {
+      "name": "AutoProofreader",
+      "path": "../autoproofreader/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

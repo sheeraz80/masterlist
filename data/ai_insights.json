@@ -1,0 +1,55 @@
+{
+  "market_opportunities": [
+    {
+      "type": "underserved_niche",
+      "category": "health-fitness",
+      "platform": "salesforce-app",
+      "project_count": 1,
+      "avg_quality": 9.2,
+      "opportunity_score": 8.28,
+      "recommendation": "High potential in health-fitness for salesforce-app - only 1 projects with 9.2/10 quality"
+    },
+    {
+      "type": "underserved_niche",
+      "category": "social-networking",
+      "platform": "office-365-addon",
+      "project_count": 1,
+      "avg_quality": 9.1,
+      "opportunity_score": 8.19,
+      "recommendation": "High potential in social-networking for office-365-addon - only 1 projects with 9.1/10 quality"
+    },
+    {
+      "type": "underserved_niche",
+      "category": "communication",
+      "platform": "salesforce-app",
+      "project_count": 1,
+      "avg_quality": 9.0,
+      "opportunity_score": 8.1,
+      "recommendation": "High potential in communication for salesforce-app - only 1 projects with 9.0/10 quality"
+    }
+  ],
+  "trending_technologies": [],
+  "development_recommendations": [
+    {
+      "priority": "Medium",
+      "category": "Platform Diversification",
+      "recommendation": "Expand beyond figma-plugin to reduce platform risk",
+      "reasoning": "Currently 101 projects on figma-plugin",
+      "examples": [
+        "vscode-extension",
+        "crypto-browser-tools",
+        "ai-browser-tools"
+      ],
+      "estimated_roi": "Reduced platform dependency risk"
+    }
+  ],
+  "risk_assessment": {
+    "platform_concentration": [],
+    "technology_risks": [],
+    "market_risks": [],
+    "complexity_risks": [],
+    "overall_risk_score": 0,
+    "risk_level": "Low"
+  },
+  "generated_at": "2025-07-08T15:01:35.555965"
+}

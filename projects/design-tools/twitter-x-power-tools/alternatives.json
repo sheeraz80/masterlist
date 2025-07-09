@@ -1,0 +1,36 @@
+{
+  "project_name": "Twitter (X) Power Tools",
+  "alternatives": [
+    {
+      "name": "LayoutPlanner (Grid & Guide Assistant)",
+      "path": "../layoutplanner-grid-guide-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Bulk Style & Variable Replacer",
+      "path": "../bulk-style-variable-replacer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Component Prop Sorter",
+      "path": "../component-prop-sorter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Airtable Content Sync",
+      "path": "../airtable-content-sync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "SVG Animation Exporter",
+      "path": "../svg-animation-exporter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,24 @@
+{
+  "project_name": "Freelance Gig OS",
+  "alternatives": [
+    {
+      "name": "Freelancer Client Portal Pro",
+      "path": "../freelancer-client-portal-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "TaskFlow",
+      "path": "../taskflow/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "NFT Gallery Pro",
+      "path": "../nft-gallery-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

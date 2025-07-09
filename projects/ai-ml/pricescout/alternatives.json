@@ -1,0 +1,30 @@
+{
+  "project_name": "PriceScout",
+  "alternatives": [
+    {
+      "name": "SummarizeNow",
+      "path": "../summarizenow/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "ScholarAI Sidekick",
+      "path": "../scholarai-sidekick/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Citation Finder",
+      "path": "../citation-finder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Gas Tracker Lite",
+      "path": "../gas-tracker-lite/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

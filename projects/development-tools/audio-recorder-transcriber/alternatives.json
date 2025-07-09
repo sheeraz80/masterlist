@@ -1,0 +1,30 @@
+{
+  "project_name": "Audio Recorder & Transcriber",
+  "alternatives": [
+    {
+      "name": "Smart Shopping Sidekick",
+      "path": "../smart-shopping-sidekick/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Dynamic Chart & Graph Widget",
+      "path": "../dynamic-chart-graph-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Audio Recorder & Transcriber",
+      "path": "../audio-recorder-transcriber/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI-Powered Audio Transcription",
+      "path": "../ai-powered-audio-transcription/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

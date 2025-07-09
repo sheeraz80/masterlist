@@ -1,0 +1,36 @@
+{
+  "project_name": "Customer Review to Testimonial Generator",
+  "alternatives": [
+    {
+      "name": "Meeting Master",
+      "path": "../meeting-master/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "AutoLinker",
+      "path": "../autolinker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Social Media Content Planner",
+      "path": "../social-media-content-planner/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Book & Reading Tracker",
+      "path": "../book-reading-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Zotero Pro Sync",
+      "path": "../zotero-pro-sync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

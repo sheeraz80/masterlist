@@ -1,0 +1,24 @@
+{
+  "project_name": "Citation Finder",
+  "alternatives": [
+    {
+      "name": "Smart Exporter",
+      "path": "../smart-exporter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "PriceScout",
+      "path": "../pricescout/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Meeting Minutes AI",
+      "path": "../meeting-minutes-ai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

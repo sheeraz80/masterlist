@@ -1,0 +1,36 @@
+{
+  "project_name": "AI Docstring Pro",
+  "alternatives": [
+    {
+      "name": "AI SOP Generator",
+      "path": "../ai-sop-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "SnippetSaver",
+      "path": "../snippetsaver/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "DocuGen",
+      "path": "../docugen/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "CommitCoach",
+      "path": "../commitcoach/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "CodeSprintAI",
+      "path": "../codesprintai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

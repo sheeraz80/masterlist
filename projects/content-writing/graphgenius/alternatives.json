@@ -1,0 +1,18 @@
+{
+  "project_name": "GraphGenius",
+  "alternatives": [
+    {
+      "name": "MindMap Maker",
+      "path": "../mindmap-maker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Note Versioning",
+      "path": "../note-versioning/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

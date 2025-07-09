@@ -1,0 +1,239 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  name          String
+  avatar        String?
+  role          String    @default("user") // admin, user
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  projects      Project[]
+  comments      Comment[]
+  activities    Activity[]
+  teamMembers   TeamMember[]
+  exports       Export[]
+  searches      SearchHistory[]
+  notifications Notification[]
+  sessions      Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([token])
+}
+
+model Project {
+  id                  String   @id
+  title               String
+  problem             String
+  solution            String
+  category            String
+  targetUsers         String
+  revenueModel        String
+  revenuePotential    String   // JSON string
+  developmentTime     String
+  competitionLevel    String
+  technicalComplexity Float
+  qualityScore        Float
+  keyFeatures         String   // JSON string array
+  tags                String   // JSON string array
+  status              String   @default("active") // active, archived, in_progress, completed
+  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  
+  // Relations
+  ownerId             String?
+  owner               User?    @relation(fields: [ownerId], references: [id])
+  comments            Comment[]
+  activities          Activity[]
+  teamProjects        TeamProject[]
+  
+  @@index([category])
+  @@index([status])
+  @@index([qualityScore])
+  @@index([ownerId])
+}
+
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  members     TeamMember[]
+  projects    TeamProject[]
+  activities  Activity[]
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  role      String   @default("member") // owner, admin, member
+  joinedAt  DateTime @default(now())
+  
+  // Relations
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([teamId, userId])
+  @@index([teamId])
+  @@index([userId])
+}
+
+model TeamProject {
+  id         String   @id @default(cuid())
+  assignedAt DateTime @default(now())
+  status     String   @default("assigned") // assigned, in_progress, completed
+  
+  // Relations
+  teamId     String
+  team       Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  projectId  String
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@unique([teamId, projectId])
+  @@index([teamId])
+  @@index([projectId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  type      String   @default("comment") // comment, feedback, review
+  rating    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([projectId])
+  @@index([userId])
+}
+
+model Activity {
+  id          String   @id @default(cuid())
+  type        String   // project_created, comment_added, status_changed, member_joined, etc.
+  description String
+  metadata    String?  // JSON string for additional data
+  createdAt   DateTime @default(now())
+  
+  // Relations
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  projectId   String?
+  project     Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  teamId      String?
+  team        Team?    @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([projectId])
+  @@index([teamId])
+  @@index([createdAt])
+}
+
+model Export {
+  id        String   @id @default(cuid())
+  type      String   // qa_report, analytics, insights, collaboration
+  format    String   // json, csv, pdf
+  filename  String
+  data      String   // JSON string or file path
+  createdAt DateTime @default(now())
+  
+  // Relations
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([type])
+}
+
+model SearchHistory {
+  id        String   @id @default(cuid())
+  query     String
+  filters   String?  // JSON string
+  results   Int      @default(0)
+  createdAt DateTime @default(now())
+  
+  // Relations
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([query])
+}
+
+model SystemMetric {
+  id           String   @id @default(cuid())
+  metric       String   // cpu_usage, memory_usage, response_time, etc.
+  value        Float
+  unit         String   // percentage, ms, mb, etc.
+  service      String?  // api, database, ai_service, etc.
+  timestamp    DateTime @default(now())
+  
+  @@index([metric])
+  @@index([service])
+  @@index([timestamp])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  type      String   // comment, mention, status_change, etc.
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  metadata  String?  // JSON string
+  createdAt DateTime @default(now())
+  
+  // Relations
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([read])
+}
+
+model AIInsight {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  type         String   // opportunity, risk, trend, recommendation
+  confidence   Float
+  impact       String   // low, medium, high
+  projectIds   String   // JSON array of project IDs
+  metadata     String?  // JSON string for AI model details
+  generatedAt  DateTime @default(now())
+  expiresAt    DateTime?
+  
+  @@index([type])
+  @@index([impact])
+  @@index([generatedAt])
+}

@@ -1,0 +1,36 @@
+{
+  "project_name": "DocuSigner",
+  "alternatives": [
+    {
+      "name": "Dev Handoff Optimizer",
+      "path": "../dev-handoff-optimizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "A11y Contrast Pairings",
+      "path": "../a11y-contrast-pairings/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "SVG Animation Exporter",
+      "path": "../svg-animation-exporter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Reading Mode Pro",
+      "path": "../reading-mode-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Meeting Prep Assistant",
+      "path": "../meeting-prep-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

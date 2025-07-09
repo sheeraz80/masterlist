@@ -1,0 +1,36 @@
+{
+  "project_name": "SnippetSaver",
+  "alternatives": [
+    {
+      "name": "Session Sentinel",
+      "path": "../session-sentinel/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "SnipSync",
+      "path": "../snipsync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Docstring Pro",
+      "path": "../ai-docstring-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Unit Test Generator",
+      "path": "../ai-unit-test-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "SnippetSearchX",
+      "path": "../snippetsearchx/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

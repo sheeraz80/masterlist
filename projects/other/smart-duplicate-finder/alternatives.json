@@ -1,0 +1,12 @@
+{
+  "project_name": "Smart Duplicate Finder",
+  "alternatives": [
+    {
+      "name": "Batch Renamer",
+      "path": "../batch-renamer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

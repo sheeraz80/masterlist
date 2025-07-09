@@ -1,0 +1,36 @@
+{
+  "project_name": "AssetAudit",
+  "alternatives": [
+    {
+      "name": "Unused Asset Finder",
+      "path": "../unused-asset-finder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "LayerSage (Auto-Organize & Name)",
+      "path": "../layersage-auto-organize-name/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Design System Linter Pro",
+      "path": "../design-system-linter-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Print-Ready Export",
+      "path": "../print-ready-export/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Frontend Asset Optimizer",
+      "path": "../frontend-asset-optimizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

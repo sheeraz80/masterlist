@@ -1,0 +1,36 @@
+{
+  "project_name": "Wallet Watcher",
+  "alternatives": [
+    {
+      "name": "Multi-Chain Address Book",
+      "path": "../multi-chain-address-book/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Airdrop Eligibility Checker",
+      "path": "../airdrop-eligibility-checker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Web3 Identity Manager",
+      "path": "../web3-identity-manager/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Gas Tracker Lite",
+      "path": "../gas-tracker-lite/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Airdrop Finder",
+      "path": "../airdrop-finder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

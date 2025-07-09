@@ -1,0 +1,12 @@
+{
+  "project_name": "Color Highlighter Pro",
+  "alternatives": [
+    {
+      "name": "Screenshot to Code (AI)",
+      "path": "../screenshot-to-code-ai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

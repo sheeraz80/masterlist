@@ -1,0 +1,36 @@
+{
+  "project_name": "Resume Analyzer AI",
+  "alternatives": [
+    {
+      "name": "SmartTags",
+      "path": "../smarttags/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered PDF Chat",
+      "path": "../ai-powered-pdf-chat/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Research Assistant",
+      "path": "../ai-research-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Meeting Minutes AI",
+      "path": "../meeting-minutes-ai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Blockchain Explorer Overlay",
+      "path": "../blockchain-explorer-overlay/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

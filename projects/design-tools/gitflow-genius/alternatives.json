@@ -1,0 +1,36 @@
+{
+  "project_name": "GitFlow Genius",
+  "alternatives": [
+    {
+      "name": "Localize Preview",
+      "path": "../localize-preview/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Design Merge Request (Collaboration Aid)",
+      "path": "../design-merge-request-collaboration-aid/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Bulk Style & Variable Replacer",
+      "path": "../bulk-style-variable-replacer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Component Prop Sorter",
+      "path": "../component-prop-sorter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Dynamic Persona Generator",
+      "path": "../dynamic-persona-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

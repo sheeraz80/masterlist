@@ -1,0 +1,36 @@
+{
+  "project_name": "SnipSync",
+  "alternatives": [
+    {
+      "name": "SnippetSaver",
+      "path": "../snippetsaver/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Docstring Pro",
+      "path": "../ai-docstring-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Unit Test Generator",
+      "path": "../ai-unit-test-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "SnippetSearchX",
+      "path": "../snippetsearchx/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Code Explainer",
+      "path": "../ai-code-explainer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

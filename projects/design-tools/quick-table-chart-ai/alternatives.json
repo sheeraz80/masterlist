@@ -1,0 +1,24 @@
+{
+  "project_name": "Quick Table Chart AI",
+  "alternatives": [
+    {
+      "name": "Design System Linter Pro",
+      "path": "../design-system-linter-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Real-Time Stock Chart Generator",
+      "path": "../real-time-stock-chart-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Course Creator Suite",
+      "path": "../course-creator-suite/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

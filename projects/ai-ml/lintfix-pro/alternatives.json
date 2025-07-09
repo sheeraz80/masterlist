@@ -1,0 +1,12 @@
+{
+  "project_name": "LintFix Pro",
+  "alternatives": [
+    {
+      "name": "CiteFinder",
+      "path": "../citefinder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

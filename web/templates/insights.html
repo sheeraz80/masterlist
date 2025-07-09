@@ -1,0 +1,338 @@
+{% extends "base.html" %}
+
+{% block title %}AI Insights - Masterlist{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="display-4 fw-bold">AI-Powered Insights</h1>
+        <p class="lead text-muted">Strategic recommendations powered by advanced analytics</p>
+    </div>
+</div>
+
+<!-- Insights Summary -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="stat-card text-center">
+            <i class="bi bi-lightbulb-fill text-warning fs-1 mb-2"></i>
+            <div class="stat-number">{{ insights.market_opportunities|length }}</div>
+            <div class="stat-label">Market Opportunities</div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="stat-card text-center">
+            <i class="bi bi-graph-up-arrow text-success fs-1 mb-2"></i>
+            <div class="stat-number">{{ insights.trending_technologies|length }}</div>
+            <div class="stat-label">Trending Technologies</div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="stat-card text-center">
+            <i class="bi bi-shield-check text-primary fs-1 mb-2"></i>
+            <div class="stat-number">{{ insights.risk_assessment.overall_risk_score }}/10</div>
+            <div class="stat-label">Risk Score</div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="stat-card text-center">
+            <i class="bi bi-trophy-fill text-info fs-1 mb-2"></i>
+            <div class="stat-number">{{ insights.success_patterns|length }}</div>
+            <div class="stat-label">Success Patterns</div>
+        </div>
+    </div>
+</div>
+
+<!-- Market Opportunities -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="bi bi-lightbulb"></i> Top Market Opportunities</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for opp in insights.market_opportunities[:6] %}
+                    <div class="col-md-6 mb-3">
+                        <div class="border rounded p-3 h-100">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="mb-0">{{ opp.type.replace('_', ' ').title() }}</h6>
+                                <span class="badge bg-warning text-dark">{{ opp.opportunity_score }}/10</span>
+                            </div>
+                            <p class="small mb-2">{{ opp.recommendation }}</p>
+                            {% if opp.category %}
+                            <small class="text-muted">Category: {{ opp.category }}</small><br>
+                            {% endif %}
+                            {% if opp.platform %}
+                            <small class="text-muted">Platform: {{ opp.platform }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Trending Technologies & Development Recommendations -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="bi bi-rocket"></i> Trending Technologies</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="trendingTechChart" height="300"></canvas>
+                <div class="mt-3">
+                    {% for tech in insights.trending_technologies[:3] %}
+                    <div class="mb-2">
+                        <strong>{{ tech.technology.replace('-', ' ').title() }}</strong>
+                        <div class="small text-muted">{{ tech.insight }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="bi bi-compass"></i> Strategic Recommendations</h5>
+            </div>
+            <div class="card-body">
+                {% for rec in insights.development_recommendations[:4] %}
+                <div class="mb-3 pb-3 {% if not loop.last %}border-bottom{% endif %}">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <h6 class="mb-1">{{ rec.category }}</h6>
+                        <span class="badge bg-{{ 'danger' if rec.priority == 'High' else 'warning' if rec.priority == 'Medium' else 'secondary' }}">
+                            {{ rec.priority }}
+                        </span>
+                    </div>
+                    <p class="small mb-1">{{ rec.recommendation }}</p>
+                    <small class="text-success"><i class="bi bi-graph-up"></i> {{ rec.estimated_roi }}</small>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Patterns -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="bi bi-trophy"></i> Success Patterns</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for pattern in insights.success_patterns %}
+                    <div class="col-md-4 mb-3">
+                        <h6>{{ pattern.pattern }}</h6>
+                        <p class="small text-muted">{{ pattern.description }}</p>
+                        {% if pattern.data %}
+                        <ul class="small">
+                            {% for item in pattern.data[:3] %}
+                            <li>
+                                {% if item.tag %}{{ item.tag }}: {{ item.frequency }}{% endif %}
+                                {% if item.combination %}{{ item.combination }}{% endif %}
+                                {% if item.platform %}{{ item.platform }}: {{ item.success_rate }}{% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Risk Assessment & Innovation -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Risk Assessment</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <h6>Overall Risk Level: 
+                        <span class="text-{{ 'danger' if insights.risk_assessment.risk_level == 'High' else 'warning' if insights.risk_assessment.risk_level == 'Medium' else 'success' }}">
+                            {{ insights.risk_assessment.risk_level }}
+                        </span>
+                    </h6>
+                    <div class="progress" style="height: 20px;">
+                        <div class="progress-bar bg-{{ 'danger' if insights.risk_assessment.overall_risk_score > 7 else 'warning' if insights.risk_assessment.overall_risk_score > 4 else 'success' }}" 
+                             style="width: {{ insights.risk_assessment.overall_risk_score * 10 }}%">
+                            {{ insights.risk_assessment.overall_risk_score }}/10
+                        </div>
+                    </div>
+                </div>
+                
+                {% if insights.risk_assessment.platform_concentration %}
+                <h6>Platform Concentration</h6>
+                <ul class="small">
+                    {% for risk in insights.risk_assessment.platform_concentration %}
+                    <li>{{ risk.platform }}: {{ risk.concentration }} ({{ risk.risk_level }})</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                
+                {% if insights.risk_assessment.technology_risks %}
+                <h6>Technology Risks</h6>
+                <ul class="small">
+                    {% for risk in insights.risk_assessment.technology_risks %}
+                    <li>{{ risk.technology }}: {{ risk.affected_projects }} projects</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header bg-purple text-white" style="background-color: #6f42c1;">
+                <h5 class="mb-0"><i class="bi bi-stars"></i> Innovation Opportunities</h5>
+            </div>
+            <div class="card-body">
+                {% for inn in insights.innovation_opportunities[:5] %}
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>{{ inn.opportunity }}</strong>
+                        <span class="badge bg-{{ 'success' if inn.potential == 'Very High' else 'primary' }}">
+                            {{ inn.potential }}
+                        </span>
+                    </div>
+                    <small class="text-muted">{{ inn.type }} - {{ inn.current_projects }} existing projects</small>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Personalized Recommendations -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header" style="background-color: #f8f9fa;">
+                <h5 class="mb-0"><i class="bi bi-person-badge"></i> Personalized Developer Paths</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for rec in insights.personalized_recommendations %}
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="border rounded p-3 h-100">
+                            <h6 class="text-primary">{{ rec.persona }}</h6>
+                            <p class="small mb-2"><strong>Focus:</strong> {{ rec.focus }}</p>
+                            <p class="small mb-2">{{ rec.path }}</p>
+                            <p class="small text-success mb-2">
+                                <i class="bi bi-clock"></i> {{ rec.estimated_timeline }}
+                            </p>
+                            <div>
+                                {% for tag in rec.key_tags[:3] %}
+                                <span class="badge bg-light text-dark">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Actions -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0">Insights Actions</h6>
+                        <small class="text-muted">Last generated: {{ insights.generated_at }}</small>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" onclick="refreshInsights()">
+                            <i class="bi bi-arrow-clockwise"></i> Refresh Insights
+                        </button>
+                        <a href="/api/insights/export" class="btn btn-outline-primary">
+                            <i class="bi bi-download"></i> Export Report
+                        </a>
+                        <button class="btn btn-outline-secondary" onclick="viewDetailedInsights()">
+                            <i class="bi bi-eye"></i> Detailed View
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Trending Technologies Chart
+const trendData = {
+    labels: [{% for tech in insights.trending_technologies[:6] %}'{{ tech.technology.replace("-", " ").title() }}'{% if not loop.last %},{% endif %}{% endfor %}],
+    datasets: [{
+        label: 'Trend Score',
+        data: [{% for tech in insights.trending_technologies[:6] %}{{ tech.trend_score }}{% if not loop.last %},{% endif %}{% endfor %}],
+        backgroundColor: [
+            '#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'
+        ],
+        borderRadius: 6
+    }]
+};
+
+new Chart(document.getElementById('trendingTechChart'), {
+    type: 'bar',
+    data: trendData,
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 10
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+});
+
+function refreshInsights() {
+    if (!confirm('Regenerate AI insights? This may take a few moments.')) return;
+    
+    showLoading();
+    $.ajax({
+        url: '/api/insights/refresh',
+        method: 'POST',
+        success: function() {
+            location.reload();
+        },
+        error: function() {
+            hideLoading();
+            alert('Error refreshing insights');
+        }
+    });
+}
+
+function viewDetailedInsights() {
+    window.open('/api/insights/detailed', '_blank');
+}
+</script>
+{% endblock %}

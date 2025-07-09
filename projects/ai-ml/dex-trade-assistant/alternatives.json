@@ -1,0 +1,24 @@
+{
+  "project_name": "DEX Trade Assistant",
+  "alternatives": [
+    {
+      "name": "Email Tone Improver",
+      "path": "../email-tone-improver/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "DeFi Shield",
+      "path": "../defi-shield/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "FAQ Generator",
+      "path": "../faq-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

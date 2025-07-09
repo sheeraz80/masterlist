@@ -1,0 +1,18 @@
+{
+  "project_name": "Code Metrics Lite",
+  "alternatives": [
+    {
+      "name": "StyleDoc Generator",
+      "path": "../styledoc-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "FileSize Status",
+      "path": "../filesize-status/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

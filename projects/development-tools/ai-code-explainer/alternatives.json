@@ -1,0 +1,36 @@
+{
+  "project_name": "AI Code Explainer",
+  "alternatives": [
+    {
+      "name": "SnippetSaver",
+      "path": "../snippetsaver/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Clipboard Manager Pro",
+      "path": "../clipboard-manager-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "SnipSync",
+      "path": "../snipsync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Docstring Pro",
+      "path": "../ai-docstring-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Git Time-Lapse",
+      "path": "../git-time-lapse/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,36 @@
+{
+  "project_name": "Freelancer Client Portal Pro",
+  "alternatives": [
+    {
+      "name": "ClientPortal OS",
+      "path": "../clientportal-os/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Advanced Bookmark Manager",
+      "path": "../advanced-bookmark-manager/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Social Media Feed Blocker",
+      "path": "../social-media-feed-blocker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Content Repurposing Engine",
+      "path": "../content-repurposing-engine/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered Image Caption & Keyword Generator",
+      "path": "../ai-powered-image-caption-keyword-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

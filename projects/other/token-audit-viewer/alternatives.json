@@ -1,0 +1,24 @@
+{
+  "project_name": "Token Audit Viewer",
+  "alternatives": [
+    {
+      "name": "TweetArchiver",
+      "path": "../tweetarchiver/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Advanced CRM & Sales Pipeline",
+      "path": "../advanced-crm-sales-pipeline/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "FontFinder Pro",
+      "path": "../fontfinder-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

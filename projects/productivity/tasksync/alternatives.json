@@ -1,0 +1,18 @@
+{
+  "project_name": "TaskSync",
+  "alternatives": [
+    {
+      "name": "Team Task Automator",
+      "path": "../team-task-automator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Smart Meeting Note Saver",
+      "path": "../smart-meeting-note-saver/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

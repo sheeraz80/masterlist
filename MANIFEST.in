@@ -1,0 +1,46 @@
+# Include documentation
+include README.md
+include LICENSE
+include CONTRIBUTING.md
+include CLAUDE.md
+
+# Include configuration files
+include requirements.txt
+include requirements.in
+include pyproject.toml
+include setup.cfg
+include .pre-commit-config.yaml
+
+# Include data files
+include projects.json
+include project_tags.json
+recursive-include data *.json *.md
+
+# Include web assets
+recursive-include web/templates *.html
+recursive-include web/static *.css *.js *.png *.jpg *.ico
+
+# Include test data
+recursive-include tests *.py *.json *.txt
+
+# Include documentation
+recursive-include docs *.md *.rst *.txt
+
+# Include scripts
+recursive-include scripts *.py *.sh
+
+# Exclude unnecessary files
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude .DS_Store
+global-exclude .git*
+global-exclude .coverage
+global-exclude .pytest_cache
+global-exclude .mypy_cache
+global-exclude *.log
+global-exclude *.swp
+global-exclude *~
+exclude .github
+exclude .vscode
+exclude venv
+exclude .env*

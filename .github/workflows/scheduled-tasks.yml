@@ -1,0 +1,287 @@
+name: Scheduled Tasks
+
+on:
+  schedule:
+    # Run every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Task to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - insights
+          - quality
+          - backup
+          - cleanup
+
+jobs:
+  generate-insights:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event.inputs.task == 'all' || github.event.inputs.task == 'insights'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Generate AI insights
+      run: |
+        python insights/ai_insights.py --generate-all
+    
+    - name: Generate analytics reports
+      run: |
+        python analytics/report_generator.py all --format json
+        python analytics/report_generator.py all --format markdown
+    
+    - name: Commit and push insights
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+        # Check if there are changes
+        if [[ -n $(git status -s data/) ]]; then
+          git add data/ai_insights.json data/reports/
+          git commit -m "🤖 Update AI insights and reports [skip ci]"
+          git push
+        else
+          echo "No changes to insights"
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  quality-check:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event.inputs.task == 'all' || github.event.inputs.task == 'quality'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run quality validation
+      run: |
+        python qa/validation_system.py --run-all
+    
+    - name: Generate quality reports
+      run: |
+        python qa/quality_scorer.py --generate-report
+    
+    - name: Update quality scores
+      run: |
+        python -c "
+        import json
+        from qa.quality_scorer import QualityScorer
+        
+        scorer = QualityScorer()
+        updated_count = 0
+        
+        with open('projects.json') as f:
+            data = json.load(f)
+            projects = data['projects']
+        
+        for key, project in projects.items():
+            old_score = project.get('quality_score', 0)
+            new_score = scorer.calculate_quality_score(project)
+            
+            if abs(old_score - new_score) > 0.1:
+                project['quality_score'] = round(new_score, 2)
+                updated_count += 1
+        
+        if updated_count > 0:
+            with open('projects.json', 'w') as f:
+                json.dump(data, f, indent=2)
+            print(f'✅ Updated {updated_count} quality scores')
+        else:
+            print('✅ All quality scores are up to date')
+        "
+    
+    - name: Create quality issue if needed
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const report = fs.readFileSync('qa_reports/comprehensive_qa_report.md', 'utf8');
+          
+          // Check for critical issues
+          if (report.includes('❌') || report.includes('FAILED')) {
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 Quality Issues Detected',
+              body: '## Automated Quality Check Failed\n\n' +
+                    'The scheduled quality check has detected issues.\n\n' +
+                    '[View Full Report](qa_reports/comprehensive_qa_report.md)\n\n' +
+                    'Please review and address the issues.',
+              labels: ['quality', 'automated']
+            });
+          }
+
+  data-backup:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event.inputs.task == 'all' || github.event.inputs.task == 'backup'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Create data backup
+      run: |
+        # Create backup directory
+        mkdir -p backups
+        
+        # Create timestamped backup
+        TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+        BACKUP_NAME="masterlist_backup_${TIMESTAMP}.tar.gz"
+        
+        # Archive important data
+        tar -czf "backups/${BACKUP_NAME}" \
+          projects.json \
+          project_tags.json \
+          data/ \
+          qa_reports/ \
+          collaboration/data/ \
+          analytics/data/
+        
+        # Keep only last 30 backups
+        cd backups
+        ls -t masterlist_backup_*.tar.gz | tail -n +31 | xargs -r rm
+        
+        echo "✅ Backup created: ${BACKUP_NAME}"
+    
+    - name: Upload backup to artifact storage
+      uses: actions/upload-artifact@v3
+      with:
+        name: data-backup-${{ github.run_id }}
+        path: backups/
+        retention-days: 30
+
+  cleanup-and-optimize:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event.inputs.task == 'all' || github.event.inputs.task == 'cleanup'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Clean up old data
+      run: |
+        python -c "
+        import os
+        import json
+        from datetime import datetime, timedelta
+        
+        # Clean up old performance metrics
+        metrics_file = 'data/performance_metrics.json'
+        if os.path.exists(metrics_file):
+            with open(metrics_file) as f:
+                metrics = json.load(f)
+            
+            # Keep only last 30 days of API calls
+            cutoff = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
+            metrics['api_calls'] = {
+                date: calls for date, calls in metrics['api_calls'].items()
+                if date >= cutoff
+            }
+            
+            # Keep only last 1000 search queries
+            metrics['search_queries'] = metrics['search_queries'][-1000:]
+            
+            # Keep only last 100 errors
+            metrics['errors'] = metrics['errors'][-100:]
+            
+            with open(metrics_file, 'w') as f:
+                json.dump(metrics, f, indent=2)
+            
+            print('✅ Cleaned up performance metrics')
+        
+        # Clean up old reports
+        reports_dir = 'data/reports'
+        if os.path.exists(reports_dir):
+            cutoff_time = datetime.now() - timedelta(days=7)
+            for filename in os.listdir(reports_dir):
+                filepath = os.path.join(reports_dir, filename)
+                if os.path.getmtime(filepath) < cutoff_time.timestamp():
+                    os.remove(filepath)
+                    print(f'Removed old report: {filename}')
+        "
+    
+    - name: Optimize data files
+      run: |
+        python -c "
+        import json
+        
+        # Optimize projects.json
+        with open('projects.json') as f:
+            data = json.load(f)
+        
+        # Remove any null or empty values
+        for key, project in data['projects'].items():
+            data['projects'][key] = {
+                k: v for k, v in project.items()
+                if v is not None and v != '' and v != []
+            }
+        
+        # Write optimized version
+        with open('projects.json', 'w') as f:
+            json.dump(data, f, separators=(',', ':'))
+        
+        # Optimize project_tags.json
+        with open('project_tags.json') as f:
+            tags = json.load(f)
+        
+        # Remove duplicates and sort
+        for key in tags:
+            tags[key] = sorted(list(set(tags[key])))
+        
+        with open('project_tags.json', 'w') as f:
+            json.dump(tags, f, separators=(',', ':'))
+        
+        print('✅ Data files optimized')
+        "
+
+  notification-summary:
+    runs-on: ubuntu-latest
+    needs: [generate-insights, quality-check, data-backup, cleanup-and-optimize]
+    if: always()
+    
+    steps:
+    - name: Send summary notification
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const jobs = ${{ toJson(needs) }};
+          const failed = Object.entries(jobs).filter(([name, job]) => job.result === 'failure');
+          
+          if (failed.length > 0) {
+            // Create issue for failures
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 Scheduled Tasks Failed',
+              body: `## Failed Jobs\n\n${failed.map(([name]) => `- ${name}`).join('\n')}\n\n[View Workflow Run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`,
+              labels: ['automated', 'error']
+            });
+          }

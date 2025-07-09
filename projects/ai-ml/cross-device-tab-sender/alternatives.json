@@ -1,0 +1,36 @@
+{
+  "project_name": "Cross-Device Tab Sender",
+  "alternatives": [
+    {
+      "name": "Daily Planner Pro",
+      "path": "../daily-planner-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Sales & Lead Generation",
+      "path": "../ai-sales-lead-generation/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "On-Chain Voting Dashboard",
+      "path": "../on-chain-voting-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Price Drop & Stock Alert for Amazon",
+      "path": "../price-drop-stock-alert-for-amazon/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "ReadAloud Pro",
+      "path": "../readaloud-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

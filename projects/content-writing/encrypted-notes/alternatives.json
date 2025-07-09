@@ -1,0 +1,36 @@
+{
+  "project_name": "Encrypted Notes",
+  "alternatives": [
+    {
+      "name": "MindMap Maker",
+      "path": "../mindmap-maker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Book & Reading Tracker",
+      "path": "../book-reading-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Note Versioning",
+      "path": "../note-versioning/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Note Statistics",
+      "path": "../note-statistics/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Note Merge Tool",
+      "path": "../note-merge-tool/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

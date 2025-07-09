@@ -1,0 +1,36 @@
+{
+  "project_name": "Code Block Beautifier",
+  "alternatives": [
+    {
+      "name": "Code Spell Checker Pro",
+      "path": "../code-spell-checker-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Code Review Assistant",
+      "path": "../ai-code-review-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Code-to-Flowchart",
+      "path": "../code-to-flowchart/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI-Powered Code Translator",
+      "path": "../ai-powered-code-translator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Meeting Summary Generator",
+      "path": "../meeting-summary-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

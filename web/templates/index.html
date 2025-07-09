@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+
+{% block title %}Masterlist Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="display-4 fw-bold">Project Dashboard</h1>
+        <p class="lead text-muted">Comprehensive overview of 710+ curated project ideas</p>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-number">{{ stats.total_projects }}</div>
+                    <div class="stat-label">Total Projects</div>
+                </div>
+                <div class="text-primary fs-1">
+                    <i class="bi bi-folder-fill"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-number">{{ stats.average_quality }}/10</div>
+                    <div class="stat-label">Avg Quality Score</div>
+                </div>
+                <div class="text-success fs-1">
+                    <i class="bi bi-star-fill"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-number">{{ stats.unique_tags }}</div>
+                    <div class="stat-label">Unique Tags</div>
+                </div>
+                <div class="text-info fs-1">
+                    <i class="bi bi-tags-fill"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="stat-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <div class="stat-number">{{ stats.categories|length }}</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+                <div class="text-warning fs-1">
+                    <i class="bi bi-grid-3x3-gap-fill"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="h4 mb-3">Quick Actions</h2>
+        <div class="d-flex flex-wrap gap-2">
+            <a href="/search?tags=ai-powered,high-revenue" class="btn btn-primary">
+                <i class="bi bi-lightning-charge"></i> High-Revenue AI Projects
+            </a>
+            <a href="/search?tags=quick-win,beginner-friendly" class="btn btn-outline-primary">
+                <i class="bi bi-rocket"></i> Quick Win Projects
+            </a>
+            <a href="/search?quality=8" class="btn btn-outline-primary">
+                <i class="bi bi-star"></i> Top Rated Projects
+            </a>
+            <a href="/analytics" class="btn btn-outline-primary">
+                <i class="bi bi-graph-up"></i> View Analytics
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Category Distribution -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="chart-container">
+            <h3 class="h5 mb-3">Projects by Category</h3>
+            <canvas id="categoryChart" height="300"></canvas>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="chart-container">
+            <h3 class="h5 mb-3">Quality Score Distribution</h3>
+            <canvas id="qualityChart" height="300"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Top Tags -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="chart-container">
+            <h3 class="h5 mb-3">Most Popular Tags</h3>
+            <div class="d-flex flex-wrap gap-2">
+                {% for tag, count in stats.top_tags[:15] %}
+                <div class="tag-badge">
+                    {{ tag }} <span class="badge bg-primary ms-1">{{ count }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="row">
+    <div class="col-12">
+        <div class="chart-container">
+            <h3 class="h5 mb-3">System Status</h3>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        <span>Data Loaded Successfully</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        <span>{{ stats.total_projects }} Projects Available</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        <span>{{ stats.unique_tags }} Tags Active</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-info-circle-fill text-info me-2"></i>
+                        <span>Average Quality: {{ stats.average_quality }}/10</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-info-circle-fill text-info me-2"></i>
+                        <span>{{ stats.platforms|length }} Platforms Supported</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-info-circle-fill text-info me-2"></i>
+                        <span>{{ stats.categories|length }} Categories Available</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <a href="/qa" class="btn btn-outline-primary btn-sm mb-2 d-block">
+                        <i class="bi bi-shield-check"></i> Run QA Check
+                    </a>
+                    <a href="/api/export/json" class="btn btn-outline-secondary btn-sm d-block">
+                        <i class="bi bi-download"></i> Export Data
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/chart-fix.js') }}"></script>
+<script>
+// Category Chart
+const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+const categoryData = {
+    labels: [{% for cat, count in stats.categories.items() %}'{{ cat }}'{% if not loop.last %},{% endif %}{% endfor %}],
+    datasets: [{
+        data: [{% for cat, count in stats.categories.items() %}{{ count }}{% if not loop.last %},{% endif %}{% endfor %}],
+        backgroundColor: [
+            '#2563eb', '#3b82f6', '#60a5fa', '#93bbfc', '#c3d9fe',
+            '#10b981', '#34d399', '#86efac', '#bbf7d0', '#d1fae5',
+            '#f59e0b', '#fbbf24', '#fcd34d', '#fde68a', '#fef3c7'
+        ]
+    }]
+};
+
+new Chart(categoryCtx, {
+    type: 'doughnut',
+    data: categoryData,
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+            duration: 1000,
+            loop: false,
+            onComplete: function() {
+                // Stop any animation after completion
+                this.options.animation.duration = 0;
+            }
+        },
+        plugins: {
+            legend: {
+                position: 'right',
+                labels: {
+                    padding: 10,
+                    font: {
+                        size: 11
+                    }
+                }
+            }
+        }
+    }
+});
+
+// Quality Chart
+const qualityCtx = document.getElementById('qualityChart').getContext('2d');
+const qualityData = {
+    labels: ['0-5', '5-6', '6-7', '7-8', '8-9', '9-10'],
+    datasets: [{
+        label: 'Projects',
+        data: [
+            {{ stats.quality_ranges['0-5'] }},
+            {{ stats.quality_ranges['5-6'] }},
+            {{ stats.quality_ranges['6-7'] }},
+            {{ stats.quality_ranges['7-8'] }},
+            {{ stats.quality_ranges['8-9'] }},
+            {{ stats.quality_ranges['9-10'] }}
+        ],
+        backgroundColor: '#2563eb',
+        borderRadius: 6
+    }]
+};
+
+new Chart(qualityCtx, {
+    type: 'bar',
+    data: qualityData,
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+            duration: 1000,
+            loop: false,
+            onComplete: function() {
+                // Stop any animation after completion
+                this.options.animation.duration = 0;
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 50
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+});
+</script>
+{% endblock %}

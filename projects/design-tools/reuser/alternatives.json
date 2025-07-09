@@ -1,0 +1,36 @@
+{
+  "project_name": "Reuser",
+  "alternatives": [
+    {
+      "name": "BrandSync",
+      "path": "../brandsync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "DesignToken Sync",
+      "path": "../designtoken-sync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Design System Linter Pro",
+      "path": "../design-system-linter-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Google Docs Style Manager",
+      "path": "../google-docs-style-manager/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Investment Portfolio Tracker",
+      "path": "../investment-portfolio-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

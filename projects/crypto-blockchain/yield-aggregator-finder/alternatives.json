@@ -1,0 +1,24 @@
+{
+  "project_name": "Yield Aggregator Finder",
+  "alternatives": [
+    {
+      "name": "DeFi Protocol Comparator",
+      "path": "../defi-protocol-comparator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    },
+    {
+      "name": "DeFi Protocol Encyclopedia",
+      "path": "../defi-protocol-encyclopedia/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    },
+    {
+      "name": "Yield Aggregator Scanner",
+      "path": "../yield-aggregator-scanner/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

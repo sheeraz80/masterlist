@@ -1,0 +1,30 @@
+{
+  "project_name": "Address Reputation Checker",
+  "alternatives": [
+    {
+      "name": "Price Drop & Stock Alert for Amazon",
+      "path": "../price-drop-stock-alert-for-amazon/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered Personal Shopper",
+      "path": "../ai-powered-personal-shopper/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "DeFi Shield",
+      "path": "../defi-shield/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Web3 Identity Manager",
+      "path": "../web3-identity-manager/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

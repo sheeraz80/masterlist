@@ -1,0 +1,36 @@
+{
+  "project_name": "MindMap Maker",
+  "alternatives": [
+    {
+      "name": "GraphGenius",
+      "path": "../graphgenius/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Book & Reading Tracker",
+      "path": "../book-reading-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Note Versioning",
+      "path": "../note-versioning/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Note Merge Tool",
+      "path": "../note-merge-tool/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Encrypted Notes",
+      "path": "../encrypted-notes/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

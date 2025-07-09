@@ -1,0 +1,36 @@
+{
+  "project_name": "AI Resume Analyzer",
+  "alternatives": [
+    {
+      "name": "DebugSense",
+      "path": "../debugsense/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Unit Test Generator",
+      "path": "../ai-unit-test-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AIRefactor",
+      "path": "../airefactor/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Smart Snippet Collector",
+      "path": "../smart-snippet-collector/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Invoice Categorizer",
+      "path": "../ai-invoice-categorizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

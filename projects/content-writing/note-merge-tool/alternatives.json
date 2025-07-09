@@ -1,0 +1,36 @@
+{
+  "project_name": "Note Merge Tool",
+  "alternatives": [
+    {
+      "name": "MindMap Maker",
+      "path": "../mindmap-maker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Book & Reading Tracker",
+      "path": "../book-reading-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Note Versioning",
+      "path": "../note-versioning/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Team Collaboration Toolkit",
+      "path": "../team-collaboration-toolkit/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Encrypted Notes",
+      "path": "../encrypted-notes/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,36 @@
+{
+  "project_name": "AI Slide Generator",
+  "alternatives": [
+    {
+      "name": "CiteFinder",
+      "path": "../citefinder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Writing Assistant",
+      "path": "../ai-writing-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Visual Data Extractor",
+      "path": "../visual-data-extractor/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Math Solver",
+      "path": "../ai-math-solver/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Calendar Assistant",
+      "path": "../ai-calendar-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

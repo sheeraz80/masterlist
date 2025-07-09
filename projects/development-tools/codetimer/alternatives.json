@@ -1,0 +1,18 @@
+{
+  "project_name": "CodeTimer",
+  "alternatives": [
+    {
+      "name": "Session Sentinel",
+      "path": "../session-sentinel/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI-Powered Code Reviewer",
+      "path": "../ai-powered-code-reviewer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

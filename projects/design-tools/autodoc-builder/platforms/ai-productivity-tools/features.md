@@ -1,0 +1,21 @@
+# AutoDoc Builder - Ai Productivity Tools Features
+
+## Core Features
+- Record workflow steps
+- Auto-generate docs
+- Export to PDF/Markdown
+
+## Platform-Specific Capabilities
+This implementation leverages the unique capabilities of the Ai Productivity Tools platform:
+
+### API Integration
+- Access to platform-specific APIs
+- Native integration with platform ecosystem
+
+### User Experience
+- Follows platform design guidelines
+- Optimized for platform-specific workflows
+
+### Performance
+- Optimized for platform performance characteristics
+- Efficient resource utilization

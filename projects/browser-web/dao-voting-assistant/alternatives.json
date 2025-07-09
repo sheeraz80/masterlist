@@ -1,0 +1,12 @@
+{
+  "project_name": "DAO Voting Assistant",
+  "alternatives": [
+    {
+      "name": "DAO Vote Monitor",
+      "path": "../dao-vote-monitor/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "browser-web"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

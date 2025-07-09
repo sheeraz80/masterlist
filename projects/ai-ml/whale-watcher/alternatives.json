@@ -1,0 +1,36 @@
+{
+  "project_name": "Whale Watcher",
+  "alternatives": [
+    {
+      "name": "On-Chain Voting Dashboard",
+      "path": "../on-chain-voting-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Cross-Device Tab Sender",
+      "path": "../cross-device-tab-sender/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "ReadAloud Pro",
+      "path": "../readaloud-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Paraphraser",
+      "path": "../ai-paraphraser/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Reading Level Analyzer",
+      "path": "../reading-level-analyzer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

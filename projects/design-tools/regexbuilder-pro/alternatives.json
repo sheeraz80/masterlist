@@ -1,0 +1,36 @@
+{
+  "project_name": "RegexBuilder Pro",
+  "alternatives": [
+    {
+      "name": "Figma2Notion (Design-to-Docs)",
+      "path": "../figma2notion-design-to-docs/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Real-Time Stock Chart Generator",
+      "path": "../real-time-stock-chart-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Advanced Shadow Studio",
+      "path": "../advanced-shadow-studio/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Version Snapshotter",
+      "path": "../version-snapshotter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Layer Path Copier",
+      "path": "../layer-path-copier/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

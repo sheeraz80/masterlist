@@ -1,0 +1,36 @@
+{
+  "project_name": "PDF++ Pro",
+  "alternatives": [
+    {
+      "name": "Web Page Health Checker",
+      "path": "../web-page-health-checker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Book & Reading Tracker",
+      "path": "../book-reading-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Zotero Pro Sync",
+      "path": "../zotero-pro-sync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Team Collaboration Toolkit",
+      "path": "../team-collaboration-toolkit/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "PDF++ Pro",
+      "path": "../pdf-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

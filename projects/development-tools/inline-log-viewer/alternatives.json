@@ -1,0 +1,36 @@
+{
+  "project_name": "Inline Log Viewer",
+  "alternatives": [
+    {
+      "name": "ModHeader",
+      "path": "../modheader/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Session Sentinel",
+      "path": "../session-sentinel/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Smart Shopping Sidekick",
+      "path": "../smart-shopping-sidekick/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Clipboard Manager Pro",
+      "path": "../clipboard-manager-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Docstring Pro",
+      "path": "../ai-docstring-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

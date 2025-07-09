@@ -1,0 +1,18 @@
+{
+  "project_name": "Legal & Compliance Tracker",
+  "alternatives": [
+    {
+      "name": "Legal & Compliance Tracker",
+      "path": "../legal-compliance-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Advanced CRM & Sales Pipeline",
+      "path": "../advanced-crm-sales-pipeline/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

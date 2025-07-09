@@ -1,0 +1,30 @@
+{
+  "project_name": "DeFi Protocol Comparator",
+  "alternatives": [
+    {
+      "name": "NFT Inspector",
+      "path": "../nft-inspector/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    },
+    {
+      "name": "Yield Aggregator Finder",
+      "path": "../yield-aggregator-finder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    },
+    {
+      "name": "NFT Sniper",
+      "path": "../nft-sniper/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    },
+    {
+      "name": "DeFi Protocol Encyclopedia",
+      "path": "../defi-protocol-encyclopedia/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

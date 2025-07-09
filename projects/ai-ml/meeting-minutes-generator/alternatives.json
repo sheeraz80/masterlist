@@ -1,0 +1,30 @@
+{
+  "project_name": "Meeting Minutes Generator",
+  "alternatives": [
+    {
+      "name": "AI Content Rewriter",
+      "path": "../ai-content-rewriter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Research Assistant",
+      "path": "../ai-research-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Meeting Scheduler Widget",
+      "path": "../meeting-scheduler-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Note Taker",
+      "path": "../ai-note-taker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

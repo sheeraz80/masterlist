@@ -1,0 +1,24 @@
+{
+  "project_name": "AutoLinker",
+  "alternatives": [
+    {
+      "name": "Book Notes Hub",
+      "path": "../book-notes-hub/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Note Merger",
+      "path": "../note-merger/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Customer Review to Testimonial Generator",
+      "path": "../customer-review-to-testimonial-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

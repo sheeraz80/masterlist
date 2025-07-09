@@ -1,0 +1,36 @@
+{
+  "project_name": "EmojiGen",
+  "alternatives": [
+    {
+      "name": "PersonaPalette (AI Image & Icon Finder)",
+      "path": "../personapalette-ai-image-icon-finder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "A11y Analyzer (Accessibility Assistant)",
+      "path": "../a11y-analyzer-accessibility-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Dev Handoff Optimizer",
+      "path": "../dev-handoff-optimizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "LayerSage (Auto-Organize & Name)",
+      "path": "../layersage-auto-organize-name/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Redline & Spec Exporter",
+      "path": "../redline-spec-exporter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

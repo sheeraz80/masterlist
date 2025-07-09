@@ -1,0 +1,36 @@
+{
+  "project_name": "The Creator's Content Engine",
+  "alternatives": [
+    {
+      "name": "ComponentWizard AI",
+      "path": "../componentwizard-ai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "AutoLayout Optimizer",
+      "path": "../autolayout-optimizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "ContrastMaster",
+      "path": "../contrastmaster/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "CopySync (Figma Text Sync)",
+      "path": "../copysync-figma-text-sync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "FigTask (Integrated Task Lists)",
+      "path": "../figtask-integrated-task-lists/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

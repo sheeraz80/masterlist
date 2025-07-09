@@ -1,0 +1,24 @@
+{
+  "project_name": "OKR Tracker Pro",
+  "alternatives": [
+    {
+      "name": "Freelancer Finance Tracker",
+      "path": "../freelancer-finance-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Time Tracking Dashboard",
+      "path": "../time-tracking-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "OKR Master Template",
+      "path": "../okr-master-template/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

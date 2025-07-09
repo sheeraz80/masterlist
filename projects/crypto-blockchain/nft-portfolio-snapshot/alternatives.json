@@ -1,0 +1,24 @@
+{
+  "project_name": "NFT Portfolio Snapshot",
+  "alternatives": [
+    {
+      "name": "NFT Inspector",
+      "path": "../nft-inspector/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    },
+    {
+      "name": "Crypto Mining Tab (Opt-in)",
+      "path": "../crypto-mining-tab-opt-in/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    },
+    {
+      "name": "DeFi Protocol Encyclopedia",
+      "path": "../defi-protocol-encyclopedia/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

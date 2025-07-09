@@ -1,0 +1,36 @@
+{
+  "project_name": "AutoDoc Builder",
+  "alternatives": [
+    {
+      "name": "StyleDoc Generator",
+      "path": "../styledoc-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Figma2Notion (Design-to-Docs)",
+      "path": "../figma2notion-design-to-docs/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Flowchart Builder",
+      "path": "../flowchart-builder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Variable Style Guide Generator",
+      "path": "../variable-style-guide-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Shopify Product Card Builder",
+      "path": "../shopify-product-card-builder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

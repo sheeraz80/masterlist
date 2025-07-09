@@ -1,0 +1,36 @@
+{
+  "project_name": "Stablecoin Monitor",
+  "alternatives": [
+    {
+      "name": "Token Tracker",
+      "path": "../token-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Freelancer Finance Tracker",
+      "path": "../freelancer-finance-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Life Dashboard",
+      "path": "../life-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Time Tracking Dashboard",
+      "path": "../time-tracking-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "OKR Master Template",
+      "path": "../okr-master-template/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

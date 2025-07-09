@@ -1,0 +1,24 @@
+{
+  "project_name": "Code Spell Checker Pro",
+  "alternatives": [
+    {
+      "name": "Code-to-Flowchart",
+      "path": "../code-to-flowchart/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI-Powered Code Translator",
+      "path": "../ai-powered-code-translator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Code Block Beautifier",
+      "path": "../code-block-beautifier/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,12 @@
+{
+  "project_name": "AI Form Filler",
+  "alternatives": [
+    {
+      "name": "FormAutoPilot",
+      "path": "../formautopilot/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

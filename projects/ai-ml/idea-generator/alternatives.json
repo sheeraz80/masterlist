@@ -1,0 +1,24 @@
+{
+  "project_name": "Idea Generator",
+  "alternatives": [
+    {
+      "name": "Mind Map Widget",
+      "path": "../mind-map-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Smart Tagger",
+      "path": "../smart-tagger/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Mind Map Overlay",
+      "path": "../mind-map-overlay/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

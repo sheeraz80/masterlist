@@ -1,0 +1,36 @@
+{
+  "project_name": "Google Calendar Sync Widget",
+  "alternatives": [
+    {
+      "name": "BulkDownloader",
+      "path": "../bulkdownloader/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Life Dashboard",
+      "path": "../life-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Advanced CRM & Sales Pipeline",
+      "path": "../advanced-crm-sales-pipeline/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Personal Finance & Budgeting OS",
+      "path": "../personal-finance-budgeting-os/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Vault Health Check",
+      "path": "../vault-health-check/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

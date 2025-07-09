@@ -1,0 +1,24 @@
+{
+  "project_name": "AI Content Detector",
+  "alternatives": [
+    {
+      "name": "AI Paraphraser",
+      "path": "../ai-paraphraser/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Accessibility Checker",
+      "path": "../ai-accessibility-checker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "FAQ Generator",
+      "path": "../faq-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

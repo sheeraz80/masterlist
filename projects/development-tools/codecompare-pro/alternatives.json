@@ -1,0 +1,12 @@
+{
+  "project_name": "CodeCompare Pro",
+  "alternatives": [
+    {
+      "name": "Test Runner Lite",
+      "path": "../test-runner-lite/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

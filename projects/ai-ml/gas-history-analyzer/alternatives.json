@@ -1,0 +1,18 @@
+{
+  "project_name": "Gas History Analyzer",
+  "alternatives": [
+    {
+      "name": "DeFi Shield",
+      "path": "../defi-shield/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Token Approval Manager",
+      "path": "../token-approval-manager/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

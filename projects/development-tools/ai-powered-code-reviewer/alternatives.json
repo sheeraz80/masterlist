@@ -1,0 +1,36 @@
+{
+  "project_name": "AI-Powered Code Reviewer",
+  "alternatives": [
+    {
+      "name": "SnippetSaver",
+      "path": "../snippetsaver/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "CodeTimer",
+      "path": "../codetimer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "CodeSprintAI",
+      "path": "../codesprintai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "DeFi Dashboard Lite",
+      "path": "../defi-dashboard-lite/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "ModHeader",
+      "path": "../modheader/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

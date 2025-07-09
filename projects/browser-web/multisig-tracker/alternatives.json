@@ -1,0 +1,12 @@
+{
+  "project_name": "Multisig Tracker",
+  "alternatives": [
+    {
+      "name": "Stablecoin Risk Analyzer",
+      "path": "../stablecoin-risk-analyzer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "browser-web"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

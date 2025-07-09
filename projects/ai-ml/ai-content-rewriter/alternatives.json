@@ -1,0 +1,36 @@
+{
+  "project_name": "AI Content Rewriter",
+  "alternatives": [
+    {
+      "name": "AI Writing Assistant",
+      "path": "../ai-writing-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Meeting Minutes Generator",
+      "path": "../meeting-minutes-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Math Solver",
+      "path": "../ai-math-solver/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Calendar Assistant",
+      "path": "../ai-calendar-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Slide Generator",
+      "path": "../ai-slide-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

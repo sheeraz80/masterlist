@@ -1,0 +1,24 @@
+{
+  "project_name": "Note Reminders",
+  "alternatives": [
+    {
+      "name": "Social Media Feed Blocker",
+      "path": "../social-media-feed-blocker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Recurring Task & Subscription Manager Widget",
+      "path": "../recurring-task-subscription-manager-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Smart Link Preview",
+      "path": "../smart-link-preview/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

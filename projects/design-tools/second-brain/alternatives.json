@@ -1,0 +1,36 @@
+{
+  "project_name": "Second Brain",
+  "alternatives": [
+    {
+      "name": "LayoutPlanner (Grid & Guide Assistant)",
+      "path": "../layoutplanner-grid-guide-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "SpellCheck+ (Content Proofreader)",
+      "path": "../spellcheck-content-proofreader/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Variable Style Guide Generator",
+      "path": "../variable-style-guide-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Grid Guardian",
+      "path": "../grid-guardian/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Simple Wiki",
+      "path": "../simple-wiki/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

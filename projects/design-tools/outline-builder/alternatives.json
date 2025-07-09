@@ -1,0 +1,36 @@
+{
+  "project_name": "Outline Builder",
+  "alternatives": [
+    {
+      "name": "Dev Handoff Optimizer",
+      "path": "../dev-handoff-optimizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "AI-Powered YouTube Summarizer & Mind Map",
+      "path": "../ai-powered-youtube-summarizer-mind-map/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Web Page Annotator & Highlighter",
+      "path": "../web-page-annotator-highlighter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "QuickNotes Web",
+      "path": "../quicknotes-web/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Second Brain OS (PARA Method)",
+      "path": "../second-brain-os-para-method/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

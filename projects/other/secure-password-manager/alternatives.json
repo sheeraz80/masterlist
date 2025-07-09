@@ -1,0 +1,24 @@
+{
+  "project_name": "Secure Password Manager",
+  "alternatives": [
+    {
+      "name": "Token Tracker",
+      "path": "../token-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Life Dashboard",
+      "path": "../life-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Investor CRM",
+      "path": "../investor-crm/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

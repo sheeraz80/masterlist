@@ -1,0 +1,36 @@
+{
+  "project_name": "AutoProofreader",
+  "alternatives": [
+    {
+      "name": "AI Content Rewriter",
+      "path": "../ai-content-rewriter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered Form Filler",
+      "path": "../ai-powered-form-filler/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered SEO Assistant",
+      "path": "../ai-powered-seo-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered Personal Shopper",
+      "path": "../ai-powered-personal-shopper/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "DeFi Shield",
+      "path": "../defi-shield/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

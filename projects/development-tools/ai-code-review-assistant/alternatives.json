@@ -1,0 +1,36 @@
+{
+  "project_name": "AI Code Review Assistant",
+  "alternatives": [
+    {
+      "name": "AI-Powered Code Reviewer",
+      "path": "../ai-powered-code-reviewer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI-Powered Code Translator",
+      "path": "../ai-powered-code-translator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Smart Snippet Collector",
+      "path": "../smart-snippet-collector/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Code Block Beautifier",
+      "path": "../code-block-beautifier/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Invoice Categorizer",
+      "path": "../ai-invoice-categorizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,36 @@
+{
+  "project_name": "DEX Arbitrage Finder",
+  "alternatives": [
+    {
+      "name": "Life Dashboard",
+      "path": "../life-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Automated Goal Tracker",
+      "path": "../automated-goal-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Stablecoin Monitor",
+      "path": "../stablecoin-monitor/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Gas Fee Estimator",
+      "path": "../gas-fee-estimator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Gas Fee History Explorer",
+      "path": "../gas-fee-history-explorer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}
