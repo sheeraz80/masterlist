@@ -1,12 +1,12 @@
 # Masterlist - Project Management & Analytics Platform
 
-A comprehensive project management and analytics platform built with Next.js 15, featuring real-time collaboration, AI-powered insights, and advanced analytics.
+A comprehensive project management and analytics platform built with Next.js 15, featuring real-time collaboration, AI-powered insights, and advanced analytics. The platform includes 700+ pre-loaded projects across 15+ categories with detailed analytics and insights.
 
 ## Features
 
 - 🚀 **Modern Tech Stack**: Next.js 15, TypeScript, Tailwind CSS
 - 🔐 **Authentication**: JWT-based auth with secure HTTP-only cookies
-- 💾 **Database**: Prisma ORM with SQLite (easily switchable to PostgreSQL)
+- 💾 **Database**: PostgreSQL 17 with Prisma ORM
 - 📊 **Analytics Dashboard**: Real-time metrics and visualizations
 - 🤝 **Team Collaboration**: Real-time updates, comments, and activity tracking
 - 🤖 **AI Insights**: Intelligent project analysis and recommendations
@@ -14,6 +14,7 @@ A comprehensive project management and analytics platform built with Next.js 15,
 - 🌙 **Dark Mode**: Full theme support
 - 📄 **Export Functionality**: Export data in multiple formats (CSV, JSON, XLSX, PDF)
 - 🔍 **Advanced Search**: Full-text search with filters and sorting
+- 💼 **700+ Projects**: Pre-loaded with comprehensive project data
 
 ## Getting Started
 
@@ -21,47 +22,83 @@ A comprehensive project management and analytics platform built with Next.js 15,
 
 - Node.js 20+ 
 - npm 10+
+- PostgreSQL 17+
 - Git
 
-### Installation
+### Quick Setup (Recommended)
 
-1. Clone the repository:
+We provide an automated setup script that handles everything:
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/masterlist.git
+cd masterlist
+
+# Run the setup script
+chmod +x setup.sh
+./setup.sh
+```
+
+The setup script will:
+- Check system requirements
+- Install dependencies
+- Configure the database
+- Load 700+ projects with seed data
+- Set up git hooks for automatic backups
+
+### Manual Setup
+
+If you prefer manual setup:
+
+1. **Clone the repository:**
 ```bash
 git clone https://github.com/yourusername/masterlist.git
 cd masterlist
 ```
 
-2. Install dependencies:
+2. **Install dependencies:**
 ```bash
 npm install
 ```
 
-3. Set up environment variables:
+3. **Set up PostgreSQL database:**
 ```bash
-cp .env.nextjs.example .env
+# Create database and user
+sudo -u postgres psql <<EOF
+CREATE DATABASE masterlist;
+CREATE USER masterlist_user WITH PASSWORD 'masterlist_password123';
+GRANT ALL PRIVILEGES ON DATABASE masterlist TO masterlist_user;
+ALTER DATABASE masterlist OWNER TO masterlist_user;
+EOF
 ```
 
-4. Generate Prisma client:
+4. **Configure environment:**
 ```bash
-npx prisma generate
+cp .env.example .env
+# Edit .env with your database credentials if different
 ```
 
-5. Run database migrations:
+5. **Initialize database:**
 ```bash
-npx prisma migrate dev
+npm run setup
 ```
 
-6. (Optional) Seed the database:
-```bash
-npm run seed
-```
-
-7. Start the development server:
+6. **Start the development server:**
 ```bash
 npm run dev
 ```
 
 Visit http://localhost:3000 to see the application.
+
+### Default Login Credentials
+
+- **Admin User**
+  - Email: `admin@masterlist.com`
+  - Password: `password123`
+
+- **Demo User**
+  - Email: `user@masterlist.com`
+  - Password: `password123`
 
 ## Project Structure
 
@@ -89,35 +126,58 @@ src/
 - **Frontend**: Next.js 15, React 18, TypeScript
 - **Styling**: Tailwind CSS, Framer Motion
 - **UI Components**: Radix UI, shadcn/ui
-- **Database**: Prisma ORM, SQLite
+- **Database**: PostgreSQL 17, Prisma ORM
 - **Authentication**: JWT, bcrypt
 - **State Management**: React Query, Zustand
 - **Charts**: Recharts, Chart.js
-- **Real-time**: Polling-based updates (WebSocket ready)
+- **Real-time**: Socket.io ready
+- **Export**: XLSX, PDF, CSV, JSON support
 
 ## Development
 
 ### Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run test` - Run tests
-- `npm run migrate` - Run database migrations
-- `npm run seed` - Seed database with sample data
+```bash
+# Development
+npm run dev              # Start development server
+npm run build           # Build for production
+npm run start           # Start production server
+
+# Database
+npm run db:generate     # Generate Prisma client
+npm run db:push        # Push schema changes
+npm run db:migrate     # Run migrations
+npm run db:seed        # Seed database
+npm run db:studio      # Open Prisma Studio
+npm run db:backup      # Backup database to seed-data
+npm run db:reset       # Reset and reseed database
+
+# Setup
+npm run setup          # Complete setup (install, generate, push, seed)
+npm run setup:fresh    # Fresh setup (reset database first)
+
+# Code Quality
+npm run lint           # Run ESLint
+npm run format         # Format with Prettier
+npm test              # Run tests
+```
 
 ### Database Management
 
+The project uses PostgreSQL with automatic backup functionality:
+
+- **Automatic Backups**: Database changes are automatically backed up on git commits
+- **Seed Data**: Pre-loaded with 700+ projects across 15+ categories
+- **Easy Restoration**: New clones automatically get the full dataset
+
+To manually backup the database:
 ```bash
-# Create a new migration
-npx prisma migrate dev --name your-migration-name
+npm run db:backup
+```
 
-# Apply migrations
-npx prisma migrate deploy
-
-# Open Prisma Studio
-npx prisma studio
+To reset and restore from seed data:
+```bash
+npm run db:reset
 ```
 
 ## Production Deployment

@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run lint-staged
+npx lint-staged
+
+# Check if database has changed by comparing project count
+if command -v node >/dev/null 2>&1; then
+  # Only backup if we're in a git repo and have database changes
+  if [ -f "db/seed-data/metadata.json" ]; then
+    OLD_COUNT=$(node -p "require('./db/seed-data/metadata.json').counts.projects" 2>/dev/null || echo "0")
+    CURRENT_COUNT=$(node -p "const { PrismaClient } = require('@prisma/client'); const prisma = new PrismaClient(); prisma.project.count().then(c => { console.log(c); process.exit(0); }).catch(() => { console.log('0'); process.exit(0); })" 2>/dev/null || echo "0")
+    
+    if [ "$OLD_COUNT" != "$CURRENT_COUNT" ]; then
+      echo "Database has changed, creating backup..."
+      npm run db:backup
+      git add db/seed-data/
+    fi
+  else
+    # First time, create backup
+    echo "Creating initial database backup..."
+    npm run db:backup
+    git add db/seed-data/
+  fi
+fi

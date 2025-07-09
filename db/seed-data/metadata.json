@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "exported_at": "2025-07-09T17:19:40.431Z",
+  "counts": {
+    "projects": 700,
+    "insights": 0,
+    "users": 2,
+    "teams": 1,
+    "activities": 3
+  },
+  "schema_version": "no-migrations-table"
+}

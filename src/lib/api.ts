@@ -34,6 +34,7 @@ export async function getProjects(params?: {
     throw new Error('Failed to fetch projects');
   }
   const data = await response.json();
+  
   return {
     projects: data.projects || [],
     pagination: data.pagination || {

@@ -22,10 +22,16 @@
     "analyze": "ANALYZE=true next build",
     "migrate": "node scripts/migrate.js",
     "seed": "node scripts/seed.js",
+    "import-original-data": "node scripts/import-original-data.js",
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
-    "db:generate": "prisma generate"
+    "db:generate": "prisma generate",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:backup": "node scripts/export-db-backup.js",
+    "db:reset": "prisma migrate reset --force",
+    "setup": "npm install && npm run db:generate && npm run db:push && npm run db:seed",
+    "setup:fresh": "npm install && npm run db:generate && npm run db:reset && npm run db:seed"
   },
   "dependencies": {
     "@prisma/client": "^6.11.1",
@@ -59,7 +65,7 @@
     "next": "15.3.0",
     "next-auth": "^4.24.5",
     "next-themes": "^0.2.1",
-    "prisma": "^6.11.1",
+    "pg": "^8.16.3",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
@@ -101,7 +107,9 @@
     "postcss": "^8.4.33",
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.5.9",
+    "prisma": "^6.11.1",
     "tailwindcss": "^3.4.0",
+    "tsx": "^4.20.3",
     "typescript": "^5.3.3"
   },
   "engines": {
@@ -116,5 +124,8 @@
     "*.{json,md,yml}": [
       "prettier --write"
     ]
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }

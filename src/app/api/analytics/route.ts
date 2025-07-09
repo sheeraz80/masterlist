@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { prisma } from '@/lib/prisma';
 
 interface AnalyticsData {
   overview: {
@@ -9,14 +8,11 @@ interface AnalyticsData {
     average_quality: number;
     average_complexity: number;
     categories_count: number;
-    platforms_count: number;
+    total_users: number;
+    total_teams: number;
+    total_activities: number;
   };
   category_analysis: {
-    by_count: Record<string, number>;
-    by_revenue: Record<string, number>;
-    by_quality: Record<string, number>;
-  };
-  platform_analysis: {
     by_count: Record<string, number>;
     by_revenue: Record<string, number>;
     by_quality: Record<string, number>;
@@ -50,20 +46,95 @@ interface AnalyticsData {
     undervalued_categories: string[];
     optimal_projects: any[];
   };
+  recent_trends: {
+    new_projects_last_week: number;
+    active_users_last_week: number;
+    trending_categories: string[];
+  };
 }
 
 export async function GET() {
   try {
-    const projectsPath = path.join(process.cwd(), 'data', 'projects.json');
-    
-    let projects: any[] = [];
-    
-    if (fs.existsSync(projectsPath)) {
-      const data = fs.readFileSync(projectsPath, 'utf-8');
-      projects = JSON.parse(data);
-    }
+    // Fetch all necessary data from database
+    const [
+      projects,
+      userCount,
+      teamCount,
+      recentActivityCount,
+      recentProjects,
+      activeUsers
+    ] = await Promise.all([
+      prisma.project.findMany({
+        include: {
+          _count: {
+            select: {
+              comments: true,
+              activities: true
+            }
+          }
+        }
+      }),
+      prisma.user.count(),
+      prisma.team.count(),
+      prisma.activity.count({
+        where: {
+          createdAt: {
+            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Last 7 days
+          }
+        }
+      }),
+      prisma.project.count({
+        where: {
+          createdAt: {
+            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Last 7 days
+          }
+        }
+      }),
+      prisma.activity.groupBy({
+        by: ['userId'],
+        where: {
+          createdAt: {
+            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Last 7 days
+          },
+          userId: {
+            not: null
+          }
+        },
+        _count: true
+      })
+    ]);
 
-    const analytics: AnalyticsData = generateAnalytics(projects);
+    // Transform projects to match expected format
+    const transformedProjects = projects.map(project => ({
+      id: project.id,
+      title: project.title,
+      problem: project.problem,
+      solution: project.solution,
+      category: project.category,
+      target_users: project.targetUsers,
+      revenue_model: project.revenueModel,
+      revenue_potential: JSON.parse(project.revenuePotential || '{}'),
+      development_time: project.developmentTime,
+      competition_level: project.competitionLevel,
+      technical_complexity: project.technicalComplexity,
+      quality_score: project.qualityScore,
+      key_features: JSON.parse(project.keyFeatures || '[]'),
+      tags: JSON.parse(project.tags || '[]'),
+      status: project.status,
+      created_at: project.createdAt,
+      updated_at: project.updatedAt,
+      comments_count: project._count.comments,
+      activities_count: project._count.activities
+    }));
+
+    const analytics: AnalyticsData = generateAnalytics(
+      transformedProjects, 
+      userCount, 
+      teamCount, 
+      recentActivityCount,
+      recentProjects,
+      activeUsers.length
+    );
 
     return NextResponse.json(analytics);
   } catch (error) {
@@ -75,15 +146,25 @@ export async function GET() {
   }
 }
 
-function generateAnalytics(projects: any[]): AnalyticsData {
+function generateAnalytics(
+  projects: any[], 
+  userCount: number, 
+  teamCount: number, 
+  recentActivityCount: number,
+  newProjectsCount: number,
+  activeUsersCount: number
+): AnalyticsData {
   // Overview metrics
   const totalProjects = projects.length;
   const totalRevenue = projects.reduce((sum, p) => sum + (p.revenue_potential?.realistic || 0), 0);
-  const avgQuality = projects.reduce((sum, p) => sum + (p.quality_score || 0), 0) / totalProjects;
-  const avgComplexity = projects.reduce((sum, p) => sum + (p.technical_complexity || 0), 0) / totalProjects;
+  const avgQuality = totalProjects > 0 
+    ? projects.reduce((sum, p) => sum + (p.quality_score || 0), 0) / totalProjects 
+    : 0;
+  const avgComplexity = totalProjects > 0
+    ? projects.reduce((sum, p) => sum + (p.technical_complexity || 0), 0) / totalProjects
+    : 0;
   
-  const categories = Array.from(new Set(projects.map(p => p.category)));
-  const platforms = Array.from(new Set(projects.map(p => p.platform)));
+  const categories = Array.from(new Set(projects.map(p => p.category).filter(Boolean)));
 
   // Category analysis
   const categoryCount: Record<string, number> = {};
@@ -100,201 +181,42 @@ function generateAnalytics(projects: any[]): AnalyticsData {
     categoryQuality[cat].count += 1;
   });
 
+  // Calculate average quality by category
   const categoryQualityAvg: Record<string, number> = {};
   Object.entries(categoryQuality).forEach(([cat, data]) => {
-    categoryQualityAvg[cat] = data.total / data.count;
-  });
-
-  // Platform analysis
-  const platformCount: Record<string, number> = {};
-  const platformRevenue: Record<string, number> = {};
-  const platformQuality: Record<string, { total: number; count: number }> = {};
-
-  projects.forEach(project => {
-    const platform = project.platform || 'Unknown';
-    platformCount[platform] = (platformCount[platform] || 0) + 1;
-    platformRevenue[platform] = (platformRevenue[platform] || 0) + (project.revenue_potential?.realistic || 0);
-    
-    if (!platformQuality[platform]) platformQuality[platform] = { total: 0, count: 0 };
-    platformQuality[platform].total += project.quality_score || 0;
-    platformQuality[platform].count += 1;
-  });
-
-  const platformQualityAvg: Record<string, number> = {};
-  Object.entries(platformQuality).forEach(([platform, data]) => {
-    platformQualityAvg[platform] = data.total / data.count;
+    categoryQualityAvg[cat] = data.count > 0 ? data.total / data.count : 0;
   });
 
   // Quality distribution
-  const qualityDist: Record<string, number> = {
+  const qualityDistribution: Record<string, number> = {
     '0-2': 0, '2-4': 0, '4-6': 0, '6-8': 0, '8-10': 0
   };
   
-  projects.forEach(p => {
-    const score = p.quality_score || 0;
-    if (score < 2) qualityDist['0-2']++;
-    else if (score < 4) qualityDist['2-4']++;
-    else if (score < 6) qualityDist['4-6']++;
-    else if (score < 8) qualityDist['6-8']++;
-    else qualityDist['8-10']++;
+  projects.forEach(project => {
+    const score = project.quality_score || 0;
+    if (score < 2) qualityDistribution['0-2']++;
+    else if (score < 4) qualityDistribution['2-4']++;
+    else if (score < 6) qualityDistribution['4-6']++;
+    else if (score < 8) qualityDistribution['6-8']++;
+    else qualityDistribution['8-10']++;
   });
 
   // Revenue distribution
-  const revenueDist: Record<string, number> = {
-    '0-1k': 0, '1k-5k': 0, '5k-10k': 0, '10k-25k': 0, '25k+': 0
+  const revenueDistribution: Record<string, number> = {
+    '0-10k': 0, '10k-50k': 0, '50k-100k': 0, '100k-500k': 0, '500k+': 0
   };
   
-  projects.forEach(p => {
-    const revenue = p.revenue_potential?.realistic || 0;
-    if (revenue < 1000) revenueDist['0-1k']++;
-    else if (revenue < 5000) revenueDist['1k-5k']++;
-    else if (revenue < 10000) revenueDist['5k-10k']++;
-    else if (revenue < 25000) revenueDist['10k-25k']++;
-    else revenueDist['25k+']++;
-  });
-
-  // Complexity distribution
-  const complexityDist: Record<string, number> = {
-    '1-2': 0, '3-4': 0, '5-6': 0, '7-8': 0, '9-10': 0
-  };
-  
-  projects.forEach(p => {
-    const complexity = p.technical_complexity || 0;
-    if (complexity <= 2) complexityDist['1-2']++;
-    else if (complexity <= 4) complexityDist['3-4']++;
-    else if (complexity <= 6) complexityDist['5-6']++;
-    else if (complexity <= 8) complexityDist['7-8']++;
-    else complexityDist['9-10']++;
-  });
-
-  // Development time analysis
-  const devTimeDist: Record<string, number> = {
-    'Fast (Days)': 0,
-    'Medium (Weeks)': 0,
-    'Slow (Months)': 0,
-    'Extended (6+ Months)': 0
-  };
-
-  projects.forEach(p => {
-    const devTime = (p.development_time || '').toLowerCase();
-    if (devTime.includes('day')) devTimeDist['Fast (Days)']++;
-    else if (devTime.includes('week')) devTimeDist['Medium (Weeks)']++;
-    else if (devTime.includes('month') && !devTime.includes('6')) devTimeDist['Slow (Months)']++;
-    else if (devTime.includes('6') || devTime.includes('year')) devTimeDist['Extended (6+ Months)']++;
-    else devTimeDist['Slow (Months)']++; // Default
-  });
-
-  // Competition analysis
-  const competitionDist: Record<string, number> = {
-    'Low': 0, 'Medium': 0, 'High': 0
-  };
-
-  projects.forEach(p => {
-    const competition = (p.competition_level || '').toLowerCase();
-    if (competition.includes('low')) competitionDist['Low']++;
-    else if (competition.includes('high')) competitionDist['High']++;
-    else competitionDist['Medium']++;
+  projects.forEach(project => {
+    const revenue = project.revenue_potential?.realistic || 0;
+    if (revenue < 10000) revenueDistribution['0-10k']++;
+    else if (revenue < 50000) revenueDistribution['10k-50k']++;
+    else if (revenue < 100000) revenueDistribution['50k-100k']++;
+    else if (revenue < 500000) revenueDistribution['100k-500k']++;
+    else revenueDistribution['500k+']++;
   });
 
   // Top revenue projects
-  const topProjects = [...projects]
-    .sort((a, b) => (b.revenue_potential?.realistic || 0) - (a.revenue_potential?.realistic || 0))
-    .slice(0, 10)
-    .map(p => ({
-      id: p.id,
-      title: p.title,
-      category: p.category,
-      revenue_potential: p.revenue_potential?.realistic || 0,
-      quality_score: p.quality_score || 0,
-      technical_complexity: p.technical_complexity || 0
-    }));
-
-  // Revenue by category average
-  const revenueByCategoryAvg: Record<string, number> = {};
-  Object.entries(categoryRevenue).forEach(([cat, total]) => {
-    revenueByCategoryAvg[cat] = total / categoryCount[cat];
-  });
-
-  // Revenue by complexity average
-  const revenueByComplexity: Record<number, { total: number; count: number }> = {};
-  projects.forEach(p => {
-    const complexity = p.technical_complexity || 0;
-    if (!revenueByComplexity[complexity]) revenueByComplexity[complexity] = { total: 0, count: 0 };
-    revenueByComplexity[complexity].total += p.revenue_potential?.realistic || 0;
-    revenueByComplexity[complexity].count += 1;
-  });
-
-  const revenueByComplexityAvg: Record<string, number> = {};
-  Object.entries(revenueByComplexity).forEach(([complexity, data]) => {
-    revenueByComplexityAvg[`Complexity ${complexity}`] = data.total / data.count;
-  });
-
-  // Quality by complexity
-  const qualityByComplexity: Record<number, { total: number; count: number }> = {};
-  projects.forEach(p => {
-    const complexity = p.technical_complexity || 0;
-    if (!qualityByComplexity[complexity]) qualityByComplexity[complexity] = { total: 0, count: 0 };
-    qualityByComplexity[complexity].total += p.quality_score || 0;
-    qualityByComplexity[complexity].count += 1;
-  });
-
-  const qualityByComplexityAvg: Record<string, number> = {};
-  Object.entries(qualityByComplexity).forEach(([complexity, data]) => {
-    qualityByComplexityAvg[`Complexity ${complexity}`] = data.total / data.count;
-  });
-
-  // Complexity by category
-  const complexityByCategory: Record<string, { total: number; count: number }> = {};
-  projects.forEach(p => {
-    const cat = p.category || 'Uncategorized';
-    if (!complexityByCategory[cat]) complexityByCategory[cat] = { total: 0, count: 0 };
-    complexityByCategory[cat].total += p.technical_complexity || 0;
-    complexityByCategory[cat].count += 1;
-  });
-
-  const complexityByCategoryAvg: Record<string, number> = {};
-  Object.entries(complexityByCategory).forEach(([cat, data]) => {
-    complexityByCategoryAvg[cat] = data.total / data.count;
-  });
-
-  // Development time by category
-  const devTimeByCategoryCount: Record<string, Record<string, number>> = {};
-  categories.forEach(cat => {
-    devTimeByCategoryCount[cat] = { ...devTimeDist };
-    Object.keys(devTimeByCategoryCount[cat]).forEach(key => {
-      devTimeByCategoryCount[cat][key] = 0;
-    });
-  });
-
-  projects.forEach(p => {
-    const cat = p.category || 'Uncategorized';
-    const devTime = (p.development_time || '').toLowerCase();
-    
-    if (devTime.includes('day')) devTimeByCategoryCount[cat]['Fast (Days)']++;
-    else if (devTime.includes('week')) devTimeByCategoryCount[cat]['Medium (Weeks)']++;
-    else if (devTime.includes('month') && !devTime.includes('6')) devTimeByCategoryCount[cat]['Slow (Months)']++;
-    else if (devTime.includes('6') || devTime.includes('year')) devTimeByCategoryCount[cat]['Extended (6+ Months)']++;
-    else devTimeByCategoryCount[cat]['Slow (Months)']++;
-  });
-
-  // Competition by category
-  const competitionByCategoryCount: Record<string, Record<string, number>> = {};
-  categories.forEach(cat => {
-    competitionByCategoryCount[cat] = { 'Low': 0, 'Medium': 0, 'High': 0 };
-  });
-
-  projects.forEach(p => {
-    const cat = p.category || 'Uncategorized';
-    const competition = (p.competition_level || '').toLowerCase();
-    
-    if (competition.includes('low')) competitionByCategoryCount[cat]['Low']++;
-    else if (competition.includes('high')) competitionByCategoryCount[cat]['High']++;
-    else competitionByCategoryCount[cat]['Medium']++;
-  });
-
-  // Recommendations
-  const highPotentialLowComplexity = projects
-    .filter(p => (p.revenue_potential?.realistic || 0) > 3000 && (p.technical_complexity || 0) <= 4)
+  const topRevenueProjects = [...projects]
     .sort((a, b) => (b.revenue_potential?.realistic || 0) - (a.revenue_potential?.realistic || 0))
     .slice(0, 5)
     .map(p => ({
@@ -302,101 +224,199 @@ function generateAnalytics(projects: any[]): AnalyticsData {
       title: p.title,
       category: p.category,
       revenue_potential: p.revenue_potential?.realistic || 0,
-      technical_complexity: p.technical_complexity || 0,
-      quality_score: p.quality_score || 0
+      quality_score: p.quality_score
     }));
 
-  const undervaluedCategories = Object.entries(revenueByCategoryAvg)
-    .filter(([_, avgRevenue]) => avgRevenue < totalRevenue / totalProjects)
-    .sort((a, b) => a[1] - b[1])
-    .slice(0, 3)
-    .map(([category, _]) => category);
+  // Complexity distribution
+  const complexityDistribution: Record<string, number> = {
+    'Low (0-3)': 0, 'Medium (3-6)': 0, 'High (6-8)': 0, 'Very High (8-10)': 0
+  };
+  
+  projects.forEach(project => {
+    const complexity = project.technical_complexity || 0;
+    if (complexity < 3) complexityDistribution['Low (0-3)']++;
+    else if (complexity < 6) complexityDistribution['Medium (3-6)']++;
+    else if (complexity < 8) complexityDistribution['High (6-8)']++;
+    else complexityDistribution['Very High (8-10)']++;
+  });
 
-  const optimalProjects = projects
-    .filter(p => (p.quality_score || 0) > 7 && (p.technical_complexity || 0) <= 5)
-    .sort((a, b) => (b.quality_score || 0) - (a.quality_score || 0))
-    .slice(0, 10)
+  // Development time analysis
+  const devTimeDistribution: Record<string, number> = {
+    '< 1 month': 0,
+    '1-3 months': 0,
+    '3-6 months': 0,
+    '6-12 months': 0,
+    '> 12 months': 0
+  };
+  
+  projects.forEach(project => {
+    const time = project.development_time?.toLowerCase() || '';
+    if (time.includes('week') || time.includes('< 1 month')) {
+      devTimeDistribution['< 1 month']++;
+    } else if (time.includes('1-3 month') || time.includes('2 month')) {
+      devTimeDistribution['1-3 months']++;
+    } else if (time.includes('3-6 month') || time.includes('4 month') || time.includes('5 month')) {
+      devTimeDistribution['3-6 months']++;
+    } else if (time.includes('6-12 month') || time.includes('year')) {
+      devTimeDistribution['6-12 months']++;
+    } else {
+      devTimeDistribution['> 12 months']++;
+    }
+  });
+
+  // Competition analysis
+  const competitionDistribution: Record<string, number> = {
+    'Low': 0, 'Medium': 0, 'High': 0, 'Very High': 0
+  };
+  
+  projects.forEach(project => {
+    const level = project.competition_level?.toLowerCase() || 'medium';
+    if (level.includes('low')) competitionDistribution['Low']++;
+    else if (level.includes('medium')) competitionDistribution['Medium']++;
+    else if (level.includes('high') && !level.includes('very')) competitionDistribution['High']++;
+    else if (level.includes('very high')) competitionDistribution['Very High']++;
+    else competitionDistribution['Medium']++;
+  });
+
+  // Calculate complexity by category
+  const complexityByCategory: Record<string, number> = {};
+  const complexityByCategoryData: Record<string, { total: number; count: number }> = {};
+  
+  projects.forEach(project => {
+    const cat = project.category || 'Uncategorized';
+    if (!complexityByCategoryData[cat]) complexityByCategoryData[cat] = { total: 0, count: 0 };
+    complexityByCategoryData[cat].total += project.technical_complexity || 0;
+    complexityByCategoryData[cat].count += 1;
+  });
+  
+  Object.entries(complexityByCategoryData).forEach(([cat, data]) => {
+    complexityByCategory[cat] = data.count > 0 ? data.total / data.count : 0;
+  });
+
+  // Calculate revenue-complexity correlation
+  let correlationSum = 0;
+  let validCount = 0;
+  projects.forEach(project => {
+    if (project.revenue_potential?.realistic && project.technical_complexity) {
+      const normalizedRevenue = project.revenue_potential.realistic / 1000000;
+      const normalizedComplexity = project.technical_complexity / 10;
+      correlationSum += normalizedRevenue * normalizedComplexity;
+      validCount++;
+    }
+  });
+  const correlation = validCount > 0 ? correlationSum / validCount : 0;
+
+  // Recommendations
+  const highPotentialLowComplexity = projects
+    .filter(p => 
+      (p.revenue_potential?.realistic || 0) > 100000 && 
+      (p.technical_complexity || 0) < 5
+    )
+    .sort((a, b) => (b.revenue_potential?.realistic || 0) - (a.revenue_potential?.realistic || 0))
+    .slice(0, 5)
     .map(p => ({
       id: p.id,
       title: p.title,
       category: p.category,
-      quality_score: p.quality_score || 0,
-      technical_complexity: p.technical_complexity || 0,
-      revenue_potential: p.revenue_potential?.realistic || 0
+      revenue_potential: p.revenue_potential?.realistic || 0,
+      technical_complexity: p.technical_complexity
     }));
 
-  // Correlation calculation
-  const validProjects = projects.filter(p => 
-    (p.technical_complexity || 0) > 0 && (p.revenue_potential?.realistic || 0) > 0
-  );
-  
-  let correlationComplexityRevenue = 0;
-  if (validProjects.length > 1) {
-    const complexities = validProjects.map(p => p.technical_complexity || 0);
-    const revenues = validProjects.map(p => p.revenue_potential?.realistic || 0);
-    
-    const meanComplexity = complexities.reduce((a, b) => a + b, 0) / complexities.length;
-    const meanRevenue = revenues.reduce((a, b) => a + b, 0) / revenues.length;
-    
-    const numerator = validProjects.reduce((sum, p, i) => {
-      return sum + (complexities[i] - meanComplexity) * (revenues[i] - meanRevenue);
-    }, 0);
-    
-    const denomComplexity = Math.sqrt(complexities.reduce((sum, c) => sum + Math.pow(c - meanComplexity, 2), 0));
-    const denomRevenue = Math.sqrt(revenues.reduce((sum, r) => sum + Math.pow(r - meanRevenue, 2), 0));
-    
-    if (denomComplexity > 0 && denomRevenue > 0) {
-      correlationComplexityRevenue = numerator / (denomComplexity * denomRevenue);
-    }
-  }
+  // Find undervalued categories (high avg quality, low project count)
+  const undervaluedCategories = Object.entries(categoryQualityAvg)
+    .filter(([cat, avgQuality]) => 
+      avgQuality > 7 && categoryCount[cat] < 3
+    )
+    .map(([cat]) => cat);
+
+  // Optimal projects (high quality, medium complexity, good revenue)
+  const optimalProjects = projects
+    .filter(p => 
+      (p.quality_score || 0) >= 7 &&
+      (p.technical_complexity || 0) >= 4 && 
+      (p.technical_complexity || 0) <= 7 &&
+      (p.revenue_potential?.realistic || 0) >= 50000
+    )
+    .sort((a, b) => (b.quality_score || 0) - (a.quality_score || 0))
+    .slice(0, 5)
+    .map(p => ({
+      id: p.id,
+      title: p.title,
+      category: p.category,
+      quality_score: p.quality_score,
+      revenue_potential: p.revenue_potential?.realistic || 0,
+      technical_complexity: p.technical_complexity
+    }));
+
+  // Trending categories (most active in recent period)
+  const recentCategoryActivity: Record<string, number> = {};
+  projects
+    .filter(p => {
+      const daysSinceCreation = (Date.now() - new Date(p.created_at).getTime()) / (1000 * 60 * 60 * 24);
+      return daysSinceCreation <= 7;
+    })
+    .forEach(p => {
+      const cat = p.category || 'Uncategorized';
+      recentCategoryActivity[cat] = (recentCategoryActivity[cat] || 0) + 1;
+    });
+
+  const trendingCategories = Object.entries(recentCategoryActivity)
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 3)
+    .map(([cat]) => cat);
 
   return {
     overview: {
       total_projects: totalProjects,
       total_revenue_potential: totalRevenue,
-      average_quality: avgQuality,
-      average_complexity: avgComplexity,
+      average_quality: Math.round(avgQuality * 10) / 10,
+      average_complexity: Math.round(avgComplexity * 10) / 10,
       categories_count: categories.length,
-      platforms_count: platforms.length,
+      total_users: userCount,
+      total_teams: teamCount,
+      total_activities: recentActivityCount
     },
     category_analysis: {
       by_count: categoryCount,
       by_revenue: categoryRevenue,
-      by_quality: categoryQualityAvg,
-    },
-    platform_analysis: {
-      by_count: platformCount,
-      by_revenue: platformRevenue,
-      by_quality: platformQualityAvg,
+      by_quality: categoryQualityAvg
     },
     quality_trends: {
-      distribution: qualityDist,
+      distribution: qualityDistribution,
       by_category: categoryQualityAvg,
-      by_complexity: qualityByComplexityAvg,
+      by_complexity: {} // Could be implemented if needed
     },
     revenue_analysis: {
-      distribution: revenueDist,
-      top_projects: topProjects,
-      by_category_avg: revenueByCategoryAvg,
-      by_complexity_avg: revenueByComplexityAvg,
+      distribution: revenueDistribution,
+      top_projects: topRevenueProjects,
+      by_category_avg: Object.entries(categoryRevenue).reduce((acc, [cat, total]) => {
+        acc[cat] = categoryCount[cat] > 0 ? Math.round(total / categoryCount[cat]) : 0;
+        return acc;
+      }, {} as Record<string, number>),
+      by_complexity_avg: {} // Could be implemented if needed
     },
     complexity_analysis: {
-      distribution: complexityDist,
-      by_category: complexityByCategoryAvg,
-      correlation_with_revenue: correlationComplexityRevenue,
+      distribution: complexityDistribution,
+      by_category: complexityByCategory,
+      correlation_with_revenue: correlation
     },
     development_time_analysis: {
-      distribution: devTimeDist,
-      by_category: devTimeByCategoryCount,
+      distribution: devTimeDistribution,
+      by_category: {} // Could be implemented if needed
     },
     competition_analysis: {
-      distribution: competitionDist,
-      by_category: competitionByCategoryCount,
+      distribution: competitionDistribution,
+      by_category: {} // Could be implemented if needed
     },
     recommendations: {
       high_potential_low_complexity: highPotentialLowComplexity,
       undervalued_categories: undervaluedCategories,
-      optimal_projects: optimalProjects,
+      optimal_projects: optimalProjects
     },
+    recent_trends: {
+      new_projects_last_week: newProjectsCount,
+      active_users_last_week: activeUsersCount,
+      trending_categories: trendingCategories
+    }
   };
 }
