@@ -1,0 +1,36 @@
+{
+  "project_name": "ContrastFix",
+  "alternatives": [
+    {
+      "name": "ContrastMaster",
+      "path": "../contrastmaster/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Variable Style Guide Generator",
+      "path": "../variable-style-guide-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "A11y Contrast Pairings",
+      "path": "../a11y-contrast-pairings/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Contrast Guardian",
+      "path": "../contrast-guardian/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Google Docs Style Manager",
+      "path": "../google-docs-style-manager/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

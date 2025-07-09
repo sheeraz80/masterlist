@@ -1,0 +1,36 @@
+{
+  "project_name": "TaskFlow",
+  "alternatives": [
+    {
+      "name": "Note-Taking & To-Do List",
+      "path": "../note-taking-to-do-list/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered Email Summarizer",
+      "path": "../ai-powered-email-summarizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Team Task Automator",
+      "path": "../team-task-automator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Freelance Gig OS",
+      "path": "../freelance-gig-os/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Task Board",
+      "path": "../task-board/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,36 @@
+{
+  "project_name": "AI Accessibility Checker",
+  "alternatives": [
+    {
+      "name": "AI Email Summarizer",
+      "path": "../ai-email-summarizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered Personal Shopper",
+      "path": "../ai-powered-personal-shopper/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered Personalized News Feed",
+      "path": "../ai-powered-personalized-news-feed/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Content Detector",
+      "path": "../ai-content-detector/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Visual Alt Text",
+      "path": "../ai-visual-alt-text/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

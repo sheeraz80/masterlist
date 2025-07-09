@@ -1,0 +1,24 @@
+{
+  "project_name": "Code Explainer Overlay",
+  "alternatives": [
+    {
+      "name": "SnipSync",
+      "path": "../snipsync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Code-to-Flowchart",
+      "path": "../code-to-flowchart/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Smart Snippet Collector",
+      "path": "../smart-snippet-collector/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

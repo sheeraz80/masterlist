@@ -1,0 +1,36 @@
+{
+  "project_name": "Markdown Genie",
+  "alternatives": [
+    {
+      "name": "CiteFinder",
+      "path": "../citefinder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Sales & Lead Generation",
+      "path": "../ai-sales-lead-generation/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Cross-Device Tab Sender",
+      "path": "../cross-device-tab-sender/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Webpage Voice AI",
+      "path": "../webpage-voice-ai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Smart Reference Finder",
+      "path": "../smart-reference-finder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

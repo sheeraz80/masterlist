@@ -1,0 +1,36 @@
+{
+  "project_name": "TestMate",
+  "alternatives": [
+    {
+      "name": "LayoutPlanner (Grid & Guide Assistant)",
+      "path": "../layoutplanner-grid-guide-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Grid Guardian",
+      "path": "../grid-guardian/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Version Snapshotter",
+      "path": "../version-snapshotter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Layer Path Copier",
+      "path": "../layer-path-copier/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Web Page Annotator & Highlighter",
+      "path": "../web-page-annotator-highlighter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

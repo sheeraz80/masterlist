@@ -1,0 +1,24 @@
+{
+  "project_name": "Smart Highlight Collector",
+  "alternatives": [
+    {
+      "name": "HighlightMagic",
+      "path": "../highlightmagic/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Image Gallery",
+      "path": "../image-gallery/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Customer Support Knowledge Base Writer",
+      "path": "../customer-support-knowledge-base-writer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

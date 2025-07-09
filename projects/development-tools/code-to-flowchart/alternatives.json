@@ -1,0 +1,36 @@
+{
+  "project_name": "Code-to-Flowchart",
+  "alternatives": [
+    {
+      "name": "Session Sentinel",
+      "path": "../session-sentinel/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Focus Flow",
+      "path": "../focus-flow/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Code Spell Checker Pro",
+      "path": "../code-spell-checker-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI-Powered Code Reviewer",
+      "path": "../ai-powered-code-reviewer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI-Powered Code Translator",
+      "path": "../ai-powered-code-translator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

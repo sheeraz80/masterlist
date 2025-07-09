@@ -1,0 +1,36 @@
+{
+  "project_name": "Career Planner",
+  "alternatives": [
+    {
+      "name": "ContrastMaster",
+      "path": "../contrastmaster/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Figma2Notion (Design-to-Docs)",
+      "path": "../figma2notion-design-to-docs/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "LayoutPlanner (Grid & Guide Assistant)",
+      "path": "../layoutplanner-grid-guide-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Design System Linter Pro",
+      "path": "../design-system-linter-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Google Docs Style Manager",
+      "path": "../google-docs-style-manager/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

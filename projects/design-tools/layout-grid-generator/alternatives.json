@@ -1,0 +1,24 @@
+{
+  "project_name": "Layout Grid Generator",
+  "alternatives": [
+    {
+      "name": "AutoLayout Optimizer",
+      "path": "../autolayout-optimizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "LayoutPlanner (Grid & Guide Assistant)",
+      "path": "../layoutplanner-grid-guide-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "GridGuru",
+      "path": "../gridguru/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

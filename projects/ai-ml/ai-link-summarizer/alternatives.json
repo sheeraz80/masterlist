@@ -1,0 +1,18 @@
+{
+  "project_name": "AI Link Summarizer",
+  "alternatives": [
+    {
+      "name": "ScholarAI Sidekick",
+      "path": "../scholarai-sidekick/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Token Approval Manager",
+      "path": "../token-approval-manager/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

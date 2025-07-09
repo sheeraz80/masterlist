@@ -1,0 +1,18 @@
+{
+  "project_name": "DebugSense",
+  "alternatives": [
+    {
+      "name": "AI Unit Test Generator",
+      "path": "../ai-unit-test-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Resume Analyzer",
+      "path": "../ai-resume-analyzer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,30 @@
+{
+  "project_name": "SummarizeNow",
+  "alternatives": [
+    {
+      "name": "PriceScout",
+      "path": "../pricescout/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered Personal Shopper",
+      "path": "../ai-powered-personal-shopper/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered PDF Chat",
+      "path": "../ai-powered-pdf-chat/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Webpage Voice AI",
+      "path": "../webpage-voice-ai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

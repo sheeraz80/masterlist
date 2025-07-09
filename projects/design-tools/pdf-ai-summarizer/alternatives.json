@@ -1,0 +1,30 @@
+{
+  "project_name": "PDF AI Summarizer",
+  "alternatives": [
+    {
+      "name": "A11y Analyzer (Accessibility Assistant)",
+      "path": "../a11y-analyzer-accessibility-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Code Health Dashboard",
+      "path": "../code-health-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "WebPage Explainer",
+      "path": "../webpage-explainer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "AI Fact-Checker",
+      "path": "../ai-fact-checker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

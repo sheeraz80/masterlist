@@ -1,0 +1,36 @@
+{
+  "project_name": "AI Expense Tracker",
+  "alternatives": [
+    {
+      "name": "AI-Powered Code Translator",
+      "path": "../ai-powered-code-translator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Smart Snippet Collector",
+      "path": "../smart-snippet-collector/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "DeFi Dashboard Mini",
+      "path": "../defi-dashboard-mini/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Invoice Categorizer",
+      "path": "../ai-invoice-categorizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Resume Analyzer",
+      "path": "../ai-resume-analyzer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

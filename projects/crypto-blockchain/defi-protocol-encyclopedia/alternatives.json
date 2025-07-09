@@ -1,0 +1,36 @@
+{
+  "project_name": "DeFi Protocol Encyclopedia",
+  "alternatives": [
+    {
+      "name": "Rug Pull Detector",
+      "path": "../rug-pull-detector/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    },
+    {
+      "name": "Yield Aggregator Finder",
+      "path": "../yield-aggregator-finder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    },
+    {
+      "name": "DeFi Protocol Comparator",
+      "path": "../defi-protocol-comparator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    },
+    {
+      "name": "Crypto Mining Tab (Opt-in)",
+      "path": "../crypto-mining-tab-opt-in/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    },
+    {
+      "name": "NFT Portfolio Snapshot",
+      "path": "../nft-portfolio-snapshot/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

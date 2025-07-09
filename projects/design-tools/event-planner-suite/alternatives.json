@@ -1,0 +1,30 @@
+{
+  "project_name": "Event Planner Suite",
+  "alternatives": [
+    {
+      "name": "Figma2Notion (Design-to-Docs)",
+      "path": "../figma2notion-design-to-docs/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Course Creator Suite",
+      "path": "../course-creator-suite/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Advanced Excalidraw Toolkit",
+      "path": "../advanced-excalidraw-toolkit/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Vault Visualizer",
+      "path": "../vault-visualizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,36 @@
+{
+  "project_name": "Gas Tracker Lite",
+  "alternatives": [
+    {
+      "name": "PriceScout",
+      "path": "../pricescout/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "ScholarAI Sidekick",
+      "path": "../scholarai-sidekick/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Multi-Chain Address Book",
+      "path": "../multi-chain-address-book/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Airdrop Eligibility Checker",
+      "path": "../airdrop-eligibility-checker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Wallet Watcher",
+      "path": "../wallet-watcher/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

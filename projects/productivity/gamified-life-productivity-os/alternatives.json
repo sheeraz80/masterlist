@@ -1,0 +1,36 @@
+{
+  "project_name": "Gamified Life & Productivity OS",
+  "alternatives": [
+    {
+      "name": "Content Repurposing Engine",
+      "path": "../content-repurposing-engine/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered Writing Assistant",
+      "path": "../ai-powered-writing-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered Image Caption & Keyword Generator",
+      "path": "../ai-powered-image-caption-keyword-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered Email Summarizer",
+      "path": "../ai-powered-email-summarizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered E-commerce Product Description Writer",
+      "path": "../ai-powered-e-commerce-product-description-writer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

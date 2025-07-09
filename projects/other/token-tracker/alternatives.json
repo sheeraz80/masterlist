@@ -1,0 +1,36 @@
+{
+  "project_name": "Token Tracker",
+  "alternatives": [
+    {
+      "name": "Secure Password Manager",
+      "path": "../secure-password-manager/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Freelancer Finance Tracker",
+      "path": "../freelancer-finance-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Investor CRM",
+      "path": "../investor-crm/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Personal Finance & Budgeting OS",
+      "path": "../personal-finance-budgeting-os/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "OKR Master Template",
+      "path": "../okr-master-template/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

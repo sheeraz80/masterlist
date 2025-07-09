@@ -1,0 +1,36 @@
+{
+  "project_name": "Airdrop Eligibility Checker",
+  "alternatives": [
+    {
+      "name": "InsightLens",
+      "path": "../insightlens/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "ToneChecker",
+      "path": "../tonechecker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Scam Detector",
+      "path": "../ai-scam-detector/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "On-Chain Voting Dashboard",
+      "path": "../on-chain-voting-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Cross-Device Tab Sender",
+      "path": "../cross-device-tab-sender/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

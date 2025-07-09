@@ -1,0 +1,36 @@
+{
+  "project_name": "ModHeader",
+  "alternatives": [
+    {
+      "name": "Session Sentinel",
+      "path": "../session-sentinel/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Docstring Pro",
+      "path": "../ai-docstring-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Markdown Presentation Studio",
+      "path": "../markdown-presentation-studio/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Unit Test Generator",
+      "path": "../ai-unit-test-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Secure Vault Interface",
+      "path": "../secure-vault-interface/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

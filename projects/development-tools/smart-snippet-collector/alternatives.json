@@ -1,0 +1,36 @@
+{
+  "project_name": "Smart Snippet Collector",
+  "alternatives": [
+    {
+      "name": "WriteBetterDocs",
+      "path": "../writebetterdocs/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Clipboard Manager Pro",
+      "path": "../clipboard-manager-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "SnipSync",
+      "path": "../snipsync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Code Review Assistant",
+      "path": "../ai-code-review-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Docstring Pro",
+      "path": "../ai-docstring-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

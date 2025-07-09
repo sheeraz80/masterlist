@@ -1,0 +1,18 @@
+{
+  "project_name": "Knowledge Graph Enhancer",
+  "alternatives": [
+    {
+      "name": "Google Calendar Sync Widget",
+      "path": "../google-calendar-sync-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "FontFinder Pro",
+      "path": "../fontfinder-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

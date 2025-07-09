@@ -1,0 +1,12 @@
+{
+  "project_name": "Design Versioner",
+  "alternatives": [
+    {
+      "name": "ProjectTimeTracker",
+      "path": "../projecttimetracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,36 @@
+{
+  "project_name": "Reading & Learning Hub",
+  "alternatives": [
+    {
+      "name": "Reading & Learning Hub",
+      "path": "../reading-learning-hub/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Job Search Tracker Widget",
+      "path": "../job-search-tracker-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Life OS",
+      "path": "../life-os/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Health & Fitness OS",
+      "path": "../health-fitness-os/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Automated Goal Tracker",
+      "path": "../automated-goal-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

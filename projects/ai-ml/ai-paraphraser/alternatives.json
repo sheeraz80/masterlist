@@ -1,0 +1,36 @@
+{
+  "project_name": "AI Paraphraser",
+  "alternatives": [
+    {
+      "name": "Cross-Device Tab Sender",
+      "path": "../cross-device-tab-sender/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Reading Level Analyzer",
+      "path": "../reading-level-analyzer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered SEO Assistant",
+      "path": "../ai-powered-seo-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Content Detector",
+      "path": "../ai-content-detector/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Whale Watcher",
+      "path": "../whale-watcher/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

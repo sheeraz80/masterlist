@@ -1,0 +1,114 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.development
+
+# Node modules (if any JS tools are used)
+node_modules/
+
+# Backup files
+*.bak
+*.backup
+backups/
+
+# Raw data files (keep processed versions)
+raw_data/
+*.raw
+
+# Large files
+*.zip
+*.tar.gz
+*.rar
+
+# Project specific
+data/reports/*.json
+data/reports/*.md
+data/reports/*.html
+data/performance_metrics.json
+data/usage_tracking.json
+qa_reports/
+collaboration/data/
+analytics/data/
+ssl/
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv
+
+# Testing
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+htmlcov/
+
+# Docker
+docker-compose.override.yml
+
+# CI/CD
+.github/workflows/test.yml
+
+# Documentation build
+docs/_build/
+site/
+
+# Secrets
+secrets/
+*.key
+*.pem
+*.crt
+/generated/prisma

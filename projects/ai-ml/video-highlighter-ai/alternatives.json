@@ -1,0 +1,24 @@
+{
+  "project_name": "Video Highlighter AI",
+  "alternatives": [
+    {
+      "name": "AI Content Rewriter",
+      "path": "../ai-content-rewriter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Video Summarizer & Chapter Generator",
+      "path": "../ai-video-summarizer-chapter-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Airdrop Eligibility Checker",
+      "path": "../airdrop-eligibility-checker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

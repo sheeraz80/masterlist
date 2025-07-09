@@ -1,0 +1,36 @@
+{
+  "project_name": "Note-Taking & To-Do List",
+  "alternatives": [
+    {
+      "name": "Note-Taking & To-Do List",
+      "path": "../note-taking-to-do-list/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Image Gallery",
+      "path": "../image-gallery/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Writer's Longform Studio",
+      "path": "../writers-longform-studio/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Task Management Pro (GTD)",
+      "path": "../task-management-pro-gtd/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "TaskFlow",
+      "path": "../taskflow/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,36 @@
+{
+  "project_name": "Freelancer Finance Tracker",
+  "alternatives": [
+    {
+      "name": "Token Tracker",
+      "path": "../token-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "OKR Tracker Pro",
+      "path": "../okr-tracker-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Investor CRM",
+      "path": "../investor-crm/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Time Tracking Dashboard",
+      "path": "../time-tracking-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Personal Finance & Budgeting OS",
+      "path": "../personal-finance-budgeting-os/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

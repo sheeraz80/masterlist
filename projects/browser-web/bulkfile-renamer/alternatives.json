@@ -1,0 +1,12 @@
+{
+  "project_name": "BulkFile Renamer",
+  "alternatives": [
+    {
+      "name": "FileFinder",
+      "path": "../filefinder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "browser-web"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

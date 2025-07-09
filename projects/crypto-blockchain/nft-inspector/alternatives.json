@@ -1,0 +1,24 @@
+{
+  "project_name": "NFT Inspector",
+  "alternatives": [
+    {
+      "name": "DeFi Protocol Comparator",
+      "path": "../defi-protocol-comparator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    },
+    {
+      "name": "NFT Sniper",
+      "path": "../nft-sniper/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    },
+    {
+      "name": "NFT Portfolio Snapshot",
+      "path": "../nft-portfolio-snapshot/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

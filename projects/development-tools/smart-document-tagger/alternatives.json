@@ -1,0 +1,24 @@
+{
+  "project_name": "Smart Document Tagger",
+  "alternatives": [
+    {
+      "name": "AI SOP Generator",
+      "path": "../ai-sop-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Smart Tax Helper",
+      "path": "../smart-tax-helper/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "MeetingMate",
+      "path": "../meetingmate/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

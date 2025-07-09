@@ -1,0 +1,18 @@
+{
+  "project_name": "AI Email Summarizer",
+  "alternatives": [
+    {
+      "name": "AI-Powered Personalized News Feed",
+      "path": "../ai-powered-personalized-news-feed/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Accessibility Checker",
+      "path": "../ai-accessibility-checker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,30 @@
+{
+  "project_name": "Contrast Guardian",
+  "alternatives": [
+    {
+      "name": "Variable Style Guide Generator",
+      "path": "../variable-style-guide-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Google Docs Style Manager",
+      "path": "../google-docs-style-manager/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "ColorA11y",
+      "path": "../colora11y/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "ContrastFix",
+      "path": "../contrastfix/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

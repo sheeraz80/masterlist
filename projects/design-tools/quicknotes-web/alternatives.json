@@ -1,0 +1,12 @@
+{
+  "project_name": "QuickNotes Web",
+  "alternatives": [
+    {
+      "name": "Outline Builder",
+      "path": "../outline-builder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

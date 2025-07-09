@@ -1,0 +1,18 @@
+{
+  "project_name": "Project Management Suite",
+  "alternatives": [
+    {
+      "name": "FigTask (Integrated Task Lists)",
+      "path": "../figtask-integrated-task-lists/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "StyleDoc Generator",
+      "path": "../styledoc-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

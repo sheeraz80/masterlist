@@ -1,0 +1,24 @@
+{
+  "project_name": "Social Media Content Planner",
+  "alternatives": [
+    {
+      "name": "Book & Reading Tracker",
+      "path": "../book-reading-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Note Versioning",
+      "path": "../note-versioning/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Customer Review to Testimonial Generator",
+      "path": "../customer-review-to-testimonial-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

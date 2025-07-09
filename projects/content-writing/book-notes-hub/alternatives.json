@@ -1,0 +1,36 @@
+{
+  "project_name": "Book Notes Hub",
+  "alternatives": [
+    {
+      "name": "Meeting Master",
+      "path": "../meeting-master/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "AutoLinker",
+      "path": "../autolinker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "ClipMaster",
+      "path": "../clipmaster/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Book & Reading Tracker",
+      "path": "../book-reading-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Audio Note Sync",
+      "path": "../audio-note-sync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,12 @@
+{
+  "project_name": "FigmaMood",
+  "alternatives": [
+    {
+      "name": "StyleDoc Generator",
+      "path": "../styledoc-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

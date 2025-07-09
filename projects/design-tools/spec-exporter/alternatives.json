@@ -1,0 +1,12 @@
+{
+  "project_name": "Spec Exporter",
+  "alternatives": [
+    {
+      "name": "TokenExport Pro",
+      "path": "../tokenexport-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

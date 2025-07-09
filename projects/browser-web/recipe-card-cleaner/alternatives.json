@@ -1,0 +1,18 @@
+{
+  "project_name": "Recipe Card Cleaner",
+  "alternatives": [
+    {
+      "name": "Privacy Guardian Dashboard",
+      "path": "../privacy-guardian-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "browser-web"
+    },
+    {
+      "name": "Live Server Pro",
+      "path": "../live-server-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "browser-web"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

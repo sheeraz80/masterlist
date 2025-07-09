@@ -1,0 +1,12 @@
+{
+  "project_name": "PDF Annotator",
+  "alternatives": [
+    {
+      "name": "Vault Backup Pro",
+      "path": "../vault-backup-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

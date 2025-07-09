@@ -1,0 +1,12 @@
+{
+  "project_name": "DeFi Dashboard Mini",
+  "alternatives": [
+    {
+      "name": "AI Expense Tracker",
+      "path": "../ai-expense-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

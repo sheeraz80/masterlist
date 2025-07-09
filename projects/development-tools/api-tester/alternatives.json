@@ -1,0 +1,18 @@
+{
+  "project_name": "API Tester",
+  "alternatives": [
+    {
+      "name": "Table Extractor AI",
+      "path": "../table-extractor-ai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI-Powered Audio Transcription",
+      "path": "../ai-powered-audio-transcription/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

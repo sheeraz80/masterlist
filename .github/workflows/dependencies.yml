@@ -1,0 +1,182 @@
+name: Dependency Updates
+
+on:
+  schedule:
+    # Run every Monday at 3 AM UTC
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pip-tools safety
+    
+    - name: Update dependencies
+      run: |
+        # Create requirements.in if it doesn't exist
+        if [[ ! -f requirements.in ]]; then
+          cp requirements.txt requirements.in
+        fi
+        
+        # Compile new requirements
+        pip-compile requirements.in --upgrade
+        
+        # Check for security vulnerabilities
+        safety check -r requirements.txt --json > safety-report.json || true
+        
+        # Parse safety report
+        python -c "
+        import json
+        with open('safety-report.json') as f:
+            report = json.load(f)
+        
+        if report:
+            print('⚠️  Security vulnerabilities found:')
+            for vuln in report:
+                print(f'  - {vuln[\"package\"]}: {vuln[\"vulnerability\"]}')
+        else:
+            print('✅ No security vulnerabilities found')
+        "
+    
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'chore: Update dependencies'
+        title: '🔄 Weekly Dependency Update'
+        body: |
+          ## Weekly Dependency Update
+          
+          This PR updates the project dependencies to their latest versions.
+          
+          ### Changes
+          - Updated Python dependencies in `requirements.txt`
+          - Checked for security vulnerabilities
+          
+          ### Security Report
+          See the checks below for any security issues.
+          
+          ### Testing
+          - [ ] All tests pass
+          - [ ] No breaking changes
+          - [ ] Security vulnerabilities addressed
+          
+          ---
+          *This PR was automatically created by the dependency update workflow.*
+        branch: update-dependencies
+        delete-branch: true
+        labels: |
+          dependencies
+          automated
+
+  check-licenses:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pip-licenses
+    
+    - name: Check licenses
+      run: |
+        # Generate license report
+        pip-licenses --format=json > licenses.json
+        
+        # Check for problematic licenses
+        python -c "
+        import json
+        
+        # Allowed licenses
+        ALLOWED = {
+            'MIT', 'BSD', 'Apache', 'Apache 2.0', 'BSD-3-Clause', 
+            'BSD-2-Clause', 'ISC', 'Python Software Foundation License',
+            'Apache Software License', 'BSD License', 'MIT License'
+        }
+        
+        with open('licenses.json') as f:
+            licenses = json.load(f)
+        
+        problematic = []
+        for pkg in licenses:
+            license = pkg.get('License', 'Unknown')
+            if license not in ALLOWED and license != 'UNKNOWN':
+                problematic.append(f'{pkg[\"Name\"]}: {license}')
+        
+        if problematic:
+            print('⚠️  Packages with potentially problematic licenses:')
+            for p in problematic:
+                print(f'  - {p}')
+            exit(1)
+        else:
+            print('✅ All package licenses are compatible')
+        "
+    
+    - name: Upload license report
+      uses: actions/upload-artifact@v3
+      with:
+        name: license-report
+        path: licenses.json
+
+  update-docker-base:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Check for base image updates
+      run: |
+        # Get current base image
+        BASE_IMAGE=$(grep "^FROM" Dockerfile | head -1 | awk '{print $2}')
+        echo "Current base image: $BASE_IMAGE"
+        
+        # Check for updates
+        docker pull $BASE_IMAGE
+        
+        # Get latest digest
+        LATEST_DIGEST=$(docker inspect $BASE_IMAGE --format='{{index .RepoDigests 0}}')
+        echo "Latest digest: $LATEST_DIGEST"
+        
+        # Update Dockerfile if needed
+        sed -i "s|FROM .*|FROM $LATEST_DIGEST|" Dockerfile
+    
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'chore: Update Docker base image'
+        title: '🐳 Update Docker Base Image'
+        body: |
+          ## Docker Base Image Update
+          
+          This PR updates the Docker base image to the latest version.
+          
+          ### Security
+          Using the latest base image ensures we have the latest security patches.
+          
+          ---
+          *This PR was automatically created by the dependency update workflow.*
+        branch: update-docker-base
+        delete-branch: true

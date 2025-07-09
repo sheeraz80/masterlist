@@ -1,0 +1,18 @@
+{
+  "project_name": "QueryBooster",
+  "alternatives": [
+    {
+      "name": "InsightLens",
+      "path": "../insightlens/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered Research Paper Discovery",
+      "path": "../ai-powered-research-paper-discovery/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

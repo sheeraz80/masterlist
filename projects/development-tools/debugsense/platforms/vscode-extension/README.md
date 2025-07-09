@@ -1,0 +1,11 @@
+# DebugSense - Vscode Extension
+
+## Platform-Specific Implementation
+
+### Overview
+This implementation targets the **Vscode Extension** platform.
+
+### Target Users
+Software developers, DevOps engineers.
+
+### Platform-Specific Features

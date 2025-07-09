@@ -1,0 +1,36 @@
+{
+  "project_name": "Crypto Event Calendar",
+  "alternatives": [
+    {
+      "name": "On-Chain Voting Dashboard",
+      "path": "../on-chain-voting-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Cross-Device Tab Sender",
+      "path": "../cross-device-tab-sender/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Price Drop & Stock Alert for Amazon",
+      "path": "../price-drop-stock-alert-for-amazon/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "ScholarAI Sidekick",
+      "path": "../scholarai-sidekick/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Meeting Scribe",
+      "path": "../ai-meeting-scribe/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,36 @@
+{
+  "project_name": "QuickExporter",
+  "alternatives": [
+    {
+      "name": "AutoLayout Optimizer",
+      "path": "../autolayout-optimizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "ContrastMaster",
+      "path": "../contrastmaster/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "CopySync (Figma Text Sync)",
+      "path": "../copysync-figma-text-sync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "MicroAnimator (Interactive Exporter)",
+      "path": "../microanimator-interactive-exporter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "PersonaPalette (AI Image & Icon Finder)",
+      "path": "../personapalette-ai-image-icon-finder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,12 @@
+{
+  "project_name": "Reference Manager",
+  "alternatives": [
+    {
+      "name": "Icon Set Manager",
+      "path": "../icon-set-manager/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

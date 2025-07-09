@@ -1,0 +1,18 @@
+{
+  "project_name": "Reference Finder",
+  "alternatives": [
+    {
+      "name": "ContrastMaster",
+      "path": "../contrastmaster/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Localize Preview",
+      "path": "../localize-preview/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

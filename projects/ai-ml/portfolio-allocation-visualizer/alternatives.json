@@ -1,0 +1,12 @@
+{
+  "project_name": "Portfolio Allocation Visualizer",
+  "alternatives": [
+    {
+      "name": "AI-Powered SEO Assistant",
+      "path": "../ai-powered-seo-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

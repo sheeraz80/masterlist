@@ -1,0 +1,36 @@
+{
+  "project_name": "DeFi Dashboard Lite",
+  "alternatives": [
+    {
+      "name": "Clipboard Manager Pro",
+      "path": "../clipboard-manager-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI-Powered Code Reviewer",
+      "path": "../ai-powered-code-reviewer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Dynamic Chart & Graph Widget",
+      "path": "../dynamic-chart-graph-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "The Ultimate Meal Planner & Recipe Box",
+      "path": "../the-ultimate-meal-planner-recipe-box/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "NFT Gallery New Tab",
+      "path": "../nft-gallery-new-tab/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

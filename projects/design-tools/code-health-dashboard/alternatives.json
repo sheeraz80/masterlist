@@ -1,0 +1,36 @@
+{
+  "project_name": "Code Health Dashboard",
+  "alternatives": [
+    {
+      "name": "DesignAudit Buddy",
+      "path": "../designaudit-buddy/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "BrandGuard Pro",
+      "path": "../brandguard-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "ComponentWizard AI",
+      "path": "../componentwizard-ai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "AutoLayout Optimizer",
+      "path": "../autolayout-optimizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "ContrastMaster",
+      "path": "../contrastmaster/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

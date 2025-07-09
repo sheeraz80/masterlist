@@ -1,0 +1,36 @@
+{
+  "project_name": "SmartBookmark",
+  "alternatives": [
+    {
+      "name": "ScholarAI Sidekick",
+      "path": "../scholarai-sidekick/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Video Summarizer & Chapter Generator",
+      "path": "../ai-video-summarizer-chapter-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Research Assistant",
+      "path": "../ai-research-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Smart Reference Finder",
+      "path": "../smart-reference-finder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "SmartClipper",
+      "path": "../smartclipper/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

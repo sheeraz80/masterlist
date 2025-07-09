@@ -1,0 +1,18 @@
+{
+  "project_name": "FormAutoPilot",
+  "alternatives": [
+    {
+      "name": "AI Form Filler",
+      "path": "../ai-form-filler/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Airdrop Finder",
+      "path": "../airdrop-finder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

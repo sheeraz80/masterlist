@@ -1,0 +1,12 @@
+{
+  "project_name": "Personal CRM",
+  "alternatives": [
+    {
+      "name": "Audio Note Sync",
+      "path": "../audio-note-sync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

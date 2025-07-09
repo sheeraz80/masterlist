@@ -1,0 +1,36 @@
+{
+  "project_name": "Smart Link Preview",
+  "alternatives": [
+    {
+      "name": "Social Media Feed Blocker",
+      "path": "../social-media-feed-blocker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Dependency Detective",
+      "path": "../dependency-detective/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered Writing Assistant",
+      "path": "../ai-powered-writing-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Recurring Task & Subscription Manager Widget",
+      "path": "../recurring-task-subscription-manager-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Note Reminders",
+      "path": "../note-reminders/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

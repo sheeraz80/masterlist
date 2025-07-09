@@ -1,0 +1,36 @@
+{
+  "project_name": "Note Versioning",
+  "alternatives": [
+    {
+      "name": "GraphGenius",
+      "path": "../graphgenius/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "MindMap Maker",
+      "path": "../mindmap-maker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Social Media Content Planner",
+      "path": "../social-media-content-planner/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Book & Reading Tracker",
+      "path": "../book-reading-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Note Merge Tool",
+      "path": "../note-merge-tool/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

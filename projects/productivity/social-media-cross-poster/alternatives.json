@@ -1,0 +1,36 @@
+{
+  "project_name": "Social Media Cross-Poster",
+  "alternatives": [
+    {
+      "name": "AI Content Repurposer",
+      "path": "../ai-content-repurposer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Social Media Feed Blocker",
+      "path": "../social-media-feed-blocker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Content Repurposing Engine",
+      "path": "../content-repurposing-engine/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered Image Caption & Keyword Generator",
+      "path": "../ai-powered-image-caption-keyword-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered E-commerce Product Description Writer",
+      "path": "../ai-powered-e-commerce-product-description-writer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

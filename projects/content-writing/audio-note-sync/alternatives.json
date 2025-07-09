@@ -1,0 +1,30 @@
+{
+  "project_name": "Audio Note Sync",
+  "alternatives": [
+    {
+      "name": "Meeting Master",
+      "path": "../meeting-master/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Personal CRM",
+      "path": "../personal-crm/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Book & Reading Tracker",
+      "path": "../book-reading-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Book Notes Hub",
+      "path": "../book-notes-hub/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

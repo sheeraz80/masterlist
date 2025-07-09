@@ -1,0 +1,36 @@
+{
+  "project_name": "Meeting Minutes AI",
+  "alternatives": [
+    {
+      "name": "SmartTags",
+      "path": "../smarttags/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "ScholarAI Sidekick",
+      "path": "../scholarai-sidekick/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Video Summarizer & Chapter Generator",
+      "path": "../ai-video-summarizer-chapter-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Resume Analyzer AI",
+      "path": "../resume-analyzer-ai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Ultimate Personal Finance Tracker",
+      "path": "../ultimate-personal-finance-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

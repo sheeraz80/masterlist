@@ -1,0 +1,12 @@
+{
+  "project_name": "BulkDownloader",
+  "alternatives": [
+    {
+      "name": "Google Calendar Sync Widget",
+      "path": "../google-calendar-sync-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

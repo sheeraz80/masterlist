@@ -1,0 +1,36 @@
+{
+  "project_name": "AI Meeting Scribe",
+  "alternatives": [
+    {
+      "name": "AI Video Summarizer & Chapter Generator",
+      "path": "../ai-video-summarizer-chapter-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered Research Paper Discovery",
+      "path": "../ai-powered-research-paper-discovery/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered Personal Shopper",
+      "path": "../ai-powered-personal-shopper/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered Debate Partner",
+      "path": "../ai-powered-debate-partner/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered Personalized News Feed",
+      "path": "../ai-powered-personalized-news-feed/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

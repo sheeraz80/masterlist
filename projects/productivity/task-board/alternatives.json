@@ -1,0 +1,24 @@
+{
+  "project_name": "Task Board",
+  "alternatives": [
+    {
+      "name": "Smart Calendar",
+      "path": "../smart-calendar/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "TaskFlow",
+      "path": "../taskflow/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Project Template Pack",
+      "path": "../project-template-pack/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

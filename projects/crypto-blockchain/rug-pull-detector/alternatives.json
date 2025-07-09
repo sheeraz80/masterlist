@@ -1,0 +1,12 @@
+{
+  "project_name": "Rug Pull Detector",
+  "alternatives": [
+    {
+      "name": "DeFi Protocol Encyclopedia",
+      "path": "../defi-protocol-encyclopedia/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

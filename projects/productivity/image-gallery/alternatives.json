@@ -1,0 +1,36 @@
+{
+  "project_name": "Image Gallery",
+  "alternatives": [
+    {
+      "name": "Note-Taking & To-Do List",
+      "path": "../note-taking-to-do-list/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Smart Highlight Collector",
+      "path": "../smart-highlight-collector/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered Image Caption & Keyword Generator",
+      "path": "../ai-powered-image-caption-keyword-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered Email Summarizer",
+      "path": "../ai-powered-email-summarizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "TaskFlow",
+      "path": "../taskflow/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

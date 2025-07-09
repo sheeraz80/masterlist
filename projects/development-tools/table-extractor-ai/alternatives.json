@@ -1,0 +1,30 @@
+{
+  "project_name": "Table Extractor AI",
+  "alternatives": [
+    {
+      "name": "API Tester",
+      "path": "../api-tester/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Secure Vault Interface",
+      "path": "../secure-vault-interface/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Smart Snippet Collector",
+      "path": "../smart-snippet-collector/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI-Powered Audio Transcription",
+      "path": "../ai-powered-audio-transcription/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,36 @@
+{
+  "project_name": "Icon Style Converter",
+  "alternatives": [
+    {
+      "name": "ContrastMaster",
+      "path": "../contrastmaster/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Unused Asset Finder",
+      "path": "../unused-asset-finder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "PersonaPalette (AI Image & Icon Finder)",
+      "path": "../personapalette-ai-image-icon-finder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Color Contrast Checker",
+      "path": "../color-contrast-checker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Window Resizer",
+      "path": "../window-resizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

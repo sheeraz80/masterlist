@@ -1,0 +1,36 @@
+{
+  "project_name": "SmartTags",
+  "alternatives": [
+    {
+      "name": "Resume Analyzer AI",
+      "path": "../resume-analyzer-ai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Smart Outline Generator",
+      "path": "../smart-outline-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Smart Tagger",
+      "path": "../smart-tagger/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Meeting Minutes AI",
+      "path": "../meeting-minutes-ai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "SmartClipper",
+      "path": "../smartclipper/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

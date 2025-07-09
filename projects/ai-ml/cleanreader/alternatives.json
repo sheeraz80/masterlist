@@ -1,0 +1,18 @@
+{
+  "project_name": "CleanReader",
+  "alternatives": [
+    {
+      "name": "AI-Powered Form Filler",
+      "path": "../ai-powered-form-filler/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered Personalized News Feed",
+      "path": "../ai-powered-personalized-news-feed/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

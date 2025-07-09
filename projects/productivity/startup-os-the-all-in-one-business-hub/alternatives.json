@@ -1,0 +1,36 @@
+{
+  "project_name": "Startup OS: The All-in-One Business Hub",
+  "alternatives": [
+    {
+      "name": "Social Media Feed Blocker",
+      "path": "../social-media-feed-blocker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Dependency Detective",
+      "path": "../dependency-detective/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Content Repurposing Engine",
+      "path": "../content-repurposing-engine/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered Image Caption & Keyword Generator",
+      "path": "../ai-powered-image-caption-keyword-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered Email Summarizer",
+      "path": "../ai-powered-email-summarizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

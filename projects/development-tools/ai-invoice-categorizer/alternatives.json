@@ -1,0 +1,36 @@
+{
+  "project_name": "AI Invoice Categorizer",
+  "alternatives": [
+    {
+      "name": "AI SOP Generator",
+      "path": "../ai-sop-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Code Review Assistant",
+      "path": "../ai-code-review-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI-Powered Code Translator",
+      "path": "../ai-powered-code-translator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Smart Snippet Collector",
+      "path": "../smart-snippet-collector/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI Expense Tracker",
+      "path": "../ai-expense-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

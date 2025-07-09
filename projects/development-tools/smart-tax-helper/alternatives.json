@@ -1,0 +1,30 @@
+{
+  "project_name": "Smart Tax Helper",
+  "alternatives": [
+    {
+      "name": "AI SOP Generator",
+      "path": "../ai-sop-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "On-Chain Data Exporter",
+      "path": "../on-chain-data-exporter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "MeetingMate",
+      "path": "../meetingmate/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Smart Document Tagger",
+      "path": "../smart-document-tagger/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

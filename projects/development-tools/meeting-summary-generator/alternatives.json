@@ -1,0 +1,12 @@
+{
+  "project_name": "Meeting Summary Generator",
+  "alternatives": [
+    {
+      "name": "Code Block Beautifier",
+      "path": "../code-block-beautifier/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

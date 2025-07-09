@@ -1,0 +1,18 @@
+{
+  "project_name": "Batch Renamer",
+  "alternatives": [
+    {
+      "name": "JSON Schema Helper",
+      "path": "../json-schema-helper/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Smart Duplicate Finder",
+      "path": "../smart-duplicate-finder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

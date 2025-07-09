@@ -1,0 +1,36 @@
+{
+  "project_name": "Team Collaboration Toolkit",
+  "alternatives": [
+    {
+      "name": "Web Page Health Checker",
+      "path": "../web-page-health-checker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Book & Reading Tracker",
+      "path": "../book-reading-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Note Merge Tool",
+      "path": "../note-merge-tool/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Simple Upvote/Like Button Widget",
+      "path": "../simple-upvotelike-button-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Zotero Pro Sync",
+      "path": "../zotero-pro-sync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

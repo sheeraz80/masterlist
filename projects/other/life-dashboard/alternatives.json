@@ -1,0 +1,36 @@
+{
+  "project_name": "Life Dashboard",
+  "alternatives": [
+    {
+      "name": "Secure Password Manager",
+      "path": "../secure-password-manager/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Advanced CRM & Sales Pipeline",
+      "path": "../advanced-crm-sales-pipeline/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Personal Finance & Budgeting OS",
+      "path": "../personal-finance-budgeting-os/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Google Calendar Sync Widget",
+      "path": "../google-calendar-sync-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Notion Startup OS",
+      "path": "../notion-startup-os/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

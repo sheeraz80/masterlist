@@ -1,0 +1,36 @@
+{
+  "project_name": "Privacy Guardian Dashboard",
+  "alternatives": [
+    {
+      "name": "Wallet Watchdog",
+      "path": "../wallet-watchdog/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "browser-web"
+    },
+    {
+      "name": "Enhanced Privacy Tracker",
+      "path": "../enhanced-privacy-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "browser-web"
+    },
+    {
+      "name": "YouTube Ad-Free Experience Enhancer",
+      "path": "../youtube-ad-free-experience-enhancer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "browser-web"
+    },
+    {
+      "name": "Recipe Card Cleaner",
+      "path": "../recipe-card-cleaner/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "browser-web"
+    },
+    {
+      "name": "PageAudit",
+      "path": "../pageaudit/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "browser-web"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

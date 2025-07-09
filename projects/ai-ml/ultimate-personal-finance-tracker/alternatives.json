@@ -1,0 +1,36 @@
+{
+  "project_name": "Ultimate Personal Finance Tracker",
+  "alternatives": [
+    {
+      "name": "Cross-Device Tab Sender",
+      "path": "../cross-device-tab-sender/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "ScholarAI Sidekick",
+      "path": "../scholarai-sidekick/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Video Summarizer & Chapter Generator",
+      "path": "../ai-video-summarizer-chapter-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered Research Paper Discovery",
+      "path": "../ai-powered-research-paper-discovery/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI-Powered Personal Shopper",
+      "path": "../ai-powered-personal-shopper/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

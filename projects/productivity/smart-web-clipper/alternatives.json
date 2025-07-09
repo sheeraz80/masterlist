@@ -1,0 +1,18 @@
+{
+  "project_name": "Smart Web Clipper",
+  "alternatives": [
+    {
+      "name": "AI Content Repurposer",
+      "path": "../ai-content-repurposer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Content Repurposing Engine",
+      "path": "../content-repurposing-engine/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

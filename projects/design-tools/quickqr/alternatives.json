@@ -1,0 +1,36 @@
+{
+  "project_name": "QuickQR",
+  "alternatives": [
+    {
+      "name": "CopySync (Figma Text Sync)",
+      "path": "../copysync-figma-text-sync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "LayoutPlanner (Grid & Guide Assistant)",
+      "path": "../layoutplanner-grid-guide-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "TokenExport Pro",
+      "path": "../tokenexport-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Design System Linter Pro",
+      "path": "../design-system-linter-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "A11y Contrast Pairings",
+      "path": "../a11y-contrast-pairings/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

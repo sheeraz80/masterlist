@@ -1,0 +1,703 @@
+{
+  "metadata": {
+    "total_projects": 21,
+    "generation_date": "2024-01-01",
+    "focus": "Marketplace and Enterprise platforms",
+    "platforms": [
+      "shopify-app",
+      "wordpress-plugin",
+      "salesforce-app",
+      "microsoft-teams-app",
+      "office-365-addon"
+    ]
+  },
+  "projects": {
+    "advanced-inventory-manager-shopifyapp": {
+      "name": "Advanced Inventory Manager (Shopify App)",
+      "category": "e-commerce",
+      "quality_score": 7.6,
+      "platforms": [
+        "shopify-app"
+      ],
+      "problem_statement": "Shopify merchants struggle with complex inventory management across multiple locations",
+      "solution_description": "Comprehensive inventory management app with predictive reordering and multi-location sync Built specifically for Shopify App ecosystem.",
+      "target_users": "Merchants and businesses using Shopify App who need advanced inventory manager",
+      "revenue_model": "Monthly subscription through Shopify App Store with commission-based pricing tiers",
+      "revenue_potential": "Conservative: $16,178/month; Realistic: $20,222/month; Optimistic: $60,667/month",
+      "development_time": "~19 days with platform-specific frameworks",
+      "technical_complexity": "7/10 - Shopify App Store application with marketplace requirements",
+      "competition_level": "Medium to High - established marketplace with opportunities for innovation",
+      "key_features": [
+        "Multi-location sync",
+        "Predictive reordering",
+        "Low stock alerts",
+        "Supplier integration",
+        "Demand forecasting"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Shopify App",
+        "marketplace": "Shopify App ecosystem",
+        "revenue_model_details": "Monthly subscription through Shopify App Store with commission-based pricing tiers",
+        "technical_requirements": "Marketplace-compliant Shopify App Store application"
+      }
+    },
+    "conversion-rate-optimizer-shopifyapp": {
+      "name": "Conversion Rate Optimizer (Shopify App)",
+      "category": "e-commerce",
+      "quality_score": 8.3,
+      "platforms": [
+        "shopify-app"
+      ],
+      "problem_statement": "Shopify stores have average conversion rates below 3% and need optimization tools",
+      "solution_description": "AI-powered conversion optimization app with A/B testing and personalization Built specifically for Shopify App ecosystem.",
+      "target_users": "Merchants and businesses using Shopify App who need conversion rate optimizer",
+      "revenue_model": "Monthly subscription through Shopify App Store with commission-based pricing tiers",
+      "revenue_potential": "Conservative: $19,106/month; Realistic: $23,882/month; Optimistic: $71,647/month",
+      "development_time": "~11 days with platform-specific frameworks",
+      "technical_complexity": "5/10 - Shopify App Store application with marketplace requirements",
+      "competition_level": "Medium to High - established marketplace with opportunities for innovation",
+      "key_features": [
+        "A/B testing",
+        "Product recommendations",
+        "Personalized offers",
+        "Exit-intent popups",
+        "Analytics dashboard"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Shopify App",
+        "marketplace": "Shopify App ecosystem",
+        "revenue_model_details": "Monthly subscription through Shopify App Store with commission-based pricing tiers",
+        "technical_requirements": "Marketplace-compliant Shopify App Store application"
+      }
+    },
+    "subscription-commerce-suite-shopifyapp": {
+      "name": "Subscription Commerce Suite (Shopify App)",
+      "category": "e-commerce",
+      "quality_score": 7.7,
+      "platforms": [
+        "shopify-app"
+      ],
+      "problem_statement": "Merchants want to add subscription models but lack comprehensive tools",
+      "solution_description": "Complete subscription management app with billing, customer portal, and analytics Built specifically for Shopify App ecosystem.",
+      "target_users": "Merchants and businesses using Shopify App who need subscription commerce suite",
+      "revenue_model": "Monthly subscription through Shopify App Store with commission-based pricing tiers",
+      "revenue_potential": "Conservative: $13,750/month; Realistic: $17,187/month; Optimistic: $51,562/month",
+      "development_time": "~18 days with platform-specific frameworks",
+      "technical_complexity": "7/10 - Shopify App Store application with marketplace requirements",
+      "competition_level": "Medium to High - established marketplace with opportunities for innovation",
+      "key_features": [
+        "Subscription billing",
+        "Customer portal",
+        "Churn prevention",
+        "Dunning management",
+        "Revenue analytics"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Shopify App",
+        "marketplace": "Shopify App ecosystem",
+        "revenue_model_details": "Monthly subscription through Shopify App Store with commission-based pricing tiers",
+        "technical_requirements": "Marketplace-compliant Shopify App Store application"
+      }
+    },
+    "email-marketing-pro-shopifyapp": {
+      "name": "Email Marketing Pro (Shopify App)",
+      "category": "marketing-automation",
+      "quality_score": 8.6,
+      "platforms": [
+        "shopify-app"
+      ],
+      "problem_statement": "Shopify's basic email tools lack advanced segmentation and automation",
+      "solution_description": "Advanced email marketing app with AI-powered segmentation and automation Built specifically for Shopify App ecosystem.",
+      "target_users": "Merchants and businesses using Shopify App who need email marketing pro",
+      "revenue_model": "Monthly subscription through Shopify App Store with commission-based pricing tiers",
+      "revenue_potential": "Conservative: $16,034/month; Realistic: $20,042/month; Optimistic: $60,127/month",
+      "development_time": "~17 days with platform-specific frameworks",
+      "technical_complexity": "8/10 - Shopify App Store application with marketplace requirements",
+      "competition_level": "Medium to High - established marketplace with opportunities for innovation",
+      "key_features": [
+        "AI segmentation",
+        "Behavioral triggers",
+        "Abandoned cart recovery",
+        "Product recommendations",
+        "Performance analytics"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Shopify App",
+        "marketplace": "Shopify App ecosystem",
+        "revenue_model_details": "Monthly subscription through Shopify App Store with commission-based pricing tiers",
+        "technical_requirements": "Marketplace-compliant Shopify App Store application"
+      }
+    },
+    "social-commerce-connector-shopifyapp": {
+      "name": "Social Commerce Connector (Shopify App)",
+      "category": "marketing-automation",
+      "quality_score": 8.2,
+      "platforms": [
+        "shopify-app"
+      ],
+      "problem_statement": "Merchants struggle to manage sales across social media platforms",
+      "solution_description": "Unified social commerce app connecting Shopify with all major social platforms Built specifically for Shopify App ecosystem.",
+      "target_users": "Merchants and businesses using Shopify App who need social commerce connector",
+      "revenue_model": "Monthly subscription through Shopify App Store with commission-based pricing tiers",
+      "revenue_potential": "Conservative: $17,608/month; Realistic: $22,010/month; Optimistic: $66,030/month",
+      "development_time": "~13 days with platform-specific frameworks",
+      "technical_complexity": "6/10 - Shopify App Store application with marketplace requirements",
+      "competition_level": "Medium to High - established marketplace with opportunities for innovation",
+      "key_features": [
+        "Social media sync",
+        "Cross-platform inventory",
+        "Social ads management",
+        "Influencer tools",
+        "Performance tracking"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Shopify App",
+        "marketplace": "Shopify App ecosystem",
+        "revenue_model_details": "Monthly subscription through Shopify App Store with commission-based pricing tiers",
+        "technical_requirements": "Marketplace-compliant Shopify App Store application"
+      }
+    },
+    "advanced-analytics-pro-wordpressplugin": {
+      "name": "Advanced Analytics Pro (WordPress Plugin)",
+      "category": "business-analytics",
+      "quality_score": 8.9,
+      "platforms": [
+        "wordpress-plugin"
+      ],
+      "problem_statement": "WordPress sites need more sophisticated analytics than Google Analytics provides",
+      "solution_description": "Comprehensive analytics plugin with custom dashboards and advanced reporting Built specifically for WordPress Plugin ecosystem.",
+      "target_users": "Merchants and businesses using WordPress Plugin who need advanced analytics pro",
+      "revenue_model": "Freemium model with premium features and annual licensing options",
+      "revenue_potential": "Conservative: $7,047/month; Realistic: $8,809/month; Optimistic: $26,427/month",
+      "development_time": "~10 days with platform-specific frameworks",
+      "technical_complexity": "5/10 - WordPress.org plugin with marketplace requirements",
+      "competition_level": "Medium to High - established marketplace with opportunities for innovation",
+      "key_features": [
+        "Custom dashboards",
+        "Event tracking",
+        "Conversion funnels",
+        "User behavior analysis",
+        "Performance optimization"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "WordPress Plugin",
+        "marketplace": "WordPress Plugin ecosystem",
+        "revenue_model_details": "Freemium model with premium features and annual licensing options",
+        "technical_requirements": "Marketplace-compliant WordPress.org plugin"
+      }
+    },
+    "revenue-tracking-suite-wordpressplugin": {
+      "name": "Revenue Tracking Suite (WordPress Plugin)",
+      "category": "business-analytics",
+      "quality_score": 7.7,
+      "platforms": [
+        "wordpress-plugin"
+      ],
+      "problem_statement": "WordPress business sites lack integrated revenue and performance tracking",
+      "solution_description": "Complete revenue analytics plugin with business intelligence features Built specifically for WordPress Plugin ecosystem.",
+      "target_users": "Merchants and businesses using WordPress Plugin who need revenue tracking suite",
+      "revenue_model": "Freemium model with premium features and annual licensing options",
+      "revenue_potential": "Conservative: $12,119/month; Realistic: $15,148/month; Optimistic: $45,446/month",
+      "development_time": "~8 days with platform-specific frameworks",
+      "technical_complexity": "4/10 - WordPress.org plugin with marketplace requirements",
+      "competition_level": "Medium to High - established marketplace with opportunities for innovation",
+      "key_features": [
+        "Revenue tracking",
+        "Customer lifetime value",
+        "Cohort analysis",
+        "Attribution modeling",
+        "Business reports"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "WordPress Plugin",
+        "marketplace": "WordPress Plugin ecosystem",
+        "revenue_model_details": "Freemium model with premium features and annual licensing options",
+        "technical_requirements": "Marketplace-compliant WordPress.org plugin"
+      }
+    },
+    "lead-generation-engine-wordpressplugin": {
+      "name": "Lead Generation Engine (WordPress Plugin)",
+      "category": "marketing-automation",
+      "quality_score": 8.1,
+      "platforms": [
+        "wordpress-plugin"
+      ],
+      "problem_statement": "WordPress sites need better tools for capturing and nurturing leads",
+      "solution_description": "Advanced lead generation plugin with forms, popups, and automation Built specifically for WordPress Plugin ecosystem.",
+      "target_users": "Merchants and businesses using WordPress Plugin who need lead generation engine",
+      "revenue_model": "Freemium model with premium features and annual licensing options",
+      "revenue_potential": "Conservative: $8,591/month; Realistic: $10,738/month; Optimistic: $32,216/month",
+      "development_time": "~13 days with platform-specific frameworks",
+      "technical_complexity": "3/10 - WordPress.org plugin with marketplace requirements",
+      "competition_level": "Medium to High - established marketplace with opportunities for innovation",
+      "key_features": [
+        "Smart forms",
+        "Exit-intent popups",
+        "Lead scoring",
+        "Email automation",
+        "CRM integration"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "WordPress Plugin",
+        "marketplace": "WordPress Plugin ecosystem",
+        "revenue_model_details": "Freemium model with premium features and annual licensing options",
+        "technical_requirements": "Marketplace-compliant WordPress.org plugin"
+      }
+    },
+    "content-marketing-hub-wordpressplugin": {
+      "name": "Content Marketing Hub (WordPress Plugin)",
+      "category": "marketing-automation",
+      "quality_score": 7.9,
+      "platforms": [
+        "wordpress-plugin"
+      ],
+      "problem_statement": "Content creators need better tools for planning, optimizing, and promoting content",
+      "solution_description": "Complete content marketing plugin with SEO, social, and analytics features Built specifically for WordPress Plugin ecosystem.",
+      "target_users": "Merchants and businesses using WordPress Plugin who need content marketing hub",
+      "revenue_model": "Freemium model with premium features and annual licensing options",
+      "revenue_potential": "Conservative: $5,484/month; Realistic: $6,856/month; Optimistic: $20,568/month",
+      "development_time": "~10 days with platform-specific frameworks",
+      "technical_complexity": "4/10 - WordPress.org plugin with marketplace requirements",
+      "competition_level": "Medium to High - established marketplace with opportunities for innovation",
+      "key_features": [
+        "Content calendar",
+        "SEO optimization",
+        "Social scheduling",
+        "Content analytics",
+        "Competitor analysis"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "WordPress Plugin",
+        "marketplace": "WordPress Plugin ecosystem",
+        "revenue_model_details": "Freemium model with premium features and annual licensing options",
+        "technical_requirements": "Marketplace-compliant WordPress.org plugin"
+      }
+    },
+    "revenue-intelligence-hub-salesforceapp": {
+      "name": "Revenue Intelligence Hub (Salesforce App)",
+      "category": "business-analytics",
+      "quality_score": 9.2,
+      "platforms": [
+        "salesforce-app"
+      ],
+      "problem_statement": "Sales teams need AI-powered insights to improve deal closure and revenue predictability",
+      "solution_description": "Advanced revenue intelligence app with AI forecasting and deal optimization Enterprise-grade solution for Salesforce App ecosystem.",
+      "target_users": "Enterprise organizations using Salesforce App requiring revenue intelligence hub capabilities",
+      "revenue_model": "Per-user monthly licensing through Salesforce AppExchange with enterprise volume discounts",
+      "revenue_potential": "Conservative: $58,209/month; Realistic: $72,761/month; Optimistic: $218,284/month",
+      "development_time": "~24 days with enterprise development requirements",
+      "technical_complexity": "7/10 - Salesforce AppExchange application with enterprise compliance",
+      "competition_level": "High - enterprise market with significant opportunities for specialized solutions",
+      "key_features": [
+        "AI forecasting",
+        "Deal scoring",
+        "Pipeline optimization",
+        "Revenue attribution",
+        "Predictive analytics",
+        "Enterprise security",
+        "Compliance features",
+        "Admin controls"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Salesforce App",
+        "enterprise_features": true,
+        "revenue_model_details": "Per-user monthly licensing through Salesforce AppExchange with enterprise volume discounts",
+        "technical_requirements": "Enterprise-grade Salesforce AppExchange application with compliance requirements"
+      }
+    },
+    "customer-success-analytics-salesforceapp": {
+      "name": "Customer Success Analytics (Salesforce App)",
+      "category": "business-analytics",
+      "quality_score": 9.2,
+      "platforms": [
+        "salesforce-app"
+      ],
+      "problem_statement": "Companies struggle to predict and prevent customer churn in complex B2B relationships",
+      "solution_description": "Comprehensive customer success analytics app with churn prediction and health scoring Enterprise-grade solution for Salesforce App ecosystem.",
+      "target_users": "Enterprise organizations using Salesforce App requiring customer success analytics capabilities",
+      "revenue_model": "Per-user monthly licensing through Salesforce AppExchange with enterprise volume discounts",
+      "revenue_potential": "Conservative: $63,562/month; Realistic: $79,453/month; Optimistic: $238,360/month",
+      "development_time": "~26 days with enterprise development requirements",
+      "technical_complexity": "10/10 - Salesforce AppExchange application with enterprise compliance",
+      "competition_level": "High - enterprise market with significant opportunities for specialized solutions",
+      "key_features": [
+        "Health scoring",
+        "Churn prediction",
+        "Usage analytics",
+        "Renewal forecasting",
+        "Success metrics",
+        "Enterprise security",
+        "Compliance features",
+        "Admin controls"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Salesforce App",
+        "enterprise_features": true,
+        "revenue_model_details": "Per-user monthly licensing through Salesforce AppExchange with enterprise volume discounts",
+        "technical_requirements": "Enterprise-grade Salesforce AppExchange application with compliance requirements"
+      }
+    },
+    "account-based-marketing-suite-salesforceapp": {
+      "name": "Account-Based Marketing Suite (Salesforce App)",
+      "category": "marketing-automation",
+      "quality_score": 8.8,
+      "platforms": [
+        "salesforce-app"
+      ],
+      "problem_statement": "B2B marketers need sophisticated ABM tools integrated with Salesforce data",
+      "solution_description": "Complete ABM platform with account orchestration and multi-touch attribution Enterprise-grade solution for Salesforce App ecosystem.",
+      "target_users": "Enterprise organizations using Salesforce App requiring account-based marketing suite capabilities",
+      "revenue_model": "Per-user monthly licensing through Salesforce AppExchange with enterprise volume discounts",
+      "revenue_potential": "Conservative: $58,606/month; Realistic: $73,258/month; Optimistic: $219,775/month",
+      "development_time": "~22 days with enterprise development requirements",
+      "technical_complexity": "8/10 - Salesforce AppExchange application with enterprise compliance",
+      "competition_level": "High - enterprise market with significant opportunities for specialized solutions",
+      "key_features": [
+        "Account orchestration",
+        "Multi-touch attribution",
+        "Intent data",
+        "Personalization engine",
+        "ROI tracking",
+        "Enterprise security",
+        "Compliance features",
+        "Admin controls"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Salesforce App",
+        "enterprise_features": true,
+        "revenue_model_details": "Per-user monthly licensing through Salesforce AppExchange with enterprise volume discounts",
+        "technical_requirements": "Enterprise-grade Salesforce AppExchange application with compliance requirements"
+      }
+    },
+    "lead-intelligence-engine-salesforceapp": {
+      "name": "Lead Intelligence Engine (Salesforce App)",
+      "category": "marketing-automation",
+      "quality_score": 9.2,
+      "platforms": [
+        "salesforce-app"
+      ],
+      "problem_statement": "Marketing and sales teams need better lead qualification and routing",
+      "solution_description": "AI-powered lead intelligence app with scoring, routing, and conversion optimization Enterprise-grade solution for Salesforce App ecosystem.",
+      "target_users": "Enterprise organizations using Salesforce App requiring lead intelligence engine capabilities",
+      "revenue_model": "Per-user monthly licensing through Salesforce AppExchange with enterprise volume discounts",
+      "revenue_potential": "Conservative: $45,186/month; Realistic: $56,483/month; Optimistic: $169,449/month",
+      "development_time": "~27 days with enterprise development requirements",
+      "technical_complexity": "7/10 - Salesforce AppExchange application with enterprise compliance",
+      "competition_level": "High - enterprise market with significant opportunities for specialized solutions",
+      "key_features": [
+        "Lead scoring",
+        "Intelligent routing",
+        "Conversion optimization",
+        "Lead nurturing",
+        "Performance analytics",
+        "Enterprise security",
+        "Compliance features",
+        "Admin controls"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Salesforce App",
+        "enterprise_features": true,
+        "revenue_model_details": "Per-user monthly licensing through Salesforce AppExchange with enterprise volume discounts",
+        "technical_requirements": "Enterprise-grade Salesforce AppExchange application with compliance requirements"
+      }
+    },
+    "agile-project-suite-microsoftteamsapp": {
+      "name": "Agile Project Suite (Microsoft Teams App)",
+      "category": "project-management",
+      "quality_score": 9.0,
+      "platforms": [
+        "microsoft-teams-app"
+      ],
+      "problem_statement": "Teams using Microsoft Teams need integrated agile project management tools",
+      "solution_description": "Complete agile project management app integrated with Teams workflows Enterprise-grade solution for Microsoft Teams App ecosystem.",
+      "target_users": "Enterprise organizations using Microsoft Teams App requiring agile project suite capabilities",
+      "revenue_model": "Enterprise licensing with per-user pricing and organizational bulk rates",
+      "revenue_potential": "Conservative: $24,993/month; Realistic: $31,241/month; Optimistic: $93,724/month",
+      "development_time": "~16 days with enterprise development requirements",
+      "technical_complexity": "6/10 - Microsoft Teams application with enterprise compliance",
+      "competition_level": "High - enterprise market with significant opportunities for specialized solutions",
+      "key_features": [
+        "Sprint planning",
+        "Kanban boards",
+        "Burndown charts",
+        "Team velocity",
+        "Integration with Teams",
+        "Enterprise security",
+        "Compliance features",
+        "Admin controls"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Microsoft Teams App",
+        "enterprise_features": true,
+        "revenue_model_details": "Enterprise licensing with per-user pricing and organizational bulk rates",
+        "technical_requirements": "Enterprise-grade Microsoft Teams application with compliance requirements"
+      }
+    },
+    "resource-management-hub-microsoftteamsapp": {
+      "name": "Resource Management Hub (Microsoft Teams App)",
+      "category": "project-management",
+      "quality_score": 9.0,
+      "platforms": [
+        "microsoft-teams-app"
+      ],
+      "problem_statement": "Organizations struggle with resource allocation and capacity planning across teams",
+      "solution_description": "Advanced resource management app with capacity planning and optimization Enterprise-grade solution for Microsoft Teams App ecosystem.",
+      "target_users": "Enterprise organizations using Microsoft Teams App requiring resource management hub capabilities",
+      "revenue_model": "Enterprise licensing with per-user pricing and organizational bulk rates",
+      "revenue_potential": "Conservative: $32,942/month; Realistic: $41,177/month; Optimistic: $123,532/month",
+      "development_time": "~13 days with enterprise development requirements",
+      "technical_complexity": "8/10 - Microsoft Teams application with enterprise compliance",
+      "competition_level": "High - enterprise market with significant opportunities for specialized solutions",
+      "key_features": [
+        "Capacity planning",
+        "Resource allocation",
+        "Skill matching",
+        "Workload balancing",
+        "Forecasting",
+        "Enterprise security",
+        "Compliance features",
+        "Admin controls"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Microsoft Teams App",
+        "enterprise_features": true,
+        "revenue_model_details": "Enterprise licensing with per-user pricing and organizational bulk rates",
+        "technical_requirements": "Enterprise-grade Microsoft Teams application with compliance requirements"
+      }
+    },
+    "meeting-intelligence-pro-microsoftteamsapp": {
+      "name": "Meeting Intelligence Pro (Microsoft Teams App)",
+      "category": "communication",
+      "quality_score": 9.0,
+      "platforms": [
+        "microsoft-teams-app"
+      ],
+      "problem_statement": "Teams meetings lack structured follow-up and action item tracking",
+      "solution_description": "AI-powered meeting intelligence app with transcription and action tracking Enterprise-grade solution for Microsoft Teams App ecosystem.",
+      "target_users": "Enterprise organizations using Microsoft Teams App requiring meeting intelligence pro capabilities",
+      "revenue_model": "Enterprise licensing with per-user pricing and organizational bulk rates",
+      "revenue_potential": "Conservative: $33,128/month; Realistic: $41,411/month; Optimistic: $124,233/month",
+      "development_time": "~14 days with enterprise development requirements",
+      "technical_complexity": "6/10 - Microsoft Teams application with enterprise compliance",
+      "competition_level": "High - enterprise market with significant opportunities for specialized solutions",
+      "key_features": [
+        "Meeting transcription",
+        "Action item extraction",
+        "Follow-up automation",
+        "Meeting analytics",
+        "Integration with Teams",
+        "Enterprise security",
+        "Compliance features",
+        "Admin controls"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Microsoft Teams App",
+        "enterprise_features": true,
+        "revenue_model_details": "Enterprise licensing with per-user pricing and organizational bulk rates",
+        "technical_requirements": "Enterprise-grade Microsoft Teams application with compliance requirements"
+      }
+    },
+    "collaboration-analytics-microsoftteamsapp": {
+      "name": "Collaboration Analytics (Microsoft Teams App)",
+      "category": "communication",
+      "quality_score": 8.1,
+      "platforms": [
+        "microsoft-teams-app"
+      ],
+      "problem_statement": "Organizations need insights into team collaboration patterns and productivity",
+      "solution_description": "Comprehensive collaboration analytics app for Teams usage and productivity Enterprise-grade solution for Microsoft Teams App ecosystem.",
+      "target_users": "Enterprise organizations using Microsoft Teams App requiring collaboration analytics capabilities",
+      "revenue_model": "Enterprise licensing with per-user pricing and organizational bulk rates",
+      "revenue_potential": "Conservative: $34,472/month; Realistic: $43,091/month; Optimistic: $129,273/month",
+      "development_time": "~19 days with enterprise development requirements",
+      "technical_complexity": "7/10 - Microsoft Teams application with enterprise compliance",
+      "competition_level": "High - enterprise market with significant opportunities for specialized solutions",
+      "key_features": [
+        "Collaboration metrics",
+        "Productivity insights",
+        "Team dynamics",
+        "Usage analytics",
+        "Performance optimization",
+        "Enterprise security",
+        "Compliance features",
+        "Admin controls"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Microsoft Teams App",
+        "enterprise_features": true,
+        "revenue_model_details": "Enterprise licensing with per-user pricing and organizational bulk rates",
+        "technical_requirements": "Enterprise-grade Microsoft Teams application with compliance requirements"
+      }
+    },
+    "excel-analytics-pro-office365addon": {
+      "name": "Excel Analytics Pro (Office 365 Add-on)",
+      "category": "business-analytics",
+      "quality_score": 9.3,
+      "platforms": [
+        "office-365-addon"
+      ],
+      "problem_statement": "Business users need advanced analytics capabilities beyond standard Excel",
+      "solution_description": "Professional analytics add-on with AI insights and advanced visualization Enterprise-grade solution for Office 365 Add-on ecosystem.",
+      "target_users": "Enterprise organizations using Office 365 Add-on requiring excel analytics pro capabilities",
+      "revenue_model": "Microsoft AppSource distribution with enterprise licensing and volume pricing",
+      "revenue_potential": "Conservative: $22,185/month; Realistic: $27,732/month; Optimistic: $83,196/month",
+      "development_time": "~23 days with enterprise development requirements",
+      "technical_complexity": "8/10 - Microsoft Office 365 add-on with enterprise compliance",
+      "competition_level": "High - enterprise market with significant opportunities for specialized solutions",
+      "key_features": [
+        "AI insights",
+        "Advanced charts",
+        "Predictive modeling",
+        "Data connectors",
+        "Automated reporting",
+        "Enterprise security",
+        "Compliance features",
+        "Admin controls"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Office 365 Add-on",
+        "enterprise_features": true,
+        "revenue_model_details": "Microsoft AppSource distribution with enterprise licensing and volume pricing",
+        "technical_requirements": "Enterprise-grade Microsoft Office 365 add-on with compliance requirements"
+      }
+    },
+    "power-bi-enhancer-office365addon": {
+      "name": "Power BI Enhancer (Office 365 Add-on)",
+      "category": "business-analytics",
+      "quality_score": 8.5,
+      "platforms": [
+        "office-365-addon"
+      ],
+      "problem_statement": "Power BI users need additional visualization and analysis capabilities",
+      "solution_description": "Advanced Power BI add-on with custom visuals and analytical tools Enterprise-grade solution for Office 365 Add-on ecosystem.",
+      "target_users": "Enterprise organizations using Office 365 Add-on requiring power bi enhancer capabilities",
+      "revenue_model": "Microsoft AppSource distribution with enterprise licensing and volume pricing",
+      "revenue_potential": "Conservative: $28,639/month; Realistic: $35,799/month; Optimistic: $107,397/month",
+      "development_time": "~12 days with enterprise development requirements",
+      "technical_complexity": "8/10 - Microsoft Office 365 add-on with enterprise compliance",
+      "competition_level": "High - enterprise market with significant opportunities for specialized solutions",
+      "key_features": [
+        "Custom visuals",
+        "Advanced analytics",
+        "Automated insights",
+        "Report optimization",
+        "Data modeling",
+        "Enterprise security",
+        "Compliance features",
+        "Admin controls"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Office 365 Add-on",
+        "enterprise_features": true,
+        "revenue_model_details": "Microsoft AppSource distribution with enterprise licensing and volume pricing",
+        "technical_requirements": "Enterprise-grade Microsoft Office 365 add-on with compliance requirements"
+      }
+    },
+    "document-intelligence-suite-office365addon": {
+      "name": "Document Intelligence Suite (Office 365 Add-on)",
+      "category": "productivity",
+      "quality_score": 8.2,
+      "platforms": [
+        "office-365-addon"
+      ],
+      "problem_statement": "Organizations need AI-powered document analysis and processing",
+      "solution_description": "AI document processing add-on for Word and SharePoint with automation Enterprise-grade solution for Office 365 Add-on ecosystem.",
+      "target_users": "Enterprise organizations using Office 365 Add-on requiring document intelligence suite capabilities",
+      "revenue_model": "Microsoft AppSource distribution with enterprise licensing and volume pricing",
+      "revenue_potential": "Conservative: $28,485/month; Realistic: $35,607/month; Optimistic: $106,821/month",
+      "development_time": "~15 days with enterprise development requirements",
+      "technical_complexity": "7/10 - Microsoft Office 365 add-on with enterprise compliance",
+      "competition_level": "High - enterprise market with significant opportunities for specialized solutions",
+      "key_features": [
+        "Document analysis",
+        "Content extraction",
+        "Automated processing",
+        "Compliance checking",
+        "Workflow integration",
+        "Enterprise security",
+        "Compliance features",
+        "Admin controls"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Office 365 Add-on",
+        "enterprise_features": true,
+        "revenue_model_details": "Microsoft AppSource distribution with enterprise licensing and volume pricing",
+        "technical_requirements": "Enterprise-grade Microsoft Office 365 add-on with compliance requirements"
+      }
+    },
+    "email-productivity-enhancer-office365addon": {
+      "name": "Email Productivity Enhancer (Office 365 Add-on)",
+      "category": "productivity",
+      "quality_score": 8.4,
+      "platforms": [
+        "office-365-addon"
+      ],
+      "problem_statement": "Outlook users need better email management and productivity tools",
+      "solution_description": "Advanced Outlook add-on with AI scheduling and email optimization Enterprise-grade solution for Office 365 Add-on ecosystem.",
+      "target_users": "Enterprise organizations using Office 365 Add-on requiring email productivity enhancer capabilities",
+      "revenue_model": "Microsoft AppSource distribution with enterprise licensing and volume pricing",
+      "revenue_potential": "Conservative: $24,972/month; Realistic: $31,215/month; Optimistic: $93,645/month",
+      "development_time": "~22 days with enterprise development requirements",
+      "technical_complexity": "8/10 - Microsoft Office 365 add-on with enterprise compliance",
+      "competition_level": "High - enterprise market with significant opportunities for specialized solutions",
+      "key_features": [
+        "AI scheduling",
+        "Email templates",
+        "Follow-up automation",
+        "Productivity analytics",
+        "Team coordination",
+        "Enterprise security",
+        "Compliance features",
+        "Admin controls"
+      ],
+      "cross_platform_project": true,
+      "completeness_score": 10,
+      "platform_specific_details": {
+        "platform_type": "Office 365 Add-on",
+        "enterprise_features": true,
+        "revenue_model_details": "Microsoft AppSource distribution with enterprise licensing and volume pricing",
+        "technical_requirements": "Enterprise-grade Microsoft Office 365 add-on with compliance requirements"
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "project_name": "Email Tone Improver",
+  "alternatives": [
+    {
+      "name": "AI Writing Assistant",
+      "path": "../ai-writing-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "DEX Trade Assistant",
+      "path": "../dex-trade-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

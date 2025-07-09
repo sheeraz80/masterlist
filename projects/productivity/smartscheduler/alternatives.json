@@ -1,0 +1,30 @@
+{
+  "project_name": "SmartScheduler",
+  "alternatives": [
+    {
+      "name": "Note-Taking & To-Do List",
+      "path": "../note-taking-to-do-list/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Automated Task Scheduler",
+      "path": "../automated-task-scheduler/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Team Task Automator",
+      "path": "../team-task-automator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "TaskFlow",
+      "path": "../taskflow/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

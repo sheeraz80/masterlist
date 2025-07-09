@@ -1,0 +1,36 @@
+{
+  "project_name": "Mind Map Widget",
+  "alternatives": [
+    {
+      "name": "AI Video Summarizer & Chapter Generator",
+      "path": "../ai-video-summarizer-chapter-generator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Ultimate Personal Finance Tracker",
+      "path": "../ultimate-personal-finance-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Meeting Scheduler Widget",
+      "path": "../meeting-scheduler-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Mind Map Overlay",
+      "path": "../mind-map-overlay/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Meeting Minutes AI",
+      "path": "../meeting-minutes-ai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

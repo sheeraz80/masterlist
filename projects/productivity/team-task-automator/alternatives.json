@@ -1,0 +1,30 @@
+{
+  "project_name": "Team Task Automator",
+  "alternatives": [
+    {
+      "name": "TaskFlow",
+      "path": "../taskflow/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "TaskSync",
+      "path": "../tasksync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "SmartScheduler",
+      "path": "../smartscheduler/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Social Media Cross-Poster",
+      "path": "../social-media-cross-poster/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

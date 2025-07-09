@@ -1,0 +1,36 @@
+{
+  "project_name": "AI Unit Test Generator",
+  "alternatives": [
+    {
+      "name": "SnippetSaver",
+      "path": "../snippetsaver/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "DocuGen",
+      "path": "../docugen/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "CodeSprintAI",
+      "path": "../codesprintai/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "DebugSense",
+      "path": "../debugsense/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "WriteBetterDocs",
+      "path": "../writebetterdocs/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,30 @@
+{
+  "project_name": "AI Content Repurposer",
+  "alternatives": [
+    {
+      "name": "Smart Web Clipper",
+      "path": "../smart-web-clipper/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Content Repurposing Engine",
+      "path": "../content-repurposing-engine/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered E-commerce Product Description Writer",
+      "path": "../ai-powered-e-commerce-product-description-writer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Social Media Cross-Poster",
+      "path": "../social-media-cross-poster/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

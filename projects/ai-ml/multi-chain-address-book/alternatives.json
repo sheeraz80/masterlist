@@ -1,0 +1,24 @@
+{
+  "project_name": "Multi-Chain Address Book",
+  "alternatives": [
+    {
+      "name": "Airdrop Eligibility Checker",
+      "path": "../airdrop-eligibility-checker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Wallet Watcher",
+      "path": "../wallet-watcher/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Gas Tracker Lite",
+      "path": "../gas-tracker-lite/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

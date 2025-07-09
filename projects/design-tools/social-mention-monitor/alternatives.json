@@ -1,0 +1,36 @@
+{
+  "project_name": "Social Mention Monitor",
+  "alternatives": [
+    {
+      "name": "BrandGuard Pro",
+      "path": "../brandguard-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "LayoutPlanner (Grid & Guide Assistant)",
+      "path": "../layoutplanner-grid-guide-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "SpellCheck+ (Content Proofreader)",
+      "path": "../spellcheck-content-proofreader/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Design System Linter Pro",
+      "path": "../design-system-linter-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "AI Social Media Comment Responder",
+      "path": "../ai-social-media-comment-responder/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

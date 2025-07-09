@@ -1,0 +1,12 @@
+{
+  "project_name": "YouTube Ad-Free Experience Enhancer",
+  "alternatives": [
+    {
+      "name": "Privacy Guardian Dashboard",
+      "path": "../privacy-guardian-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "browser-web"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

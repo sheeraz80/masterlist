@@ -1,0 +1,18 @@
+{
+  "preferences": {
+    "default_limit": 10,
+    "preferred_categories": ["ai-ml", "design-tools", "productivity"],
+    "preferred_difficulty": "intermediate",
+    "preferred_timeline": "quick",
+    "min_quality_threshold": 6.0,
+    "max_complexity_threshold": 7
+  },
+  "export_formats": {
+    "default": "table",
+    "supported": ["table", "json", "markdown"]
+  },
+  "tracking": {
+    "enable_auto_tracking": true,
+    "backup_interval": "daily"
+  }
+}

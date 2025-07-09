@@ -1,0 +1,12 @@
+{
+  "project_name": "Job Application Tracker",
+  "alternatives": [
+    {
+      "name": "Job Search Tracker Widget",
+      "path": "../job-search-tracker-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

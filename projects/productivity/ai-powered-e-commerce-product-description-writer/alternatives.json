@@ -1,0 +1,36 @@
+{
+  "project_name": "AI-Powered E-commerce Product Description Writer",
+  "alternatives": [
+    {
+      "name": "AI Content Repurposer",
+      "path": "../ai-content-repurposer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Social Media Feed Blocker",
+      "path": "../social-media-feed-blocker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Dependency Detective",
+      "path": "../dependency-detective/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Content Repurposing Engine",
+      "path": "../content-repurposing-engine/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered Writing Assistant",
+      "path": "../ai-powered-writing-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

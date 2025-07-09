@@ -1,0 +1,36 @@
+{
+  "project_name": "AI Video Summarizer & Chapter Generator",
+  "alternatives": [
+    {
+      "name": "On-Chain Voting Dashboard",
+      "path": "../on-chain-voting-dashboard/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Cross-Device Tab Sender",
+      "path": "../cross-device-tab-sender/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "Price Drop & Stock Alert for Amazon",
+      "path": "../price-drop-stock-alert-for-amazon/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "SmartBookmark",
+      "path": "../smartbookmark/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    },
+    {
+      "name": "AI Content Rewriter",
+      "path": "../ai-content-rewriter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "ai-ml"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

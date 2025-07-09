@@ -1,0 +1,30 @@
+{
+  "project_name": "Web Page Health Checker",
+  "alternatives": [
+    {
+      "name": "Book & Reading Tracker",
+      "path": "../book-reading-tracker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Simple Upvote/Like Button Widget",
+      "path": "../simple-upvotelike-button-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "Team Collaboration Toolkit",
+      "path": "../team-collaboration-toolkit/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    },
+    {
+      "name": "PDF++ Pro",
+      "path": "../pdf-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "content-writing"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,24 @@
+{
+  "project_name": "Vault Health Check",
+  "alternatives": [
+    {
+      "name": "Google Calendar Sync Widget",
+      "path": "../google-calendar-sync-widget/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Advanced Tables Pro",
+      "path": "../advanced-tables-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    },
+    {
+      "name": "Vault Backup Pro",
+      "path": "../vault-backup-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "other"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

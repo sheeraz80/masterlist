@@ -1,0 +1,18 @@
+{
+  "project_name": "Image Compressor",
+  "alternatives": [
+    {
+      "name": "Design System Linter Pro",
+      "path": "../design-system-linter-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "Frontend Asset Optimizer",
+      "path": "../frontend-asset-optimizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

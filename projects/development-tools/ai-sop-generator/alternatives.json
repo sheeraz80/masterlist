@@ -1,0 +1,36 @@
+{
+  "project_name": "AI SOP Generator",
+  "alternatives": [
+    {
+      "name": "AI Docstring Pro",
+      "path": "../ai-docstring-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Secure Vault Interface",
+      "path": "../secure-vault-interface/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "AI-Powered Code Translator",
+      "path": "../ai-powered-code-translator/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "On-Chain Data Exporter",
+      "path": "../on-chain-data-exporter/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    },
+    {
+      "name": "Smart Tax Helper",
+      "path": "../smart-tax-helper/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,12 @@
+{
+  "project_name": "Advanced Bookmark Manager",
+  "alternatives": [
+    {
+      "name": "Freelancer Client Portal Pro",
+      "path": "../freelancer-client-portal-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

@@ -1,0 +1,12 @@
+{
+  "project_name": "Smart Meeting Note Saver",
+  "alternatives": [
+    {
+      "name": "TaskSync",
+      "path": "../tasksync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

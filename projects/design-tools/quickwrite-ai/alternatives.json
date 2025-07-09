@@ -1,0 +1,36 @@
+{
+  "project_name": "QuickWrite AI",
+  "alternatives": [
+    {
+      "name": "AutoLayout Optimizer",
+      "path": "../autolayout-optimizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "ContrastMaster",
+      "path": "../contrastmaster/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "CopySync (Figma Text Sync)",
+      "path": "../copysync-figma-text-sync/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "FigTask (Integrated Task Lists)",
+      "path": "../figtask-integrated-task-lists/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    },
+    {
+      "name": "LayoutPlanner (Grid & Guide Assistant)",
+      "path": "../layoutplanner-grid-guide-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "design-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

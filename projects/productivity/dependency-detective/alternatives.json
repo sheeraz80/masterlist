@@ -1,0 +1,36 @@
+{
+  "project_name": "Dependency Detective",
+  "alternatives": [
+    {
+      "name": "Social Media Feed Blocker",
+      "path": "../social-media-feed-blocker/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered Writing Assistant",
+      "path": "../ai-powered-writing-assistant/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered Email Summarizer",
+      "path": "../ai-powered-email-summarizer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "AI-Powered E-commerce Product Description Writer",
+      "path": "../ai-powered-e-commerce-product-description-writer/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    },
+    {
+      "name": "Startup OS: The All-in-One Business Hub",
+      "path": "../startup-os-the-all-in-one-business-hub/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "productivity"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

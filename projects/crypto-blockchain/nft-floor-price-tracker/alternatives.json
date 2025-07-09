@@ -1,0 +1,12 @@
+{
+  "project_name": "NFT Floor Price Tracker",
+  "alternatives": [
+    {
+      "name": "NFT Floor Alert",
+      "path": "../nft-floor-alert/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "crypto-blockchain"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}

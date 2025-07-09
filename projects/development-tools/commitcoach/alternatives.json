@@ -1,0 +1,12 @@
+{
+  "project_name": "CommitCoach",
+  "alternatives": [
+    {
+      "name": "AI Docstring Pro",
+      "path": "../ai-docstring-pro/",
+      "similarity_reason": "Similar problem domain and category",
+      "category": "development-tools"
+    }
+  ],
+  "last_updated": "2024-01-01"
+}
