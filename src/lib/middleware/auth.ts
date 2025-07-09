@@ -16,7 +16,7 @@ export async function withAuth(
   options: AuthOptions = { requireAuth: true }
 ) {
   try {
-    const user = await getCurrentUser();
+    const user = await getCurrentUser(request);
 
     // Check if authentication is required
     if (options.requireAuth && !user) {
