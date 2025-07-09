@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
 import { optionalAuth, requireAuth } from '@/lib/middleware/auth';
 import { AuthUser } from '@/types';
+import { logError, logDatabaseOperation } from '@/lib/logger';
 
 export const GET = withRateLimit(
   optionalAuth(async (request: NextRequest, user: AuthUser | null) => {
@@ -143,8 +144,10 @@ export const GET = withRateLimit(
       userRole
     });
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error fetching collaboration data:', error);
+    logError(error as Error, { 
+      context: 'collaboration_get_data',
+      userId: user?.id
+    });
     return NextResponse.json(
       { error: 'Failed to fetch collaboration data' },
       { status: 500 }
@@ -168,6 +171,10 @@ export const POST = withRateLimit(
           return handleAssignProject(user, data);
         case 'update_project_status':
           return handleUpdateProjectStatus(user, data);
+        case 'update_project_priority':
+          return handleUpdateProjectPriority(user, data);
+        case 'update_project_progress':
+          return handleUpdateProjectProgress(user, data);
         case 'add_comment':
           return handleAddComment(user, data);
         default:
@@ -177,8 +184,10 @@ export const POST = withRateLimit(
           );
       }
     } catch (error: unknown) {
-      // eslint-disable-next-line no-console
-      console.error('Collaboration error:', error);
+      logError(error as Error, { 
+        context: 'collaboration_post_action',
+        action: (error as any)?.action || 'unknown'
+      });
       const errorMessage = error instanceof Error ? error.message : 'Operation failed';
       return NextResponse.json(
         { error: errorMessage },
@@ -499,6 +508,37 @@ async function handleUpdateProjectStatus(user: any, data: any) {
     success: true,
     message: 'Project updated successfully'
   });
+}
+
+async function handleUpdateProjectPriority(user: any, data: any) {
+  const { teamId, projectId, priority } = data;
+
+  if (!priority) {
+    return NextResponse.json(
+      { error: 'Priority is required' },
+      { status: 400 }
+    );
+  }
+
+  // Reuse existing handler with priority data
+  return handleUpdateProjectStatus(user, { teamId, projectId, priority });
+}
+
+async function handleUpdateProjectProgress(user: any, data: any) {
+  const { teamId, projectId, progress } = data;
+
+  if (progress === undefined || progress === null) {
+    return NextResponse.json(
+      { error: 'Progress is required' },
+      { status: 400 }
+    );
+  }
+
+  // Validate progress range
+  const validProgress = Math.max(0, Math.min(100, progress));
+  
+  // Reuse existing handler with progress data
+  return handleUpdateProjectStatus(user, { teamId, projectId, progress: validProgress });
 }
 
 async function handleAddComment(user: any, data: any) {
