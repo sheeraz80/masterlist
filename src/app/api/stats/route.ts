@@ -3,10 +3,18 @@ import { prisma } from '@/lib/prisma';
 import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
 import { optionalAuth } from '@/lib/middleware/auth';
 import { AuthUser } from '@/types';
+import { statsCache } from '@/lib/cache';
+import { logError } from '@/lib/logger';
 
 export const GET = withRateLimit(
   optionalAuth(async (request: NextRequest, _user: AuthUser | null) => {
   try {
+    // Check cache first
+    const cachedStats = statsCache.getStats();
+    if (cachedStats) {
+      return NextResponse.json(cachedStats);
+    }
+
     // Get statistics from database
     const [
       totalProjects,
@@ -90,7 +98,7 @@ export const GET = withRateLimit(
       else if (score >= 8 && score <= 10) qualityDistribution['8-10']++;
     });
 
-    return NextResponse.json({
+    const statsData = {
       total_projects: totalProjects,
       total_users: totalUsers,
       average_quality: averageQuality,
@@ -101,10 +109,17 @@ export const GET = withRateLimit(
       total_revenue_potential: totalRevenuePotential,
       quality_distribution: qualityDistribution,
       recent_activity: recentActivity,
-    });
+    };
+
+    // Cache the results
+    statsCache.setStats(statsData);
+    
+    return NextResponse.json(statsData);
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error fetching stats:', error);
+    logError(error as Error, { 
+      context: 'stats_get',
+      userId: _user?.id
+    });
     return NextResponse.json(
       { error: 'Failed to fetch statistics' },
       { status: 500 }

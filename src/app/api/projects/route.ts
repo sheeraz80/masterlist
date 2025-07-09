@@ -4,6 +4,8 @@ import { paginationSchema, searchSchema, validateQuery, createProjectSchema, val
 import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
 import { optionalAuth, requireAuth } from '@/lib/middleware/auth';
 import { AuthUser, DatabaseProject, ProjectWithOwner, PaginatedResponse } from '@/types';
+import { logError, logDatabaseOperation } from '@/lib/logger';
+import { projectCache, statsCache } from '@/lib/cache';
 
 export const GET = withRateLimit(
   optionalAuth(async (request: NextRequest, _user: AuthUser | null) => {
@@ -30,6 +32,13 @@ export const GET = withRateLimit(
       
       const { limit, offset } = paginationResult.data!;
       const { search, category, sortBy, sortOrder } = searchResult.data!;
+
+      // Check cache first
+      const cacheParams = { limit, offset, search, category, sortBy, sortOrder };
+      const cachedResult = projectCache.getProjectList(cacheParams);
+      if (cachedResult) {
+        return NextResponse.json(cachedResult);
+      }
 
     // Build where clause
     const where: Record<string, unknown> = {};
@@ -152,10 +161,15 @@ export const GET = withRateLimit(
       }
     };
 
+    // Cache the results
+    projectCache.setProjectList(cacheParams, response);
+
     return NextResponse.json(response);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Error fetching projects:', error);
+      logError(error as Error, { 
+        context: 'projects_get',
+        userId: _user?.id
+      });
       return NextResponse.json(
         { error: 'Failed to fetch projects' },
         { status: 500 }
@@ -200,10 +214,16 @@ export const POST = withRateLimit(
         }
       });
 
+      // Invalidate related caches
+      projectCache.invalidateProject(project.id);
+      statsCache.invalidateStats();
+
       return NextResponse.json(project, { status: 201 });
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Error creating project:', error);
+      logError(error as Error, { 
+        context: 'projects_create',
+        userId: user.id
+      });
       return NextResponse.json(
         { error: 'Failed to create project' },
         { status: 500 }
