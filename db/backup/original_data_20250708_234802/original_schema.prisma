@@ -1,0 +1,217 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String          @id @default(cuid())
+  email         String          @unique
+  password      String
+  name          String
+  avatar        String?
+  role          String          @default("user")
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  activities    Activity[]
+  comments      Comment[]
+  exports       Export[]
+  notifications Notification[]
+  projects      Project[]
+  searches      SearchHistory[]
+  sessions      Session[]
+  teamMembers   TeamMember[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+model Project {
+  id                  String        @id
+  title               String
+  problem             String
+  solution            String
+  category            String
+  targetUsers         String
+  revenueModel        String
+  revenuePotential    String
+  developmentTime     String
+  competitionLevel    String
+  technicalComplexity Float
+  qualityScore        Float
+  keyFeatures         String
+  tags                String
+  status              String        @default("active")
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  ownerId             String?
+  activities          Activity[]
+  comments            Comment[]
+  owner               User?         @relation(fields: [ownerId], references: [id])
+  teamProjects        TeamProject[]
+
+  @@index([category])
+  @@index([status])
+  @@index([qualityScore])
+  @@index([ownerId])
+}
+
+model Team {
+  id          String        @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  activities  Activity[]
+  members     TeamMember[]
+  projects    TeamProject[]
+}
+
+model TeamMember {
+  id       String   @id @default(cuid())
+  role     String   @default("member")
+  joinedAt DateTime @default(now())
+  teamId   String
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team     Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@index([teamId])
+  @@index([userId])
+}
+
+model TeamProject {
+  id         String   @id @default(cuid())
+  assignedAt DateTime @default(now())
+  status     String   @default("assigned")
+  teamId     String
+  projectId  String
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  team       Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, projectId])
+  @@index([teamId])
+  @@index([projectId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  type      String   @default("comment")
+  rating    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  projectId String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([userId])
+}
+
+model Activity {
+  id          String   @id @default(cuid())
+  type        String
+  description String
+  metadata    String?
+  createdAt   DateTime @default(now())
+  userId      String?
+  projectId   String?
+  teamId      String?
+  team        Team?    @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  project     Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user        User?    @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([projectId])
+  @@index([teamId])
+  @@index([createdAt])
+}
+
+model Export {
+  id        String   @id @default(cuid())
+  type      String
+  format    String
+  filename  String
+  data      String
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([type])
+}
+
+model SearchHistory {
+  id        String   @id @default(cuid())
+  query     String
+  filters   String?
+  results   Int      @default(0)
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([query])
+}
+
+model SystemMetric {
+  id        String   @id @default(cuid())
+  metric    String
+  value     Float
+  unit      String
+  service   String?
+  timestamp DateTime @default(now())
+
+  @@index([metric])
+  @@index([service])
+  @@index([timestamp])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  type      String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  metadata  String?
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([read])
+}
+
+model AIInsight {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  type        String
+  confidence  Float
+  impact      String
+  projectIds  String
+  metadata    String?
+  generatedAt DateTime  @default(now())
+  expiresAt   DateTime?
+  category    String?
+
+  @@index([type])
+  @@index([impact])
+  @@index([category])
+  @@index([generatedAt])
+}
