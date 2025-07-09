@@ -228,6 +228,7 @@ model AIInsight {
   type         String   // opportunity, risk, trend, recommendation
   confidence   Float
   impact       String   // low, medium, high
+  category     String?  // category of the insight
   projectIds   String   // JSON array of project IDs
   metadata     String?  // JSON string for AI model details
   generatedAt  DateTime @default(now())
@@ -235,5 +236,6 @@ model AIInsight {
   
   @@index([type])
   @@index([impact])
+  @@index([category])
   @@index([generatedAt])
 }

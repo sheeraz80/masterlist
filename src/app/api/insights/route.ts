@@ -96,11 +96,11 @@ export async function GET(request: NextRequest) {
               description: insight.description,
               confidence: insight.confidence,
               impact: insight.impact,
-              category: insight.category,
+              category: insight.category || null,
+              projectIds: JSON.stringify(insight.projectIds || []),
               metadata: JSON.stringify({
                 dataPoints: insight.dataPoints,
-                actionItems: insight.actionItems,
-                projectIds: insight.projectIds
+                actionItems: insight.actionItems
               })
             }
           })
