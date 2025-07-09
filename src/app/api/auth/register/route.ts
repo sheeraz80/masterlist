@@ -1,25 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { register } from '@/lib/auth';
+import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
+import { registerSchema, validateRequest } from '@/lib/validations';
 
-export async function POST(request: NextRequest) {
+export const POST = withRateLimit(async (request: NextRequest) => {
   try {
-    const { email, password, name } = await request.json();
-
-    if (!email || !password || !name) {
+    // Validate request body
+    const { data, error } = await validateRequest(request, registerSchema);
+    
+    if (error) {
       return NextResponse.json(
-        { error: 'Email, password, and name are required' },
+        { error: `Invalid registration data: ${error}` },
         { status: 400 }
       );
     }
 
-    if (password.length < 6) {
-      return NextResponse.json(
-        { error: 'Password must be at least 6 characters' },
-        { status: 400 }
-      );
-    }
-
-    const result = await register(email, password, name);
+    const result = await register(data.email, data.password, data.name);
 
     const response = NextResponse.json({
       user: result.user,
@@ -35,10 +31,11 @@ export async function POST(request: NextRequest) {
     });
 
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Registration failed';
     return NextResponse.json(
-      { error: error.message || 'Registration failed' },
+      { error: errorMessage },
       { status: 400 }
     );
   }
-}
+}, rateLimits.auth);

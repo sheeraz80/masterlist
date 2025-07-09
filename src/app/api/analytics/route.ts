@@ -1,5 +1,8 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
+import { optionalAuth } from '@/lib/middleware/auth';
+import { AuthUser } from '@/types';
 
 interface AnalyticsData {
   overview: {
@@ -24,7 +27,7 @@ interface AnalyticsData {
   };
   revenue_analysis: {
     distribution: Record<string, number>;
-    top_projects: any[];
+    top_projects: Array<Record<string, unknown>>;
     by_category_avg: Record<string, number>;
     by_complexity_avg: Record<string, number>;
   };
@@ -42,9 +45,9 @@ interface AnalyticsData {
     by_category: Record<string, Record<string, number>>;
   };
   recommendations: {
-    high_potential_low_complexity: any[];
+    high_potential_low_complexity: Array<Record<string, unknown>>;
     undervalued_categories: string[];
-    optimal_projects: any[];
+    optimal_projects: Array<Record<string, unknown>>;
   };
   recent_trends: {
     new_projects_last_week: number;
@@ -53,7 +56,8 @@ interface AnalyticsData {
   };
 }
 
-export async function GET() {
+export const GET = withRateLimit(
+  optionalAuth(async (request: NextRequest, _user: AuthUser | null) => {
   try {
     // Fetch all necessary data from database
     const [
@@ -138,13 +142,16 @@ export async function GET() {
 
     return NextResponse.json(analytics);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error generating analytics:', error);
     return NextResponse.json(
       { error: 'Failed to generate analytics' },
       { status: 500 }
     );
   }
-}
+  }),
+  rateLimits.read
+);
 
 function generateAnalytics(
   projects: any[], 

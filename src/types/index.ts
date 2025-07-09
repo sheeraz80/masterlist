@@ -72,7 +72,7 @@ export interface Report {
   title: string;
   type: 'executive' | 'quality' | 'trends' | 'custom';
   format: 'json' | 'csv' | 'pdf' | 'markdown';
-  data: any;
+  data: Record<string, unknown>;
   generated_at: string;
 }
 
@@ -85,4 +85,107 @@ export interface Insight {
   impact: 'low' | 'medium' | 'high';
   projects: string[];
   generated_at: string;
+}
+
+// API Response Types
+export interface ApiResponse<T = unknown> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  message?: string;
+}
+
+export interface PaginatedResponse<T = unknown> {
+  data: T[];
+  pagination: {
+    total: number;
+    limit: number;
+    offset: number;
+    page: number;
+    total_pages: number;
+    has_more: boolean;
+    has_previous: boolean;
+  };
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  name: string;
+  role: 'admin' | 'user' | 'moderator';
+  avatar?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ProjectWithOwner extends Project {
+  owner: Pick<AuthUser, 'id' | 'name' | 'email' | 'avatar'>;
+  comments_count: number;
+  activities_count: number;
+  priority: 'low' | 'medium' | 'high' | 'critical';
+  progress: number;
+  status: 'active' | 'completed' | 'archived';
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DatabaseProject {
+  id: string;
+  title: string;
+  problem: string;
+  solution: string;
+  category: string;
+  targetUsers: string | null;
+  revenueModel: string | null;
+  revenuePotential: string; // JSON string
+  developmentTime: string | null;
+  competitionLevel: string | null;
+  technicalComplexity: number | null;
+  qualityScore: number | null;
+  keyFeatures: string; // JSON string
+  tags: string; // JSON string
+  priority: string;
+  progress: number;
+  status: string;
+  ownerId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  owner?: {
+    id: string;
+    name: string;
+    email: string;
+    avatar: string | null;
+  };
+  _count?: {
+    comments: number;
+    activities: number;
+  };
+}
+
+export interface SystemInfo {
+  status: 'healthy' | 'degraded' | 'unhealthy';
+  uptime: number;
+  memory: {
+    used: number;
+    total: number;
+    percentage: number;
+  };
+  cpu: {
+    usage: number;
+    cores: number;
+  };
+  disk: {
+    used: number;
+    total: number;
+    percentage: number;
+  };
+  database: {
+    connected: boolean;
+    responseTime: number;
+  };
+  services: Array<{
+    name: string;
+    status: 'healthy' | 'unhealthy';
+    responseTime?: number;
+  }>;
 }

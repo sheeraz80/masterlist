@@ -1,6 +1,8 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getCurrentUser } from '@/lib/auth';
+import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
+import { optionalAuth } from '@/lib/middleware/auth';
+import { AuthUser } from '@/types';
 
 interface SearchFilters {
   q?: string;
@@ -21,7 +23,8 @@ interface SearchFilters {
   offset?: number;
 }
 
-export async function GET(request: Request) {
+export const GET = withRateLimit(
+  optionalAuth(async (request: NextRequest, _user: AuthUser | null) => {
   try {
     const { searchParams } = new URL(request.url);
     
@@ -206,16 +209,18 @@ export async function GET(request: Request) {
     };
 
     // Track search if user is logged in
-    const user = await getCurrentUser();
-    if (user && filters.q) {
+    if (_user && filters.q) {
       await prisma.searchHistory.create({
         data: {
-          userId: user.id,
+          userId: _user.id,
           query: filters.q,
           filters: JSON.stringify(filters),
           results: filteredProjects.length
         }
-      }).catch(err => console.error('Failed to save search history:', err));
+      }).catch(err => {
+        // eslint-disable-next-line no-console
+        console.error('Failed to save search history:', err);
+      });
     }
 
     return NextResponse.json({
@@ -230,13 +235,16 @@ export async function GET(request: Request) {
       search_stats: searchStats,
     });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error searching projects:', error);
     return NextResponse.json(
       { error: 'Failed to search projects' },
       { status: 500 }
     );
   }
-}
+  }),
+  rateLimits.read
+);
 
 async function calculateCategoryDistribution(where: any): Promise<Record<string, number>> {
   const categories = await prisma.project.groupBy({

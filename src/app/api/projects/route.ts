@@ -1,18 +1,38 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { paginationSchema, searchSchema, validateQuery, createProjectSchema, validateRequest } from '@/lib/validations';
+import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
+import { optionalAuth, requireAuth } from '@/lib/middleware/auth';
+import { AuthUser, DatabaseProject, ProjectWithOwner, PaginatedResponse } from '@/types';
 
-export async function GET(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const limit = parseInt(searchParams.get('limit') || '10');
-    const offset = parseInt(searchParams.get('offset') || '0');
-    const category = searchParams.get('category');
-    const search = searchParams.get('search');
-    const sortBy = searchParams.get('sortBy') || 'createdAt';
-    const sortOrder = searchParams.get('sortOrder') || 'desc';
+export const GET = withRateLimit(
+  optionalAuth(async (request: NextRequest, _user: AuthUser | null) => {
+    try {
+      const { searchParams } = new URL(request.url);
+      
+      // Validate query parameters
+      const paginationResult = validateQuery(searchParams, paginationSchema);
+      const searchResult = validateQuery(searchParams, searchSchema);
+      
+      if (paginationResult.error) {
+        return NextResponse.json(
+          { error: `Invalid pagination: ${paginationResult.error}` },
+          { status: 400 }
+        );
+      }
+      
+      if (searchResult.error) {
+        return NextResponse.json(
+          { error: `Invalid search parameters: ${searchResult.error}` },
+          { status: 400 }
+        );
+      }
+      
+      const { limit, offset } = paginationResult.data!;
+      const { search, category, sortBy, sortOrder } = searchResult.data!;
 
     // Build where clause
-    const where: any = {};
+    const where: Record<string, unknown> = {};
     
     if (category && category !== 'all') {
       where.category = category;
@@ -26,14 +46,22 @@ export async function GET(request: Request) {
       ];
     }
 
-    // Build orderBy
-    const orderBy: any = {};
-    if (sortBy === 'quality') {
-      orderBy.qualityScore = sortOrder;
-    } else if (sortBy === 'complexity') {
-      orderBy.technicalComplexity = sortOrder;
-    } else {
-      orderBy[sortBy] = sortOrder;
+    // Build orderBy with validated sortBy field
+    const orderBy: Record<string, 'asc' | 'desc'> = {};
+    switch (sortBy) {
+      case 'quality':
+        orderBy.qualityScore = sortOrder;
+        break;
+      case 'complexity':
+        orderBy.technicalComplexity = sortOrder;
+        break;
+      case 'revenue':
+        // Sort by revenue requires custom logic since it's stored as JSON
+        // For now, fallback to createdAt
+        orderBy.createdAt = sortOrder;
+        break;
+      default:
+        orderBy[sortBy] = sortOrder;
     }
 
     // Get projects with pagination
@@ -59,40 +87,42 @@ export async function GET(request: Request) {
             }
           }
         }
-      }),
+      }) as Promise<DatabaseProject[]>,
       prisma.project.count({ where })
     ]);
 
     // Transform projects to match expected format
-    const transformedProjects = projects.map(project => ({
+    const transformedProjects: ProjectWithOwner[] = projects.map(project => ({
       id: project.id,
       title: project.title,
       problem: project.problem,
       solution: project.solution,
       category: project.category,
-      target_users: project.targetUsers,
-      revenue_model: project.revenueModel,
+      target_users: project.targetUsers || '',
+      revenue_model: project.revenueModel || '',
       revenue_potential: JSON.parse(project.revenuePotential || '{}'),
-      development_time: project.developmentTime,
-      competition_level: project.competitionLevel,
-      technical_complexity: project.technicalComplexity,
-      quality_score: project.qualityScore,
+      development_time: project.developmentTime || '',
+      competition_level: project.competitionLevel || '',
+      technical_complexity: project.technicalComplexity || 0,
+      quality_score: project.qualityScore || 0,
       key_features: JSON.parse(project.keyFeatures || '[]'),
       tags: JSON.parse(project.tags || '[]'),
-      status: project.status,
-      created_at: project.createdAt,
-      updated_at: project.updatedAt,
-      owner: project.owner,
-      comments_count: project._count.comments,
-      activities_count: project._count.activities
+      priority: project.priority as 'low' | 'medium' | 'high' | 'critical',
+      progress: project.progress,
+      status: project.status as 'active' | 'completed' | 'archived',
+      created_at: project.createdAt.toISOString(),
+      updated_at: project.updatedAt.toISOString(),
+      owner: project.owner || { id: '', name: '', email: '', avatar: null },
+      comments_count: project._count?.comments || 0,
+      activities_count: project._count?.activities || 0
     }));
 
     // Calculate pagination info
     const page = Math.floor(offset / limit) + 1;
     const totalPages = Math.ceil(total / limit);
     
-    return NextResponse.json({
-      projects: transformedProjects,
+    const response: PaginatedResponse<ProjectWithOwner> = {
+      data: transformedProjects,
       pagination: {
         total,
         limit,
@@ -102,53 +132,65 @@ export async function GET(request: Request) {
         has_more: page < totalPages,
         has_previous: page > 1
       }
-    });
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch projects' },
-      { status: 500 }
-    );
-  }
-}
+    };
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    
-    // TODO: Add authentication check here
-    // const user = await getCurrentUser(request);
-    // if (!user) {
-    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    // }
+    return NextResponse.json(response);
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error fetching projects:', error);
+      return NextResponse.json(
+        { error: 'Failed to fetch projects' },
+        { status: 500 }
+      );
+    }
+  }),
+  rateLimits.read
+);
 
-    const project = await prisma.project.create({
-      data: {
-        id: body.id || undefined, // Let Prisma generate if not provided
-        title: body.title,
-        problem: body.problem,
-        solution: body.solution,
-        category: body.category,
-        targetUsers: body.target_users,
-        revenueModel: body.revenue_model,
-        revenuePotential: JSON.stringify(body.revenue_potential || {}),
-        developmentTime: body.development_time,
-        competitionLevel: body.competition_level,
-        technicalComplexity: body.technical_complexity,
-        qualityScore: body.quality_score,
-        keyFeatures: JSON.stringify(body.key_features || []),
-        tags: JSON.stringify(body.tags || []),
-        status: body.status || 'active',
-        // ownerId: user.id
+export const POST = withRateLimit(
+  requireAuth(async (request: NextRequest, user: AuthUser) => {
+    try {
+      // Validate request body
+      const { data, error } = await validateRequest(request, createProjectSchema);
+      
+      if (error) {
+        return NextResponse.json(
+          { error: `Invalid project data: ${error}` },
+          { status: 400 }
+        );
       }
-    });
 
-    return NextResponse.json(project, { status: 201 });
-  } catch (error) {
-    console.error('Error creating project:', error);
-    return NextResponse.json(
-      { error: 'Failed to create project' },
-      { status: 500 }
-    );
-  }
-}
+      const project = await prisma.project.create({
+        data: {
+          title: data.title,
+          problem: data.problem,
+          solution: data.solution,
+          category: data.category,
+          targetUsers: data.targetUsers,
+          revenueModel: data.revenueModel,
+          revenuePotential: JSON.stringify(data.revenuePotential || {}),
+          developmentTime: data.developmentTime,
+          competitionLevel: data.competitionLevel,
+          technicalComplexity: data.technicalComplexity,
+          qualityScore: data.qualityScore,
+          keyFeatures: JSON.stringify(data.keyFeatures || []),
+          tags: JSON.stringify(data.tags || []),
+          priority: data.priority,
+          progress: data.progress,
+          status: 'active',
+          ownerId: user.id
+        }
+      });
+
+      return NextResponse.json(project, { status: 201 });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error creating project:', error);
+      return NextResponse.json(
+        { error: 'Failed to create project' },
+        { status: 500 }
+      );
+    }
+  }),
+  rateLimits.write
+);
