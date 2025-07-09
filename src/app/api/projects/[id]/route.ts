@@ -1,14 +1,24 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
+import { optionalAuth, requireAuth } from '@/lib/middleware/auth';
+import { updateProjectSchema, validateRequest } from '@/lib/validations';
+import { AuthUser } from '@/types';
 
-export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const { id } = await params;
+export const GET = withRateLimit(
+  optionalAuth(async (request: NextRequest, _user: AuthUser | null) => {
+    try {
+      const url = new URL(request.url);
+      const id = url.pathname.split('/').pop();
 
-    const project = await prisma.project.findUnique({
+      if (!id) {
+        return NextResponse.json(
+          { error: 'Project ID is required' },
+          { status: 400 }
+        );
+      }
+
+      const project = await prisma.project.findUnique({
       where: { id },
       include: {
         owner: {
@@ -98,39 +108,72 @@ export async function GET(
       { status: 500 }
     );
   }
-}
+  }),
+  rateLimits.read
+);
 
-export async function PUT(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const { id } = await params;
-    const body = await request.json();
+export const PUT = withRateLimit(
+  requireAuth(async (request: NextRequest, user: AuthUser) => {
+    try {
+      const url = new URL(request.url);
+      const id = url.pathname.split('/').pop();
 
-    // TODO: Add authentication check here
-    // const user = await getCurrentUser(request);
-    // if (!user) {
-    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    // }
+      if (!id) {
+        return NextResponse.json(
+          { error: 'Project ID is required' },
+          { status: 400 }
+        );
+      }
+
+      // Validate request body
+      const { data, error } = await validateRequest(request, updateProjectSchema);
+      
+      if (error) {
+        return NextResponse.json(
+          { error: `Invalid project data: ${error}` },
+          { status: 400 }
+        );
+      }
+
+      // Check if project exists and user has permission
+      const existingProject = await prisma.project.findUnique({
+        where: { id },
+        select: { id: true, ownerId: true, title: true }
+      });
+
+      if (!existingProject) {
+        return NextResponse.json(
+          { error: 'Project not found' },
+          { status: 404 }
+        );
+      }
+
+      // Check ownership or admin role
+      if (existingProject.ownerId !== user.id && user.role !== 'admin') {
+        return NextResponse.json(
+          { error: 'Insufficient permissions' },
+          { status: 403 }
+        );
+      }
 
     const project = await prisma.project.update({
       where: { id },
       data: {
-        title: body.title,
-        problem: body.problem,
-        solution: body.solution,
-        category: body.category,
-        targetUsers: body.target_users,
-        revenueModel: body.revenue_model,
-        revenuePotential: JSON.stringify(body.revenue_potential || {}),
-        developmentTime: body.development_time,
-        competitionLevel: body.competition_level,
-        technicalComplexity: body.technical_complexity,
-        qualityScore: body.quality_score,
-        keyFeatures: JSON.stringify(body.key_features || []),
-        tags: JSON.stringify(body.tags || []),
-        status: body.status
+        title: data.title,
+        problem: data.problem,
+        solution: data.solution,
+        category: data.category,
+        targetUsers: data.targetUsers,
+        revenueModel: data.revenueModel,
+        revenuePotential: JSON.stringify(data.revenuePotential || {}),
+        developmentTime: data.developmentTime,
+        competitionLevel: data.competitionLevel,
+        technicalComplexity: data.technicalComplexity,
+        qualityScore: data.qualityScore,
+        keyFeatures: JSON.stringify(data.keyFeatures || []),
+        tags: JSON.stringify(data.tags || []),
+        priority: data.priority,
+        progress: data.progress
       }
     });
 
@@ -140,7 +183,7 @@ export async function PUT(
         type: 'project_updated',
         description: `Updated project: ${project.title}`,
         projectId: project.id,
-        // userId: user.id
+        userId: user.id
       }
     });
 
@@ -152,20 +195,53 @@ export async function PUT(
       { status: 500 }
     );
   }
-}
+  }),
+  rateLimits.write
+);
 
-export async function DELETE(
-  request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  try {
-    const { id } = await params;
+export const DELETE = withRateLimit(
+  requireAuth(async (request: NextRequest, user: AuthUser) => {
+    try {
+      const url = new URL(request.url);
+      const id = url.pathname.split('/').pop();
 
-    // TODO: Add authentication check here
-    // const user = await getCurrentUser(request);
-    // if (!user) {
-    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    // }
+      if (!id) {
+        return NextResponse.json(
+          { error: 'Project ID is required' },
+          { status: 400 }
+        );
+      }
+
+      // Check if project exists and user has permission
+      const existingProject = await prisma.project.findUnique({
+        where: { id },
+        select: { id: true, ownerId: true, title: true }
+      });
+
+      if (!existingProject) {
+        return NextResponse.json(
+          { error: 'Project not found' },
+          { status: 404 }
+        );
+      }
+
+      // Check ownership or admin role
+      if (existingProject.ownerId !== user.id && user.role !== 'admin') {
+        return NextResponse.json(
+          { error: 'Insufficient permissions' },
+          { status: 403 }
+        );
+      }
+
+    // Log activity before deletion
+    await prisma.activity.create({
+      data: {
+        type: 'project_deleted',
+        description: `Deleted project: ${existingProject.title}`,
+        projectId: existingProject.id,
+        userId: user.id
+      }
+    });
 
     await prisma.project.delete({
       where: { id }
@@ -179,4 +255,6 @@ export async function DELETE(
       { status: 500 }
     );
   }
-}
+  }),
+  rateLimits.write
+);
