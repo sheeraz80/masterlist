@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -43,7 +43,7 @@ const PRIORITY_COLORS = {
   critical: '#dc2626'
 };
 
-async function fetchCollaborationData(teamId: string = 'default') {
+async function fetchCollaborationData(teamId: string) {
   const response = await fetch(`/api/collaborate?team_id=${teamId}&include_activity=true`);
   if (!response.ok) throw new Error('Failed to fetch collaboration data');
   return response.json();
@@ -71,6 +71,32 @@ async function updateProjectStatus(data: { teamId: string; projectId: string; st
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.error || 'Failed to update project status');
+  }
+  return response.json();
+}
+
+async function updateProjectPriority(data: { teamId: string; projectId: string; priority: string }) {
+  const response = await fetch('/api/collaborate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'update_project_priority', ...data })
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to update project priority');
+  }
+  return response.json();
+}
+
+async function updateProjectProgress(data: { teamId: string; projectId: string; progress: number }) {
+  const response = await fetch('/api/collaborate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'update_project_progress', ...data })
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to update project progress');
   }
   return response.json();
 }
@@ -134,13 +160,13 @@ export default function CollaboratePage() {
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteRole, setInviteRole] = useState('member');
   const [typingUsers, setTypingUsers] = useState<Record<string, Set<string>>>({});
-  const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const queryClient = useQueryClient();
 
   const { data: collaborationData, isLoading, error } = useQuery({
     queryKey: ['collaboration', selectedTeam],
     queryFn: () => fetchCollaborationData(selectedTeam),
-    enabled: !!user,
+    enabled: !!user && !!selectedTeam,
   });
 
   // Set the first team as selected when data loads
@@ -189,8 +215,8 @@ export default function CollaboratePage() {
     return () => {
       unsubscribe();
       // Clear typing timeout on unmount
-      if (typingTimeout) {
-        clearTimeout(typingTimeout);
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
       }
     };
   }, [selectedTeam, queryClient, subscribeToTeamUpdates, user]);
@@ -251,6 +277,32 @@ export default function CollaboratePage() {
     },
     onError: (error: any) => {
       toast.error(error.message || 'Failed to update status');
+    }
+  });
+
+  const updatePriorityMutation = useMutation({
+    mutationFn: updateProjectPriority,
+    onSuccess: (data, variables) => {
+      toast.success('Priority updated!');
+      queryClient.invalidateQueries({ queryKey: ['collaboration', selectedTeam] });
+      // Emit realtime event for updates
+      emitProjectStatusChange(variables.projectId, variables.teamId, variables.priority);
+    },
+    onError: (error: any) => {
+      toast.error(error.message || 'Failed to update priority');
+    }
+  });
+
+  const updateProgressMutation = useMutation({
+    mutationFn: updateProjectProgress,
+    onSuccess: (data, variables) => {
+      toast.success('Progress updated!');
+      queryClient.invalidateQueries({ queryKey: ['collaboration', selectedTeam] });
+      // Emit realtime event for updates
+      emitProjectStatusChange(variables.projectId, variables.teamId, variables.progress.toString());
+    },
+    onError: (error: any) => {
+      toast.error(error.message || 'Failed to update progress');
     }
   });
 
@@ -492,13 +544,13 @@ export default function CollaboratePage() {
 
   const handlePriorityUpdate = (projectId: string, newPriority: string) => {
     if (!selectedTeam) return;
-    updateStatusMutation.mutate({ teamId: selectedTeam, projectId, priority: newPriority });
+    updatePriorityMutation.mutate({ teamId: selectedTeam, projectId, priority: newPriority });
   };
 
   const handleProgressUpdate = (projectId: string, newProgress: number) => {
     if (!selectedTeam || isNaN(newProgress)) return;
     const progress = Math.max(0, Math.min(100, newProgress));
-    updateStatusMutation.mutate({ teamId: selectedTeam, projectId, progress });
+    updateProgressMutation.mutate({ teamId: selectedTeam, projectId, progress });
   };
 
   const handleAddComment = () => {
@@ -1007,8 +1059,8 @@ export default function CollaboratePage() {
                       // Handle typing indicator
                       if (e.target.value && selectedProject) {
                         // Clear existing timeout
-                        if (typingTimeout) {
-                          clearTimeout(typingTimeout);
+                        if (typingTimeoutRef.current) {
+                          clearTimeout(typingTimeoutRef.current);
                         }
                         
                         // Emit typing start (simulated via activity)
@@ -1020,15 +1072,13 @@ export default function CollaboratePage() {
                         }, selectedTeam);
                         
                         // Set timeout to stop typing
-                        const timeout = setTimeout(() => {
+                        typingTimeoutRef.current = setTimeout(() => {
                           emitActivity({
                             type: 'typing_stop',
                             projectId: selectedProject,
                             userId: user?.id
                           }, selectedTeam);
                         }, 2000);
-                        
-                        setTypingTimeout(timeout);
                       }
                     }}
                     className="min-h-[100px]"
