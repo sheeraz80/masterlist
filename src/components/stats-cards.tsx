@@ -21,8 +21,6 @@ export function StatsCards({ stats }: StatsCardsProps) {
       description: 'Active projects in portfolio',
       color: 'text-blue-600',
       bgColor: 'bg-blue-100',
-      trend: '+12%',
-      trendUp: true,
     },
     {
       title: 'Average Quality',
@@ -31,8 +29,6 @@ export function StatsCards({ stats }: StatsCardsProps) {
       description: 'Quality score average',
       color: 'text-green-600',
       bgColor: 'bg-green-100',
-      trend: '+5%',
-      trendUp: true,
     },
     {
       title: 'Revenue Potential',
@@ -41,8 +37,6 @@ export function StatsCards({ stats }: StatsCardsProps) {
       description: 'Total revenue potential',
       color: 'text-purple-600',
       bgColor: 'bg-purple-100',
-      trend: '+18%',
-      trendUp: true,
     },
     {
       title: 'Unique Tags',
@@ -51,8 +45,6 @@ export function StatsCards({ stats }: StatsCardsProps) {
       description: 'Different tags used',
       color: 'text-orange-600',
       bgColor: 'bg-orange-100',
-      trend: '+8%',
-      trendUp: true,
     },
   ];
 
@@ -78,12 +70,6 @@ export function StatsCards({ stats }: StatsCardsProps) {
               <CardContent>
                 <div className="flex items-baseline justify-between">
                   <div className="text-2xl font-bold">{card.value}</div>
-                  {card.trend && (
-                    <div className={`flex items-center text-sm ${card.trendUp ? 'text-green-600' : 'text-red-600'}`}>
-                      <TrendingUp className="h-4 w-4 mr-1" />
-                      {card.trend}
-                    </div>
-                  )}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">{card.description}</p>
               </CardContent>

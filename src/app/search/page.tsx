@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useState, useCallback, useMemo } from 'react';
+import { getStats } from '@/lib/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -71,7 +72,7 @@ export default function SearchPage() {
     min_quality: 0,
     max_quality: 10,
     min_revenue: 0,
-    max_revenue: 50000,
+    max_revenue: 20000,
     min_complexity: 1,
     max_complexity: 10,
     competition_level: 'all',
@@ -120,19 +121,16 @@ export default function SearchPage() {
     setCurrentPage(0);
   }, []);
 
-  const categories = useMemo(() => [
-    'all',
-    'Figma Plugin',
-    'Chrome Browser Extensions',
-    'VSCode Extension',
-    'AI-Powered Browser Tools',
-    'Notion Templates & Widgets',
-    'Obsidian Plugin',
-    'Crypto/Blockchain Browser Tools',
-    'AI-Powered Productivity Automation Tools',
-    'Zapier AI Automation Apps',
-    'Jasper Canvas & AI Studio'
-  ], []);
+  // Get categories from stats API
+  const { data: stats } = useQuery({
+    queryKey: ['stats'],
+    queryFn: getStats,
+  });
+
+  const categories = useMemo(() => {
+    if (!stats?.categories) return ['all'];
+    return ['all', ...Object.keys(stats.categories)];
+  }, [stats]);
 
   return (
     <div className="container mx-auto py-8">

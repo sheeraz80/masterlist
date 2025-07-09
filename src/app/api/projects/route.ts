@@ -52,10 +52,15 @@ export async function GET(request: Request) {
 
     return NextResponse.json({
       projects: paginatedProjects,
-      total,
-      limit,
-      offset,
-      has_more: offset + limit < total,
+      pagination: {
+        total,
+        limit,
+        offset,
+        page: Math.floor(offset / limit) + 1,
+        total_pages: Math.ceil(total / limit),
+        has_more: offset + limit < total,
+        has_previous: offset > 0,
+      },
     });
   } catch (error) {
     console.error('Error fetching projects:', error);

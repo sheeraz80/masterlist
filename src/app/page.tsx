@@ -23,9 +23,9 @@ export default function HomePage() {
     queryFn: getStats,
   });
 
-  const { data: projects, isLoading: projectsLoading } = useQuery({
+  const { data: projectsData, isLoading: projectsLoading } = useQuery({
     queryKey: ['projects'],
-    queryFn: getProjects,
+    queryFn: () => getProjects({ limit: 10 }),
   });
 
   if (statsLoading || projectsLoading) {
@@ -89,7 +89,7 @@ export default function HomePage() {
         </div>
 
         {/* Quick Actions */}
-        <QuickActions projects={projects || []} />
+        <QuickActions projects={projectsData?.projects || []} />
 
         {/* Stats Cards */}
         <div>
@@ -143,7 +143,7 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <RecentProjects projects={projects?.slice(0, 10)} />
+          <RecentProjects projects={projectsData?.projects || []} />
         </motion.div>
       </motion.div>
     </div>

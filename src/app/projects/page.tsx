@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getProjects, getStats } from '@/lib/api';
 import { ProjectCard } from '@/components/project-card';
+import { Pagination } from '@/components/pagination';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -37,10 +38,17 @@ export default function ProjectsPage() {
   const [qualityRange, setQualityRange] = useState([0, 10]);
   const [complexityRange, setComplexityRange] = useState([1, 10]);
   const [showFilters, setShowFilters] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
 
-  const { data: projects, isLoading } = useQuery({
-    queryKey: ['projects'],
-    queryFn: getProjects,
+  const { data: projectsData, isLoading } = useQuery({
+    queryKey: ['projects', currentPage, itemsPerPage, search, selectedCategory],
+    queryFn: () => getProjects({
+      page: currentPage,
+      limit: itemsPerPage,
+      search: search || undefined,
+      category: selectedCategory !== 'all' ? selectedCategory : undefined,
+    }),
   });
 
   const { data: stats } = useQuery({
@@ -48,14 +56,20 @@ export default function ProjectsPage() {
     queryFn: getStats,
   });
 
-  // Filter projects based on all criteria
-  const filteredProjects = projects?.filter((project) => {
-    const matchesSearch = project.title.toLowerCase().includes(search.toLowerCase()) ||
-      project.problem.toLowerCase().includes(search.toLowerCase()) ||
-      project.solution.toLowerCase().includes(search.toLowerCase());
-    
-    const matchesCategory = selectedCategory === 'all' || project.category === selectedCategory;
-    
+  // Get projects and pagination info
+  const projects = projectsData?.projects || [];
+  const pagination = projectsData?.pagination || {
+    total: 0,
+    page: 1,
+    total_pages: 1,
+    has_more: false,
+    has_previous: false,
+    limit: 12,
+    offset: 0,
+  };
+
+  // Client-side filter for tags and quality/complexity ranges
+  const filteredProjects = projects.filter((project) => {
     const matchesTags = selectedTags.length === 0 || 
       selectedTags.some(tag => project.tags?.includes(tag));
     
@@ -65,11 +79,11 @@ export default function ProjectsPage() {
     const matchesComplexity = project.technical_complexity >= complexityRange[0] && 
       project.technical_complexity <= complexityRange[1];
 
-    return matchesSearch && matchesCategory && matchesTags && matchesQuality && matchesComplexity;
+    return matchesTags && matchesQuality && matchesComplexity;
   });
 
   // Sort projects
-  const sortedProjects = [...(filteredProjects || [])].sort((a, b) => {
+  const sortedProjects = [...filteredProjects].sort((a, b) => {
     const order = sortOrder === 'desc' ? -1 : 1;
     switch (sortBy) {
       case 'quality_score':
@@ -121,7 +135,7 @@ export default function ProjectsPage() {
               Project Portfolio
             </h1>
             <p className="text-muted-foreground mt-2">
-              Discover and explore {projects?.length || 0} innovative AI and software projects
+              Discover and explore {pagination.total} innovative AI and software projects
             </p>
           </div>
 
@@ -323,7 +337,7 @@ export default function ProjectsPage() {
         {/* Results Count */}
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            Showing {sortedProjects.length} of {projects?.length || 0} projects
+            Showing {sortedProjects.length} of {pagination.total} projects
           </p>
         </div>
 
@@ -360,6 +374,18 @@ export default function ProjectsPage() {
               No projects found matching your criteria. Try adjusting your filters.
             </p>
           </Card>
+        )}
+
+        {/* Pagination */}
+        {pagination.total_pages > 1 && (
+          <Pagination
+            currentPage={pagination.page}
+            totalPages={pagination.total_pages}
+            totalItems={pagination.total}
+            itemsPerPage={itemsPerPage}
+            onPageChange={setCurrentPage}
+            onItemsPerPageChange={setItemsPerPage}
+          />
         )}
       </motion.div>
     </div>
