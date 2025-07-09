@@ -70,11 +70,13 @@ export function SystemStatus() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
+      case 'healthy':
       case 'online':
       case 'operational':
         return 'bg-green-500';
       case 'degraded':
         return 'bg-yellow-500';
+      case 'error':
       case 'offline':
         return 'bg-red-500';
       default:
@@ -84,6 +86,7 @@ export function SystemStatus() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
+      case 'healthy':
       case 'online':
       case 'operational':
         return <CheckCircle className="h-4 w-4 text-green-500" />;
@@ -92,6 +95,15 @@ export function SystemStatus() {
       default:
         return <Activity className="h-4 w-4" />;
     }
+  };
+
+  const formatUptime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    if (hours > 0) {
+      return `${hours}h ${minutes}m`;
+    }
+    return `${minutes}m`;
   };
 
   return (
@@ -109,13 +121,13 @@ export function SystemStatus() {
               <WifiOff className="h-4 w-4 text-red-500" />
             )}
             <Badge variant="outline" className={`${
-              systemMetrics.status === 'operational' ? 'text-green-600 border-green-600' :
+              systemMetrics.status === 'healthy' ? 'text-green-600 border-green-600' :
               systemMetrics.status === 'degraded' ? 'text-yellow-600 border-yellow-600' :
               'text-red-600 border-red-600'
             }`}>
               {getStatusIcon(systemMetrics.status)}
               <span className="ml-1">
-                {systemMetrics.status === 'operational' ? 'All Systems Operational' :
+                {systemMetrics.status === 'healthy' ? 'All Systems Operational' :
                  systemMetrics.status === 'degraded' ? 'Degraded Performance' :
                  'Service Disruption'}
               </span>
@@ -133,9 +145,9 @@ export function SystemStatus() {
           >
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Zap className="h-4 w-4" />
-              Response Time
+              DB Response
             </div>
-            <div className="text-2xl font-bold">{systemMetrics.responseTime}</div>
+            <div className="text-2xl font-bold">{systemMetrics.database?.responseTime || 0}ms</div>
           </motion.div>
           
           <motion.div
@@ -148,7 +160,7 @@ export function SystemStatus() {
               <Clock className="h-4 w-4" />
               Uptime
             </div>
-            <div className="text-2xl font-bold">{systemMetrics.uptime}</div>
+            <div className="text-2xl font-bold">{formatUptime(systemMetrics.uptime || 0)}</div>
           </motion.div>
           
           <motion.div
@@ -159,9 +171,15 @@ export function SystemStatus() {
           >
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Database className="h-4 w-4" />
-              Projects
+              Database
             </div>
-            <div className="text-2xl font-bold">{systemMetrics.projectsProcessed}</div>
+            <div className="text-2xl font-bold">
+              {systemMetrics.database?.connected ? (
+                <span className="text-green-600">Connected</span>
+              ) : (
+                <span className="text-red-600">Offline</span>
+              )}
+            </div>
           </motion.div>
           
           <motion.div
@@ -174,7 +192,7 @@ export function SystemStatus() {
               <Cpu className="h-4 w-4" />
               CPU Usage
             </div>
-            <div className="text-2xl font-bold">{systemMetrics.metrics?.cpu || 0}%</div>
+            <div className="text-2xl font-bold">{Math.round(systemMetrics.cpu?.usage || 0)}%</div>
           </motion.div>
         </div>
 
@@ -190,7 +208,7 @@ export function SystemStatus() {
               <HardDrive className="h-4 w-4" />
               Memory
             </div>
-            <div className="text-xl font-semibold">{systemMetrics.metrics?.memory || 0}%</div>
+            <div className="text-xl font-semibold">{Math.round(systemMetrics.memory?.percentage || 0)}%</div>
           </motion.div>
           
           <motion.div
@@ -201,9 +219,9 @@ export function SystemStatus() {
           >
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Users className="h-4 w-4" />
-              Active Users
+              CPU Cores
             </div>
-            <div className="text-xl font-semibold">{systemMetrics.metrics?.activeUsers || 0}</div>
+            <div className="text-xl font-semibold">{systemMetrics.cpu?.cores || 0}</div>
           </motion.div>
         </div>
 
@@ -211,27 +229,52 @@ export function SystemStatus() {
         <div className="pt-4 border-t">
           <h4 className="text-sm font-medium mb-3">Service Health</h4>
           <div className="space-y-2">
-            {systemMetrics.services.map((service, index) => (
-              <motion.div
-                key={service.name}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.05 }}
-                className="flex items-center justify-between p-2 rounded-lg bg-muted/50"
-              >
-                <div className="flex items-center gap-2">
-                  <div className={`h-2 w-2 rounded-full ${getStatusColor(service.status)} animate-pulse`} />
-                  <span className="text-sm font-medium">{service.name}</span>
-                </div>
-                <span className="text-xs text-muted-foreground">{service.latency}</span>
-              </motion.div>
-            ))}
+            {/* Database Service */}
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center justify-between p-2 rounded-lg bg-muted/50"
+            >
+              <div className="flex items-center gap-2">
+                <div className={`h-2 w-2 rounded-full ${systemMetrics.database?.connected ? 'bg-green-500' : 'bg-red-500'} animate-pulse`} />
+                <span className="text-sm font-medium">PostgreSQL Database</span>
+              </div>
+              <span className="text-xs text-muted-foreground">{systemMetrics.database?.responseTime || 0}ms</span>
+            </motion.div>
+
+            {/* API Service */}
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.05 }}
+              className="flex items-center justify-between p-2 rounded-lg bg-muted/50"
+            >
+              <div className="flex items-center gap-2">
+                <div className={`h-2 w-2 rounded-full ${systemMetrics.status === 'healthy' ? 'bg-green-500' : 'bg-yellow-500'} animate-pulse`} />
+                <span className="text-sm font-medium">API Server</span>
+              </div>
+              <span className="text-xs text-muted-foreground">Online</span>
+            </motion.div>
+
+            {/* Real-time Service */}
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+              className="flex items-center justify-between p-2 rounded-lg bg-muted/50"
+            >
+              <div className="flex items-center gap-2">
+                <div className={`h-2 w-2 rounded-full ${connected ? 'bg-green-500' : 'bg-red-500'} animate-pulse`} />
+                <span className="text-sm font-medium">Real-time Updates</span>
+              </div>
+              <span className="text-xs text-muted-foreground">{connected ? 'Connected' : 'Disconnected'}</span>
+            </motion.div>
           </div>
         </div>
 
         {/* Last Update */}
         <div className="pt-2 text-xs text-muted-foreground text-center">
-          Last updated: {new Date(systemMetrics.lastUpdate).toLocaleTimeString()}
+          Last updated: {new Date(systemMetrics.timestamp || new Date()).toLocaleTimeString()}
         </div>
       </CardContent>
     </Card>

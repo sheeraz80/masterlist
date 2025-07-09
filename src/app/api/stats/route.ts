@@ -1,37 +1,38 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-
-interface Project {
-  id: string;
-  title: string;
-  category: string;
-  quality_score: number;
-  technical_complexity: number;
-  revenue_potential: {
-    conservative: number;
-    realistic: number;
-    optimistic: number;
-  };
-  tags?: string[];
-}
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
-    // Read the masterlist data
-    const masterlistPath = path.join(process.cwd(), 'data', 'projects.json');
-    
-    let projects: Project[] = [];
-    
-    if (fs.existsSync(masterlistPath)) {
-      const data = fs.readFileSync(masterlistPath, 'utf-8');
-      projects = JSON.parse(data);
-    }
+    // Get statistics from database
+    const [
+      totalProjects,
+      totalUsers,
+      projects,
+      recentActivity
+    ] = await Promise.all([
+      prisma.project.count(),
+      prisma.user.count(),
+      prisma.project.findMany({
+        select: {
+          category: true,
+          qualityScore: true,
+          tags: true,
+          revenuePotential: true,
+          technicalComplexity: true
+        }
+      }),
+      prisma.activity.count({
+        where: {
+          createdAt: {
+            gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Last 7 days
+          }
+        }
+      })
+    ]);
 
-    // Calculate statistics
-    const totalProjects = projects.length;
+    // Calculate average quality
     const averageQuality = projects.length > 0 
-      ? projects.reduce((sum, p) => sum + (p.quality_score || 0), 0) / projects.length 
+      ? projects.reduce((sum, p) => sum + (p.qualityScore || 0), 0) / projects.length 
       : 0;
 
     // Group by categories
@@ -43,16 +44,28 @@ export async function GET() {
       categories[category] = (categories[category] || 0) + 1;
       
       // Count tags
-      if (project.tags && Array.isArray(project.tags)) {
-        project.tags.forEach(tag => {
-          tags[tag] = (tags[tag] || 0) + 1;
-        });
+      if (project.tags) {
+        try {
+          const projectTags = JSON.parse(project.tags);
+          if (Array.isArray(projectTags)) {
+            projectTags.forEach(tag => {
+              tags[tag] = (tags[tag] || 0) + 1;
+            });
+          }
+        } catch (e) {
+          // Invalid JSON, skip
+        }
       }
     });
 
     // Calculate total revenue potential
     const totalRevenuePotential = projects.reduce((sum, project) => {
-      return sum + (project.revenue_potential?.realistic || 0);
+      try {
+        const revenue = JSON.parse(project.revenuePotential || '{}');
+        return sum + (revenue.realistic || 0);
+      } catch {
+        return sum;
+      }
     }, 0);
 
     // Quality distribution
@@ -65,7 +78,7 @@ export async function GET() {
     };
 
     projects.forEach(project => {
-      const score = project.quality_score || 0;
+      const score = project.qualityScore || 0;
       if (score >= 0 && score < 2) qualityDistribution['0-2']++;
       else if (score >= 2 && score < 4) qualityDistribution['2-4']++;
       else if (score >= 4 && score < 6) qualityDistribution['4-6']++;
@@ -75,6 +88,7 @@ export async function GET() {
 
     return NextResponse.json({
       total_projects: totalProjects,
+      total_users: totalUsers,
       average_quality: averageQuality,
       categories,
       unique_categories: Object.keys(categories).length,
@@ -82,6 +96,7 @@ export async function GET() {
       unique_tags: Object.keys(tags).length,
       total_revenue_potential: totalRevenuePotential,
       quality_distribution: qualityDistribution,
+      recent_activity: recentActivity,
     });
   } catch (error) {
     console.error('Error fetching stats:', error);

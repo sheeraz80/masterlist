@@ -41,7 +41,7 @@ export default function ProjectsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
 
-  const { data: projectsData, isLoading } = useQuery({
+  const { data: projectsData, isLoading, error } = useQuery({
     queryKey: ['projects', currentPage, itemsPerPage, search, selectedCategory],
     queryFn: () => getProjects({
       page: currentPage,

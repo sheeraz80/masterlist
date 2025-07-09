@@ -126,3 +126,18 @@ secrets/
 *.pem
 *.crt
 /generated/prisma
+
+# SQLite files (we only use PostgreSQL now)
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+prisma/dev.db*
+prisma/*.db*
+
+# Database backups (except seed data)
+db/**
+!db/seed-data/
+!db/seed-data/**
