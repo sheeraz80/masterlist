@@ -108,9 +108,17 @@ export function SystemStatus() {
             ) : (
               <WifiOff className="h-4 w-4 text-red-500" />
             )}
-            <Badge variant="outline" className="text-green-600 border-green-600">
+            <Badge variant="outline" className={`${
+              systemMetrics.status === 'operational' ? 'text-green-600 border-green-600' :
+              systemMetrics.status === 'degraded' ? 'text-yellow-600 border-yellow-600' :
+              'text-red-600 border-red-600'
+            }`}>
               {getStatusIcon(systemMetrics.status)}
-              <span className="ml-1">All Systems Operational</span>
+              <span className="ml-1">
+                {systemMetrics.status === 'operational' ? 'All Systems Operational' :
+                 systemMetrics.status === 'degraded' ? 'Degraded Performance' :
+                 'Service Disruption'}
+              </span>
             </Badge>
           </div>
         </CardTitle>

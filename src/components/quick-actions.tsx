@@ -30,7 +30,7 @@ export function QuickActions({ projects }: QuickActionsProps) {
 
   // High revenue AI projects
   const highRevenueAI = projects
-    .filter(p => p.tags?.includes('AI') && p.revenue_potential.realistic >= 30000)
+    .filter(p => p.tags?.includes('AI') && p.revenue_potential.realistic >= 3000)
     .sort((a, b) => b.revenue_potential.realistic - a.revenue_potential.realistic)
     .slice(0, 5);
 
@@ -47,7 +47,7 @@ export function QuickActions({ projects }: QuickActionsProps) {
       count: highRevenueAI.length,
       value: `$${formatNumber(highRevenueAI.reduce((sum, p) => sum + p.revenue_potential.realistic, 0))}`,
       label: 'Total Revenue Potential',
-      link: '/search?tags=AI&min_revenue=30000',
+      link: '/search?tags=AI&min_revenue=3000',
       projects: highRevenueAI
     },
     {
@@ -55,7 +55,7 @@ export function QuickActions({ projects }: QuickActionsProps) {
       icon: Zap,
       color: 'from-green-500 to-emerald-500',
       count: quickWins.length,
-      value: `${quickWins[0]?.technical_complexity || 0}/10`,
+      value: `${quickWins.length > 0 ? (quickWins.reduce((sum, p) => sum + p.technical_complexity, 0) / quickWins.length).toFixed(1) : 0}/10`,
       label: 'Avg Complexity',
       link: '/search?max_complexity=3&min_quality=7',
       projects: quickWins
@@ -71,12 +71,12 @@ export function QuickActions({ projects }: QuickActionsProps) {
       projects: topRated
     },
     {
-      title: 'Latest Opportunities',
+      title: 'Featured Projects',
       icon: Rocket,
       color: 'from-blue-500 to-cyan-500',
       count: projects.slice(0, 5).length,
-      value: 'New',
-      label: 'This Week',
+      value: `${projects.length}`,
+      label: 'Total Projects',
       link: '/projects',
       projects: projects.slice(0, 5)
     }
