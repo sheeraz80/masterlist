@@ -54,6 +54,8 @@ model Project {
   keyFeatures         String
   tags                String
   status              String        @default("active")
+  priority            String        @default("medium")
+  progress            Int           @default(0)
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt
   ownerId             String?
@@ -65,6 +67,8 @@ model Project {
   @@index([category])
   @@index([status])
   @@index([qualityScore])
+  @@index([priority])
+  @@index([progress])
   @@index([ownerId])
 }
 
