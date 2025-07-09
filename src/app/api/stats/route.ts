@@ -1,7 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
+import { optionalAuth } from '@/lib/middleware/auth';
+import { AuthUser } from '@/types';
 
-export async function GET() {
+export const GET = withRateLimit(
+  optionalAuth(async (request: NextRequest, _user: AuthUser | null) => {
   try {
     // Get statistics from database
     const [
@@ -99,10 +103,13 @@ export async function GET() {
       recent_activity: recentActivity,
     });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error fetching stats:', error);
     return NextResponse.json(
       { error: 'Failed to fetch statistics' },
       { status: 500 }
     );
   }
-}
+  }),
+  rateLimits.read
+);

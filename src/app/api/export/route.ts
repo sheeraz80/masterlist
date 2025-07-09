@@ -6,7 +6,10 @@ import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import { format as dateFormat } from 'date-fns';
 import { prisma } from '@/lib/prisma';
-import { getCurrentUser } from '@/lib/auth';
+import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
+import { requireAuth, optionalAuth } from '@/lib/middleware/auth';
+import { exportSchema, validateRequest } from '@/lib/validations';
+import { AuthUser } from '@/types';
 
 // Declare the autotable property
 declare module 'jspdf' {
@@ -15,7 +18,7 @@ declare module 'jspdf' {
   }
 }
 
-function prepareProjectData(projects: any[]) {
+function prepareProjectData(projects: Array<Record<string, unknown>>) {
   return projects.map(project => ({
     id: project.id,
     title: project.title,
@@ -38,13 +41,23 @@ function generateFilename(format: string, reportType: string) {
   return `masterlist-${reportType}-${timestamp}.${format}`;
 }
 
-export async function POST(request: NextRequest) {
-  try {
-    const user = await getCurrentUser();
-    const { format, projectIds, reportType = 'export', filters } = await request.json();
+export const POST = withRateLimit(
+  requireAuth(async (request: NextRequest, user: AuthUser) => {
+    try {
+      // Validate request body
+      const { data, error } = await validateRequest(request, exportSchema);
+      
+      if (error) {
+        return NextResponse.json(
+          { error: `Invalid export data: ${error}` },
+          { status: 400 }
+        );
+      }
+
+      const { format, projectIds, reportType = 'export', filters } = data;
     
-    // Build query based on filters or projectIds
-    let whereClause: any = {};
+      // Build query based on filters or projectIds
+      const whereClause: Record<string, unknown> = {};
     
     if (projectIds && projectIds.length > 0) {
       whereClause.id = { in: projectIds };
@@ -93,7 +106,7 @@ export async function POST(request: NextRequest) {
     }
 
     const filename = generateFilename(format, reportType);
-    const data = prepareProjectData(selectedProjects);
+    const projectData = prepareProjectData(selectedProjects);
 
     switch (format) {
       case 'csv': {
@@ -114,7 +127,7 @@ export async function POST(request: NextRequest) {
             { label: 'Updated At', value: 'updated_at' }
           ]
         });
-        const csv = csvParser.parse(data);
+        const csv = csvParser.parse(projectData);
         
         return new NextResponse(csv, {
           headers: {
@@ -127,14 +140,14 @@ export async function POST(request: NextRequest) {
       case 'json': {
         return NextResponse.json({ 
           filename, 
-          data, 
+          data: projectData, 
           count: selectedProjects.length,
           message: 'Export successful' 
         });
       }
 
       case 'xlsx': {
-        const ws = XLSX.utils.json_to_sheet(data);
+        const ws = XLSX.utils.json_to_sheet(projectData);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Projects');
         
@@ -164,7 +177,7 @@ export async function POST(request: NextRequest) {
                 spacing: { after: 400 },
               }),
               new Paragraph({
-                text: `Total Projects: ${data.length}`,
+                text: `Total Projects: ${projectData.length}`,
                 spacing: { after: 400 },
               }),
               new Paragraph({
@@ -175,7 +188,7 @@ export async function POST(request: NextRequest) {
                 text: '',
                 spacing: { after: 400 },
               }),
-              ...data.map(project => [
+              ...projectData.map(project => [
                 new Paragraph({
                   heading: HeadingLevel.HEADING_2,
                   children: [
@@ -227,13 +240,13 @@ export async function POST(request: NextRequest) {
         pdf.text('Masterlist Export Report', 14, 15);
         pdf.setFontSize(10);
         pdf.text(`Generated on ${dateFormat(new Date(), 'MMMM dd, yyyy')}`, 14, 25);
-        pdf.text(`Total Projects: ${data.length}`, 14, 30);
+        pdf.text(`Total Projects: ${projectData.length}`, 14, 30);
         pdf.text(user ? `Exported by: ${user.name}` : 'Exported by: Guest', 14, 35);
         
         // Table
         pdf.autoTable({
           head: [['ID', 'Title', 'Category', 'Quality Score', 'Revenue Potential']],
-          body: data.map(p => [p.id, p.title, p.category, p.quality_score, p.revenue_potential]),
+          body: projectData.map(p => [p.id, p.title, p.category, p.quality_score, p.revenue_potential]),
           startY: 45,
         });
         
@@ -254,17 +267,20 @@ export async function POST(request: NextRequest) {
         );
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Export error:', error);
     return NextResponse.json(
       { error: 'Export failed' },
       { status: 500 }
     );
   }
-}
+  }),
+  rateLimits.expensive
+);
 
-export async function GET(request: NextRequest) {
-  try {
-    const user = await getCurrentUser();
+export const GET = withRateLimit(
+  optionalAuth(async (request: NextRequest, user: AuthUser | null) => {
+    try {
     
     // Get project count
     const projectCount = await prisma.project.count();
@@ -294,10 +310,13 @@ export async function GET(request: NextRequest) {
       exportHistory
     });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Export metadata error:', error);
     return NextResponse.json(
       { error: 'Failed to get export metadata' },
       { status: 500 }
     );
   }
-}
+  }),
+  rateLimits.read
+);

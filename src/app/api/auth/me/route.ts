@@ -1,22 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCurrentUser } from '@/lib/auth';
+import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
+import { requireAuth } from '@/lib/middleware/auth';
+import { AuthUser } from '@/types';
 
-export async function GET(request: NextRequest) {
-  try {
-    const user = await getCurrentUser(request);
-
-    if (!user) {
-      return NextResponse.json(
-        { error: 'Not authenticated' },
-        { status: 401 }
-      );
-    }
-
+export const GET = withRateLimit(
+  requireAuth(async (request: NextRequest, user: AuthUser) => {
     return NextResponse.json({ user });
-  } catch (error: any) {
-    return NextResponse.json(
-      { error: error.message || 'Failed to get user' },
-      { status: 500 }
-    );
-  }
-}
+  }),
+  rateLimits.api
+);

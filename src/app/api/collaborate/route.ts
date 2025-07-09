@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getCurrentUser, requireAuth } from '@/lib/auth';
+import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
+import { optionalAuth, requireAuth } from '@/lib/middleware/auth';
+import { AuthUser } from '@/types';
 
-export async function GET(request: NextRequest) {
+export const GET = withRateLimit(
+  optionalAuth(async (request: NextRequest, user: AuthUser | null) => {
   try {
     const { searchParams } = new URL(request.url);
     const teamId = searchParams.get('team_id');
     const includeActivity = searchParams.get('include_activity') === 'true';
 
-    const user = await getCurrentUser();
-    
     if (!user) {
       // Return public data for non-authenticated users
       const recentActivity = await prisma.activity.findMany({
@@ -87,7 +88,9 @@ export async function GET(request: NextRequest) {
         title: tp.project.title,
         status: tp.status,
         assignedAt: tp.assignedAt,
-        commentsCount: tp.project._count.comments
+        commentsCount: tp.project._count.comments,
+        priority: tp.project.priority,
+        progress: tp.project.progress
       }))
     }));
 
@@ -140,44 +143,51 @@ export async function GET(request: NextRequest) {
       userRole
     });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error fetching collaboration data:', error);
     return NextResponse.json(
       { error: 'Failed to fetch collaboration data' },
       { status: 500 }
     );
   }
-}
+  }),
+  rateLimits.read
+);
 
-export async function POST(request: NextRequest) {
-  try {
-    const user = await requireAuth();
-    const { action, ...data } = await request.json();
+export const POST = withRateLimit(
+  requireAuth(async (request: NextRequest, user: AuthUser) => {
+    try {
+      const { action, ...data } = await request.json();
 
-    switch (action) {
-      case 'create_team':
-        return handleCreateTeam(user, data);
-      case 'invite_member':
-        return handleInviteMember(user, data);
-      case 'assign_project':
-        return handleAssignProject(user, data);
-      case 'update_project_status':
-        return handleUpdateProjectStatus(user, data);
-      case 'add_comment':
-        return handleAddComment(user, data);
-      default:
-        return NextResponse.json(
-          { error: 'Invalid action' },
-          { status: 400 }
-        );
+      switch (action) {
+        case 'create_team':
+          return handleCreateTeam(user, data);
+        case 'invite_member':
+          return handleInviteMember(user, data);
+        case 'assign_project':
+          return handleAssignProject(user, data);
+        case 'update_project_status':
+          return handleUpdateProjectStatus(user, data);
+        case 'add_comment':
+          return handleAddComment(user, data);
+        default:
+          return NextResponse.json(
+            { error: 'Invalid action' },
+            { status: 400 }
+          );
+      }
+    } catch (error: unknown) {
+      // eslint-disable-next-line no-console
+      console.error('Collaboration error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Operation failed';
+      return NextResponse.json(
+        { error: errorMessage },
+        { status: 500 }
+      );
     }
-  } catch (error: any) {
-    console.error('Collaboration error:', error);
-    return NextResponse.json(
-      { error: error.message || 'Operation failed' },
-      { status: error.message === 'Authentication required' ? 401 : 500 }
-    );
-  }
-}
+  }),
+  rateLimits.write
+);
 
 async function handleCreateTeam(user: any, data: any) {
   const { name, description } = data;
@@ -405,7 +415,7 @@ async function handleAssignProject(user: any, data: any) {
 }
 
 async function handleUpdateProjectStatus(user: any, data: any) {
-  const { teamId, projectId, status } = data;
+  const { teamId, projectId, status, priority, progress } = data;
 
   // Verify team membership
   const membership = await prisma.teamMember.findUnique({
@@ -424,25 +434,61 @@ async function handleUpdateProjectStatus(user: any, data: any) {
     );
   }
 
-  // Update status
-  const teamProject = await prisma.teamProject.update({
-    where: {
-      teamId_projectId: {
-        teamId,
-        projectId
-      }
-    },
-    data: { status },
-    include: {
-      project: { select: { title: true } }
-    }
-  });
+  // Update team project status if provided
+  if (status) {
+    await prisma.teamProject.update({
+      where: {
+        teamId_projectId: {
+          teamId,
+          projectId
+        }
+      },
+      data: { status }
+    });
+  }
+
+  // Update project fields if provided
+  const updateData: any = {};
+  const changes: string[] = [];
+  
+  if (priority !== undefined) {
+    updateData.priority = priority;
+    changes.push(`priority to ${priority}`);
+  }
+  
+  if (progress !== undefined) {
+    updateData.progress = Math.max(0, Math.min(100, progress)); // Ensure 0-100 range
+    changes.push(`progress to ${progress}%`);
+  }
+  
+  let project;
+  if (Object.keys(updateData).length > 0) {
+    project = await prisma.project.update({
+      where: { id: projectId },
+      data: updateData,
+      select: { title: true }
+    });
+  } else {
+    project = await prisma.project.findUnique({
+      where: { id: projectId },
+      select: { title: true }
+    });
+  }
 
   // Create activity
+  let description = `${user.name}`;
+  if (status) {
+    description += ` changed status of "${project?.title}" to ${status}`;
+    if (changes.length > 0) description += ' and';
+  }
+  if (changes.length > 0) {
+    description += ` updated ${changes.join(' and ')}`;
+  }
+
   await prisma.activity.create({
     data: {
-      type: 'status_changed',
-      description: `${user.name} changed status of "${teamProject.project.title}" to ${status}`,
+      type: status ? 'status_changed' : 'project_updated',
+      description,
       userId: user.id,
       projectId,
       teamId
@@ -451,7 +497,7 @@ async function handleUpdateProjectStatus(user: any, data: any) {
 
   return NextResponse.json({
     success: true,
-    message: 'Status updated successfully'
+    message: 'Project updated successfully'
   });
 }
 

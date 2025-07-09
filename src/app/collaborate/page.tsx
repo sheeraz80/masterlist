@@ -428,25 +428,43 @@ export default function CollaboratePage() {
     if (projectStats.byStatus[p.status]) {
       projectStats.byStatus[p.status]++;
     }
-    // Mock priority data since it's not in the schema
-    const priority = ['low', 'medium', 'high'][Math.floor(Math.random() * 3)];
-    projectStats.byPriority[priority]++;
+    // Use actual priority from project
+    const priority = p.priority || 'medium';
+    if (projectStats.byPriority[priority]) {
+      projectStats.byPriority[priority]++;
+    }
   });
 
   const completionRate = projectStats.total > 0 
     ? (projectStats.byStatus.completed / projectStats.total) * 100 
     : 0;
 
-  // Calculate member contributions
-  const memberContributions = currentTeam.members?.map(member => ({
-    userId: member.id,
-    userName: member.name,
-    activityScore: Math.floor(Math.random() * 100), // Mock score
-    projectsAssigned: currentTeam.projects?.filter(p => 
+  // Calculate member contributions from real data
+  const memberContributions = currentTeam.members?.map(member => {
+    // Count activities by this member
+    const memberActivities = recentActivity.filter(a => a.user?.id === member.userId);
+    const activitiesCount = memberActivities.length;
+    
+    // Count projects assigned to this member (through team projects)
+    const projectsAssigned = currentTeam.projects?.filter(p => 
       p.assignedAt && new Date(p.assignedAt) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
-    ).length || 0,
-    commentsMade: Math.floor(Math.random() * 20) // Mock count
-  })) || [];
+    ).length || 0;
+    
+    // Count comments made by this member
+    const commentsMade = memberActivities.filter(a => a.type === 'comment_added').length;
+    
+    // Calculate activity score based on real metrics
+    // Score = (activities * 2) + (projects * 10) + (comments * 5), capped at 100
+    const activityScore = Math.min(100, (activitiesCount * 2) + (projectsAssigned * 10) + (commentsMade * 5));
+    
+    return {
+      userId: member.id,
+      userName: member.name,
+      activityScore,
+      projectsAssigned,
+      commentsMade
+    };
+  }) || [];
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -470,6 +488,17 @@ export default function CollaboratePage() {
   const handleStatusUpdate = (projectId: string, newStatus: string) => {
     if (!selectedTeam) return;
     updateStatusMutation.mutate({ teamId: selectedTeam, projectId, status: newStatus });
+  };
+
+  const handlePriorityUpdate = (projectId: string, newPriority: string) => {
+    if (!selectedTeam) return;
+    updateStatusMutation.mutate({ teamId: selectedTeam, projectId, priority: newPriority });
+  };
+
+  const handleProgressUpdate = (projectId: string, newProgress: number) => {
+    if (!selectedTeam || isNaN(newProgress)) return;
+    const progress = Math.max(0, Math.min(100, newProgress));
+    updateStatusMutation.mutate({ teamId: selectedTeam, projectId, progress });
   };
 
   const handleAddComment = () => {
@@ -652,6 +681,9 @@ export default function CollaboratePage() {
                                 <Badge variant="outline" className="text-xs">
                                   {project.status}
                                 </Badge>
+                                <Badge variant={getPriorityBadgeVariant(project.priority || 'medium')} className="text-xs">
+                                  {project.priority || 'medium'}
+                                </Badge>
                               </div>
                               
                               <p className="text-sm text-muted-foreground mb-3">Assigned {formatDistanceToNow(new Date(project.assignedAt), { addSuffix: true })}</p>
@@ -661,10 +693,20 @@ export default function CollaboratePage() {
                                   <span className="text-xs font-medium">Comments:</span>
                                   <span className="text-xs">{project.commentsCount || 0}</span>
                                 </div>
+                                <div className="flex items-center space-x-1">
+                                  <span className="text-xs font-medium">Progress:</span>
+                                  <span className="text-xs">{project.progress || 0}%</span>
+                                </div>
+                              </div>
+                              
+                              <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
+                                <div 
+                                  className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+                                  style={{ width: `${project.progress || 0}%` }}
+                                />
                               </div>
 
-                              <div className="flex items-center justify-between">
-
+                              <div className="flex items-center justify-between gap-2">
                                 <Select 
                                   value={project.status} 
                                   onValueChange={(value) => handleStatusUpdate(project.id, value)}
@@ -679,6 +721,31 @@ export default function CollaboratePage() {
                                     <SelectItem value="on_hold">On Hold</SelectItem>
                                   </SelectContent>
                                 </Select>
+                                
+                                <Select 
+                                  value={project.priority || 'medium'} 
+                                  onValueChange={(value) => handlePriorityUpdate(project.id, value)}
+                                >
+                                  <SelectTrigger className="w-28 h-8">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="low">Low</SelectItem>
+                                    <SelectItem value="medium">Medium</SelectItem>
+                                    <SelectItem value="high">High</SelectItem>
+                                    <SelectItem value="critical">Critical</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                                
+                                <Input
+                                  type="number"
+                                  min="0"
+                                  max="100"
+                                  value={project.progress || 0}
+                                  onChange={(e) => handleProgressUpdate(project.id, parseInt(e.target.value))}
+                                  className="w-20 h-8"
+                                  placeholder="0%"
+                                />
                               </div>
 
                             </div>
@@ -999,7 +1066,7 @@ export default function CollaboratePage() {
                   <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={currentTeam.projects?.map((p, idx) => ({ 
                       name: p.title?.substring(0, 15) + '...' || `Project ${idx + 1}`, 
-                      progress: Math.floor(Math.random() * 100) 
+                      progress: p.progress || 0 
                     })) || []}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
