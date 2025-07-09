@@ -1,8 +1,0 @@
-{
-  "category": "design-tools",
-  "platforms": ["figma-plugin"],
-  "keywords": "automation design consistency",
-  "features": ["automated detection", "one-click fix", "real-time", "offline"],
-  "quality_min": 6.0,
-  "quality_max": 8.0
-}
