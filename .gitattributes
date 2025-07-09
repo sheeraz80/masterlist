@@ -1,0 +1,25 @@
+# Linguist overrides to ensure correct language detection
+*.js linguist-detectable=true
+*.jsx linguist-detectable=true
+*.ts linguist-detectable=true
+*.tsx linguist-detectable=true
+*.json linguist-detectable=true
+
+# Mark vendored files
+projects/**/*.json linguist-vendored=true
+data/*.json linguist-vendored=true
+consolidated_projects.json linguist-vendored=true
+project_summary.json linguist-vendored=true
+project_tags.json linguist-vendored=true
+high_revenue_projects.json linguist-vendored=true
+marketplace_enterprise_projects.json linguist-vendored=true
+parsed_masterlist.json linguist-vendored=true
+
+# Ensure TypeScript/JavaScript are primary languages
+*.ts linguist-language=TypeScript
+*.tsx linguist-language=TypeScript
+*.js linguist-language=JavaScript
+*.jsx linguist-language=JavaScript
+
+# Documentation
+*.md linguist-documentation=true

@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "A comprehensive project management and analytics platform built with Next.js",
   "private": true,
+  "author": "Masterlist Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/masterlist.git"
+  },
   "scripts": {
     "dev": "next dev",
     "dev:socket": "node server.mjs",
@@ -15,7 +21,11 @@
     "prepare": "husky install",
     "analyze": "ANALYZE=true next build",
     "migrate": "node scripts/migrate.js",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "db:generate": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^6.11.1",
