@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { aiInsightsService } from '@/lib/ai-insights';
+import { marketDataService } from '@/lib/market-data';
 import { prisma } from '@/lib/prisma';
 import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
 import { optionalAuth } from '@/lib/middleware/auth';
@@ -78,11 +79,19 @@ export const GET = withRateLimit(
         ? parseInt(searchParams.get('min_confidence')!) 
         : undefined;
     
-      // Get real data insights
-      const realData = await aiInsightsService.generateDataDrivenInsights();
+      // Get real data insights from both internal and external sources
+      const [realData, marketData] = await Promise.all([
+        aiInsightsService.generateDataDrivenInsights(),
+        marketDataService.analyzeMarketTrends(
+          // Get top categories for market analysis
+          (await aiInsightsService.generateCategoryInsights())
+            .slice(0, 5)
+            .map(c => c.category)
+        )
+      ]);
       
-      // Generate insights report with real data
-      const insightsReport = await generateRealInsightsReport(realData, {
+      // Generate insights report with both internal and external data
+      const insightsReport = await generateRealInsightsReport(realData, marketData, {
         category,
         type,
         minConfidence
@@ -100,7 +109,7 @@ export const GET = withRateLimit(
   rateLimits.expensive
 );
 
-async function generateRealInsightsReport(realData: any, filters: any): Promise<InsightsReport> {
+async function generateRealInsightsReport(realData: any, marketData: any, filters: any): Promise<InsightsReport> {
   const { summary, categoryStats, recentTrends, competitionAnalysis, qualityDistribution } = realData;
   
   // Generate insights based on real data
@@ -253,6 +262,124 @@ async function generateRealInsightsReport(realData: any, filters: any): Promise<
       generated_at: new Date().toISOString()
     });
   }
+  
+  // Market validation insight - combine internal data with Google Trends
+  if (marketData.trends.length > 0) {
+    const validatedCategories = categoryStats.filter(cat => {
+      const marketTrend = marketData.trends.find(t => 
+        t.keyword.toLowerCase() === cat.category.toLowerCase()
+      );
+      return marketTrend && marketTrend.trend_value > 60;
+    });
+    
+    if (validatedCategories.length > 0) {
+      const topValidated = validatedCategories[0];
+      const marketTrend = marketData.trends.find(t => 
+        t.keyword.toLowerCase() === topValidated.category.toLowerCase()
+      );
+      
+      insights.push({
+        id: 'insight_market_validation',
+        title: `${topValidated.category} Validated by External Market Trends`,
+        description: `${topValidated.category} shows ${marketTrend?.trend_value}% market interest (${marketTrend?.direction}) on Google Trends, aligning with internal performance metrics.`,
+        type: 'opportunity',
+        confidence: 94,
+        impact: 'high',
+        category: topValidated.category,
+        project_ids: topValidated.projects.slice(0, 3),
+        data_points: [{
+          internal_metrics: {
+            avg_revenue: topValidated.avgRevenue,
+            project_count: topValidated.projectCount,
+            quality_score: topValidated.avgQuality
+          },
+          external_validation: {
+            google_trends_score: marketTrend?.trend_value,
+            trend_direction: marketTrend?.direction,
+            related_topics: marketTrend?.related_topics
+          }
+        }],
+        action_items: [
+          `Accelerate ${topValidated.category} development to capture market momentum`,
+          `Research trending subtopics: ${marketTrend?.related_topics?.slice(0, 3).join(', ')}`,
+          'Leverage market validation for investor/stakeholder communications'
+        ],
+        priority_score: 96,
+        generated_at: new Date().toISOString()
+      });
+    }
+  }
+  
+  // GitHub trending insight
+  if (marketData.githubProjects.length > 0) {
+    const techLanguages = marketData.githubProjects
+      .map(p => p.language)
+      .filter(l => l && l !== 'Unknown');
+    
+    const topLanguage = techLanguages[0] || 'Python';
+    const relatedProjects = marketData.githubProjects
+      .filter(p => p.language === topLanguage)
+      .slice(0, 2);
+    
+    insights.push({
+      id: 'insight_github_trends',
+      title: 'GitHub Trends Signal Technology Shifts',
+      description: `${topLanguage} dominates trending repositories with ${relatedProjects.length} top projects. Consider ${topLanguage}-based implementations for competitive advantage.`,
+      type: 'trend',
+      confidence: 82,
+      impact: 'medium',
+      category: 'Technology Trends',
+      project_ids: [],
+      data_points: [{
+        trending_languages: techLanguages.slice(0, 5),
+        top_projects: relatedProjects.map(p => ({
+          name: p.name,
+          stars: p.stars,
+          description: p.description
+        }))
+      }],
+      action_items: [
+        `Evaluate ${topLanguage} for new project implementations`,
+        `Study architecture patterns from: ${relatedProjects.map(p => p.name).join(', ')}`,
+        'Monitor GitHub trends monthly for technology shifts'
+      ],
+      priority_score: 73,
+      generated_at: new Date().toISOString()
+    });
+  }
+  
+  // Hacker News emerging tech insight
+  if (marketData.hackerNewsTopics.length > 0) {
+    const emergingTech = marketData.analysis.emerging_technologies;
+    
+    if (emergingTech.length > 0) {
+      insights.push({
+        id: 'insight_emerging_tech',
+        title: 'Emerging Technologies Creating New Opportunities',
+        description: `Hacker News discussions highlight ${emergingTech.slice(0, 3).join(', ')} as key emerging areas with high community interest.`,
+        type: 'opportunity',
+        confidence: 79,
+        impact: 'medium',
+        category: 'Market Intelligence',
+        project_ids: [],
+        data_points: [{
+          emerging_technologies: emergingTech,
+          top_discussions: marketData.hackerNewsTopics.slice(0, 3).map(s => ({
+            title: s.title,
+            score: s.score,
+            engagement: s.descendants
+          }))
+        }],
+        action_items: [
+          `Research ${emergingTech[0]} integration opportunities`,
+          'Monitor tech community discussions for early signals',
+          'Consider proof-of-concept projects in emerging areas'
+        ],
+        priority_score: 70,
+        generated_at: new Date().toISOString()
+      });
+    }
+  }
 
   // Filter insights based on provided filters
   let filteredInsights = insights;
@@ -314,6 +441,26 @@ async function generateRealInsightsReport(realData: any, filters: any): Promise<
       'Consider quality-based resource allocation'
     ]
   });
+  
+  // Add external market trends
+  if (marketData.analysis.hottest_categories.length > 0) {
+    marketTrends.push({
+      trend_name: 'External Market Validation',
+      direction: 'rising',
+      strength: 85,
+      affected_categories: marketData.analysis.hottest_categories,
+      evidence: [
+        `Google Trends shows high interest in: ${marketData.analysis.hottest_categories.join(', ')}`,
+        `${marketData.githubProjects.length} trending GitHub projects analyzed`,
+        `${marketData.hackerNewsTopics.length} top Hacker News discussions tracked`
+      ],
+      implications: [
+        'Align portfolio strategy with market demand',
+        'Prioritize development in validated categories',
+        'Monitor external signals for early opportunities'
+      ]
+    });
+  }
 
   // Build category insights from real data
   const categoryInsightsMap: Record<string, any> = {};
