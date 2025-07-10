@@ -306,7 +306,8 @@ export async function generateDataDrivenInsights() {
         good: projects.filter(p => (p.qualityScore || 0) >= 6 && (p.qualityScore || 0) < 8).length,
         average: projects.filter(p => (p.qualityScore || 0) >= 4 && (p.qualityScore || 0) < 6).length,
         poor: projects.filter(p => (p.qualityScore || 0) < 4).length
-      }
+      },
+      projects // Include projects for additional analysis
     };
   } catch (error) {
     console.error('Error generating data-driven insights:', error);
