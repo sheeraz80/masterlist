@@ -492,7 +492,7 @@ async function generateRealInsightsReport(realData: any, marketData: any, filter
   
   if (topGrowthCategories.length > 0) {
     const [topCategory, topCount] = topGrowthCategories[0];
-    const growthStrength = Math.min(90, (topCount / summary.totalProjects * 1000));
+    const growthStrength = Math.min(90, Math.round(topCount / summary.totalProjects * 1000));
     
     marketTrends.push({
       trend_name: `${topCategory} Sector Expansion`,
@@ -517,7 +517,7 @@ async function generateRealInsightsReport(realData: any, marketData: any, filter
   marketTrends.push({
     trend_name: 'Portfolio Quality Evolution',
     direction: qualityTrend,
-    strength: Math.abs(excellentRatio - poorRatio),
+    strength: Math.round(Math.abs(excellentRatio - poorRatio)),
     affected_categories: categoryStats.slice(0, 3).map(c => c.category),
     evidence: [
       `${excellentRatio.toFixed(1)}% of projects achieve excellent ratings`,
@@ -583,7 +583,7 @@ async function generateRealInsightsReport(realData: any, marketData: any, filter
     
     categoryInsightsMap[cat.category] = {
       category: cat.category,
-      opportunity_score: Math.min(100, categoryScore),
+      opportunity_score: Math.min(100, Math.round(categoryScore)),
       risk_level: competitionLevel > 70 ? 'high' : competitionLevel > 40 ? 'medium' : 'low',
       key_insights: filteredInsights.filter(insight => insight.category === cat.category),
       recommended_actions: [
