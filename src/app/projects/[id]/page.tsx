@@ -48,6 +48,10 @@ import { cn, formatNumber, formatDate } from '@/lib/utils';
 import { getCategoryDefinition, getCategoryGradient } from '@/lib/constants/categories';
 import { Project } from '@/types';
 
+// Components
+import { RepositorySection } from '@/components/project/repository-section';
+import { DeploymentSection } from '@/components/project/deployment-section';
+
 // Types
 interface Milestone {
   id: string;
@@ -747,6 +751,16 @@ export default function ProjectDetailPage() {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* Repository Integration */}
+              <RepositorySection 
+                projectId={project.id}
+                projectTitle={project.title}
+                projectCategory={project.category}
+              />
+
+              {/* Deployment Management */}
+              <DeploymentSection projectId={project.id} />
             </TabsContent>
 
             {/* Business Tab */}

@@ -63,6 +63,8 @@ model Project {
   comments            Comment[]
   owner               User?         @relation(fields: [ownerId], references: [id])
   teamProjects        TeamProject[]
+  repository          Repository?
+  deployments         Deployment[]
 
   @@index([category])
   @@index([status])
@@ -218,4 +220,503 @@ model AIInsight {
   @@index([impact])
   @@index([category])
   @@index([generatedAt])
+}
+
+// GitHub Repository Integration Models
+model Repository {
+  id              String   @id @default(cuid())
+  projectId       String   @unique
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  // GitHub Integration
+  githubRepoId    String?  @unique
+  githubUrl       String?
+  githubOwner     String?
+  githubName      String?
+  defaultBranch   String   @default("main")
+  isPrivate       Boolean  @default(true)
+  
+  // Hierarchical Organization
+  category        String
+  subcategory     String?
+  repoPath        String   @unique // categories/chrome-extensions/productivity/project-001
+  
+  // Local Management
+  localPath       String?
+  isCloned        Boolean  @default(false)
+  lastSync        DateTime?
+  
+  // Code Analysis
+  language        String?
+  framework       String?
+  dependencies    Json?    // Package.json dependencies
+  codeMetrics     Json?    // Lines of code, complexity, etc.
+  
+  // Status & Health
+  status          RepoStatus @default(NEEDS_SETUP)
+  healthScore     Int?
+  lastCommit      DateTime?
+  commitCount     Int      @default(0)
+  
+  // Template Information
+  templateUsed    String?
+  isTemplate      Boolean  @default(false)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  codeAnalyses    CodeAnalysis[]
+  repositoryTags  RepositoryTag[]
+  webhooks        GitHubWebhook[]
+  deployments     Deployment[]
+
+  @@index([category])
+  @@index([subcategory])
+  @@index([status])
+  @@index([healthScore])
+  @@index([isTemplate])
+  @@index([repoPath])
+}
+
+enum RepoStatus {
+  ACTIVE
+  ARCHIVED
+  NEEDS_SETUP
+  ERROR
+  SYNCING
+  TEMPLATE
+}
+
+model CodeAnalysis {
+  id            String      @id @default(cuid())
+  repositoryId  String
+  repository    Repository  @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  
+  // Basic Metrics
+  linesOfCode   Int?
+  fileCount     Int?
+  directoryCount Int?
+  
+  // Code Quality
+  complexity    Int?
+  testCoverage  Float?
+  codeQuality   Float?
+  maintainabilityIndex Float?
+  
+  // Security & Quality Issues
+  vulnerabilities Json?      // Security vulnerabilities found
+  codeSmells     Int?        // Code quality issues
+  duplications   Float?      // Code duplication percentage
+  technicalDebt  Int?        // Estimated technical debt in hours
+  
+  // Dependencies Analysis
+  dependencies   Json?       // All dependencies with versions
+  outdatedDeps   Json?       // Outdated dependencies
+  securityIssues Json?       // Security issues in dependencies
+  licenseIssues  Json?       // License compatibility issues
+  
+  // Performance Metrics
+  bundleSize     Int?        // Bundle size in bytes
+  loadTime       Float?      // Estimated load time
+  
+  // Analysis Metadata
+  analyzer       String      // Tool used for analysis
+  analysisType   AnalysisType @default(FULL)
+  
+  analyzedAt    DateTime    @default(now())
+  
+  @@index([repositoryId])
+  @@index([analyzedAt])
+  @@index([codeQuality])
+}
+
+enum AnalysisType {
+  FULL          // Complete analysis
+  QUICK         // Basic metrics only
+  SECURITY      // Security-focused analysis
+  DEPENDENCIES  // Dependencies analysis only
+}
+
+model RepositoryTag {
+  id           String     @id @default(cuid())
+  repositoryId String
+  repository   Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  
+  name         String
+  value        String?
+  type         TagType    @default(CUSTOM)
+  
+  createdAt    DateTime   @default(now())
+  
+  @@unique([repositoryId, name])
+  @@index([repositoryId])
+  @@index([type])
+}
+
+enum TagType {
+  FRAMEWORK     // React, Vue, Angular, etc.
+  LANGUAGE      // TypeScript, JavaScript, Python, etc.
+  CATEGORY      // Frontend, Backend, Mobile, etc.
+  DEPLOYMENT    // Vercel, Netlify, AWS, etc.
+  CUSTOM        // User-defined tags
+}
+
+model RepositoryTemplate {
+  id            String   @id @default(cuid())
+  name          String   @unique
+  description   String
+  category      String
+  subcategory   String?
+  
+  // Template Configuration
+  githubUrl     String
+  defaultBranch String   @default("main")
+  
+  // Setup Instructions
+  setupSteps    Json     // Array of setup steps
+  requirements  Json     // Required tools, dependencies
+  variables     Json     // Template variables to replace
+  
+  // Usage Statistics
+  usageCount    Int      @default(0)
+  rating        Float?
+  
+  // Status
+  isActive      Boolean  @default(true)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([category])
+  @@index([isActive])
+  @@index([usageCount])
+}
+
+model GitHubWebhook {
+  id            String   @id @default(cuid())
+  repositoryId  String?
+  repository    Repository? @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  
+  // Webhook Configuration
+  webhookId     String   @unique // GitHub webhook ID
+  secret        String   // Webhook secret for verification
+  events        Json     // Array of events to listen for
+  
+  // Status
+  isActive      Boolean  @default(true)
+  lastDelivery  DateTime?
+  deliveryCount Int      @default(0)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([repositoryId])
+  @@index([isActive])
+}
+
+// ===== DEPLOYMENT PLATFORM INTEGRATION =====
+
+model Deployment {
+  id              String   @id @default(cuid())
+  projectId       String
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  repositoryId    String?
+  repository      Repository? @relation(fields: [repositoryId], references: [id], onDelete: SetNull)
+  
+  // Platform Information
+  platform        DeploymentPlatform
+  platformId      String   // Platform-specific deployment ID
+  platformUrl     String?  // Platform dashboard URL
+  
+  // Deployment Configuration
+  environmentName String   @default("production") // production, staging, preview
+  branch          String   @default("main")
+  domain          String?  // Primary domain
+  customDomains   Json?    // Array of custom domains
+  
+  // Status & Health
+  status          DeploymentStatus @default(PENDING)
+  health          DeploymentHealth @default(UNKNOWN)
+  isActive        Boolean  @default(true)
+  
+  // Deployment Details
+  deploymentUrl   String?  // Live URL
+  previewUrl      String?  // Preview URL (for preview deployments)
+  buildCommand    String?
+  installCommand  String?
+  outputDirectory String?
+  
+  // Performance Metrics
+  buildTime       Int?     // Build time in seconds
+  responseTime    Float?   // Average response time in ms
+  uptime          Float?   // Uptime percentage
+  errorRate       Float?   // Error rate percentage
+  
+  // Resource Usage
+  bandwidth       BigInt?  // Bandwidth in bytes
+  storage         BigInt?  // Storage in bytes
+  executions      Int?     // Function executions (for serverless)
+  
+  // Timestamps
+  lastDeployedAt  DateTime?
+  lastCheckedAt   DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  deploymentLogs  DeploymentLog[]
+  deploymentEnvs  DeploymentEnv[]
+  buildLogs       BuildLog[]
+  incidents       Incident[]
+  
+  @@unique([platform, platformId])
+  @@index([projectId])
+  @@index([repositoryId])
+  @@index([platform])
+  @@index([status])
+  @@index([health])
+  @@index([environmentName])
+}
+
+model DeploymentLog {
+  id            String   @id @default(cuid())
+  deploymentId  String
+  deployment    Deployment @relation(fields: [deploymentId], references: [id], onDelete: Cascade)
+  
+  // Log Information
+  type          LogType  // deployment, build, runtime, error
+  level         LogLevel // info, warn, error, debug
+  message       String
+  metadata      Json?    // Additional structured data
+  
+  // Source Information
+  source        String?  // Component/service that generated the log
+  requestId     String?  // Request ID for tracing
+  
+  timestamp     DateTime @default(now())
+  
+  @@index([deploymentId])
+  @@index([type])
+  @@index([level])
+  @@index([timestamp])
+}
+
+model DeploymentEnv {
+  id            String   @id @default(cuid())
+  deploymentId  String
+  deployment    Deployment @relation(fields: [deploymentId], references: [id], onDelete: Cascade)
+  
+  // Environment Variable
+  key           String
+  value         String   // Encrypted
+  isSecret      Boolean  @default(true)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@unique([deploymentId, key])
+  @@index([deploymentId])
+}
+
+model BuildLog {
+  id            String   @id @default(cuid())
+  deploymentId  String
+  deployment    Deployment @relation(fields: [deploymentId], references: [id], onDelete: Cascade)
+  
+  // Build Information
+  buildId       String   @unique
+  commitSha     String?
+  commitMessage String?
+  
+  // Build Status
+  status        BuildStatus @default(BUILDING)
+  startedAt     DateTime
+  completedAt   DateTime?
+  duration      Int?     // Duration in seconds
+  
+  // Build Output
+  logs          String?  @db.Text
+  errorMessage  String?
+  warnings      Json?    // Array of warning messages
+  
+  // Build Artifacts
+  artifactSize  BigInt?  // Total size in bytes
+  fileCount     Int?
+  
+  createdAt     DateTime @default(now())
+  
+  @@index([deploymentId])
+  @@index([status])
+  @@index([startedAt])
+}
+
+model Incident {
+  id            String   @id @default(cuid())
+  deploymentId  String
+  deployment    Deployment @relation(fields: [deploymentId], references: [id], onDelete: Cascade)
+  
+  // Incident Details
+  title         String
+  description   String?
+  severity      IncidentSeverity
+  status        IncidentStatus @default(OPEN)
+  
+  // Impact
+  affectedServices Json?   // Array of affected services
+  impactedUsers    Int?
+  errorCount       Int?
+  
+  // Resolution
+  resolvedAt    DateTime?
+  resolvedBy    String?
+  resolution    String?
+  
+  // Timestamps
+  detectedAt    DateTime @default(now())
+  acknowledgedAt DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([deploymentId])
+  @@index([severity])
+  @@index([status])
+  @@index([detectedAt])
+}
+
+// Platform Credentials Storage
+model PlatformCredential {
+  id            String   @id @default(cuid())
+  userId        String
+  
+  // Platform Information
+  platform      DeploymentPlatform @unique
+  
+  // Credentials (encrypted)
+  apiKey        String?
+  apiSecret     String?
+  accessToken   String?
+  refreshToken  String?
+  
+  // Additional Configuration
+  accountId     String?  // Platform account/team ID
+  region        String?  // AWS region, etc.
+  projectPrefix String?  // Prefix for auto-naming
+  
+  // OAuth Information
+  tokenExpiresAt DateTime?
+  scope         String?
+  
+  // Status
+  isActive      Boolean  @default(true)
+  lastUsedAt    DateTime?
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([platform])
+  @@index([isActive])
+}
+
+// Deployment Templates
+model DeploymentTemplate {
+  id            String   @id @default(cuid())
+  
+  // Template Information
+  name          String   @unique
+  description   String
+  platform      DeploymentPlatform
+  
+  // Configuration Template
+  buildConfig   Json     // Build settings template
+  envTemplate   Json     // Environment variables template
+  domainConfig  Json?    // Domain configuration template
+  
+  // Optimization Settings
+  cacheConfig   Json?    // Caching rules
+  cdnConfig     Json?    // CDN configuration
+  securityConfig Json?   // Security headers, CSP, etc.
+  
+  // Usage
+  usageCount    Int      @default(0)
+  isPublic      Boolean  @default(false)
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([platform])
+  @@index([isPublic])
+}
+
+// Enums
+enum DeploymentPlatform {
+  VERCEL
+  NETLIFY
+  AWS_AMPLIFY
+  CLOUDFLARE_PAGES
+  GITHUB_PAGES
+  HEROKU
+  DIGITAL_OCEAN
+  RENDER
+  RAILWAY
+  FLY_IO
+  CUSTOM
+}
+
+enum DeploymentStatus {
+  PENDING
+  BUILDING
+  DEPLOYING
+  READY
+  ERROR
+  CANCELLED
+  SUSPENDED
+}
+
+enum DeploymentHealth {
+  HEALTHY
+  DEGRADED
+  UNHEALTHY
+  UNKNOWN
+}
+
+enum LogType {
+  DEPLOYMENT
+  BUILD
+  RUNTIME
+  ERROR
+  ACCESS
+  PERFORMANCE
+}
+
+enum LogLevel {
+  DEBUG
+  INFO
+  WARN
+  ERROR
+  FATAL
+}
+
+enum BuildStatus {
+  QUEUED
+  BUILDING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+  TIMEOUT
+}
+
+enum IncidentSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum IncidentStatus {
+  OPEN
+  ACKNOWLEDGED
+  INVESTIGATING
+  RESOLVED
+  CLOSED
 }
