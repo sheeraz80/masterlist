@@ -401,7 +401,7 @@ export default function InsightsPage() {
                                               {Object.entries(item).map(([k, v], i) => (
                                                 <span key={k}>
                                                   {i > 0 && ' • '}
-                                                  <span className="font-medium">{k.replace(/_/g, ' ')}:</span> {
+                                                  <span className="font-medium">{k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:</span> {
                                                     k.includes('revenue') || k.includes('Revenue') ? `$${Number(v).toLocaleString()}` :
                                                     typeof v === 'number' ? v.toLocaleString() : String(v)
                                                   }
@@ -421,7 +421,7 @@ export default function InsightsPage() {
                                       <div className="ml-2 space-y-1">
                                         {Object.entries(value).slice(0, 3).map(([k, v]) => (
                                           <div key={k} className="text-xs">
-                                            <span className="font-medium">{k.replace(/_/g, ' ')}:</span> {
+                                            <span className="font-medium">{k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:</span> {
                                               Array.isArray(v) ? v.slice(0, 2).join(', ') : String(v)
                                             }
                                           </div>
