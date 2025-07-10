@@ -31,7 +31,7 @@ export class RepositoryAutomationService {
   constructor() {
     this.githubClient = new GitHubClient(
       process.env.GITHUB_PROJECTS_TOKEN!,
-      process.env.GITHUB_PROJECTS_ORG || 'masterlist-forge'
+      process.env.GITHUB_PROJECTS_ORG || 'corevecta-projects'
     );
     this.repoService = new RepositoryService();
   }
@@ -333,6 +333,7 @@ export class RepositoryAutomationService {
       owner,
       repo,
       topics: [
+        'corevecta',
         'masterlist',
         project.category,
         project.subcategory,
@@ -565,7 +566,7 @@ ${repository.githubName}/
 ---
 
 <p align="center">
-  Built with ❤️ by <a href="https://github.com/masterlist-platform/masterlist">Masterlist</a>
+  Built with ❤️ by <a href="https://github.com/corevecta">CoreVecta</a>
 </p>`;
   }
 

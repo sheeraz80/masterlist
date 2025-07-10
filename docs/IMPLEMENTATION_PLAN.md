@@ -3,8 +3,9 @@
 ## Phase 1: Organization Setup ✅
 
 ### 1.1 Create GitHub Organizations
-- [ ] Create `masterlist-platform` organization
-- [ ] Create `masterlist-forge` organization (for projects)
+- [ ] Create `corevecta` organization (for CoreVecta LLC)
+- [ ] Create `corevecta-projects` organization (for all projects)
+- [ ] Note: Initially under personal account, will migrate later
 - [ ] Configure organization settings
   - Enable 2FA requirement
   - Set up organization secrets
@@ -14,11 +15,11 @@
 ### 1.2 Environment Configuration
 ```env
 # Platform Organization
-GITHUB_PLATFORM_ORG=masterlist-platform
+GITHUB_PLATFORM_ORG=corevecta
 GITHUB_PLATFORM_TOKEN=ghp_xxxxx
 
 # Projects Organization
-GITHUB_PROJECTS_ORG=masterlist-forge
+GITHUB_PROJECTS_ORG=corevecta-projects
 GITHUB_PROJECTS_TOKEN=ghp_xxxxx
 
 # Deployment Platforms
@@ -31,7 +32,7 @@ AWS_SECRET_ACCESS_KEY=xxx
 ## Phase 2: Template System Implementation
 
 ### 2.1 Create Master Templates Repository
-- [ ] Repository: `masterlist-forge/project-templates`
+- [ ] Repository: `corevecta-projects/project-templates`
 - [ ] Structure:
   ```
   project-templates/

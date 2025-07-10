@@ -3,14 +3,15 @@
 ## GitHub Organizations
 
 ### Primary Organization
-- **Name**: `masterlist-platform`
-- **Purpose**: Main platform repository
-- **Repository**: `masterlist` (this current repo)
+- **Name**: `corevecta`
+- **Purpose**: Main organization for CoreVecta LLC
+- **Repository**: `masterlist` (project management platform)
 
 ### Projects Organization
-- **Name**: `masterlist-forge` (recommended)
+- **Name**: `corevecta-projects`
 - **Purpose**: All 650+ project repositories
 - **Structure**: Hierarchical categorization
+- **Note**: Initially under personal account, will migrate to CoreVecta organization later
 
 ## Complete Project Hierarchy
 
@@ -18,7 +19,7 @@
 
 #### 1.1 Chrome Extensions
 ```
-masterlist-forge/
+corevecta-projects/
 ├── chrome-extensions/
 │   ├── productivity/
 │   │   ├── tab-manager-pro
