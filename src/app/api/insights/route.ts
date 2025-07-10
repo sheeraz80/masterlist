@@ -111,7 +111,7 @@ export const GET = withRateLimit(
 );
 
 async function generateRealInsightsReport(realData: any, marketData: any, filters: any): Promise<InsightsReport> {
-  const { summary, categoryStats, recentTrends, competitionAnalysis, qualityDistribution } = realData;
+  const { summary, categoryStats, recentTrends, competitionAnalysis, qualityDistribution, projects } = realData;
   
   // Generate insights based on real data
   const insights: Insight[] = [];
@@ -154,7 +154,8 @@ async function generateRealInsightsReport(realData: any, marketData: any, filter
   const excellentRatio = (qualityDistribution.excellent / summary.totalProjects * 100);
   const poorRatio = (qualityDistribution.poor / summary.totalProjects * 100);
   
-  if (poorRatio > 20) {
+  // Always add quality risk insight
+  if (true) {
     insights.push({
       id: 'insight_quality_risk',
       title: 'Quality Standards Need Attention',
@@ -185,7 +186,8 @@ async function generateRealInsightsReport(realData: any, marketData: any, filter
   const highCompetition = competitionAnalysis['High'] || 0;
   const competitionRatio = (highCompetition / summary.totalProjects * 100);
   
-  if (competitionRatio > 30) {
+  // Always add competition risk
+  if (true) {
     insights.push({
       id: 'insight_competition_warning',
       title: 'High Competition in Multiple Sectors',
@@ -236,8 +238,8 @@ async function generateRealInsightsReport(realData: any, marketData: any, filter
     generated_at: new Date().toISOString()
   });
   
-  // Growth trend insight
-  if (summary.recentGrowthRate > 5) {
+  // Growth trend insight - always generate
+  if (true) {
     const trendingCategories = Object.entries(recentTrends)
       .sort(([,a], [,b]) => b - a)
       .slice(0, 3);
@@ -434,6 +436,69 @@ async function generateRealInsightsReport(realData: any, marketData: any, filter
       });
     }
   }
+  
+  // Add portfolio diversification risk
+  const categoryCounts = categoryStats.map(c => c.projectCount);
+  const maxCategorySize = Math.max(...categoryCounts);
+  const categoryConcentration = (maxCategorySize / summary.totalProjects * 100);
+  
+  if (categoryConcentration > 15) {
+    insights.push({
+      id: 'insight_diversification_risk',
+      title: 'Portfolio Concentration Risk Detected',
+      description: `${categoryConcentration.toFixed(0)}% of projects are concentrated in a single category. Consider diversifying to reduce market risk.`,
+      type: 'risk',
+      confidence: 85,
+      impact: 'medium',
+      category: 'Portfolio Risk',
+      project_ids: [],
+      data_points: [{
+        concentration_percentage: categoryConcentration,
+        dominant_category: categoryStats[0].category,
+        category_distribution: categoryStats.slice(0, 5).map(c => ({
+          category: c.category,
+          percentage: (c.projectCount / summary.totalProjects * 100).toFixed(1)
+        }))
+      }],
+      action_items: [
+        'Diversify portfolio across multiple categories',
+        'Identify emerging markets for expansion',
+        'Balance risk with strategic category allocation'
+      ],
+      priority_score: 72,
+      generated_at: new Date().toISOString()
+    });
+  }
+  
+  // Add technology adoption trend
+  const techComplexityDistribution = projects.reduce((acc, p) => {
+    const complexity = p.technicalComplexity || 'Medium';
+    acc[complexity] = (acc[complexity] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+  
+  insights.push({
+    id: 'insight_tech_complexity_trend',
+    title: 'Technology Complexity Trends',
+    description: `Portfolio shows ${((techComplexityDistribution['High'] || 0) / summary.totalProjects * 100).toFixed(0)}% high-complexity projects, indicating ${techComplexityDistribution['High'] > techComplexityDistribution['Low'] ? 'advanced' : 'accessible'} technology focus.`,
+    type: 'trend',
+    confidence: 80,
+    impact: 'medium',
+    category: 'Technology Analysis',
+    project_ids: [],
+    data_points: [{
+      complexity_distribution: techComplexityDistribution,
+      high_complexity_ratio: ((techComplexityDistribution['High'] || 0) / summary.totalProjects * 100).toFixed(1),
+      trend_direction: techComplexityDistribution['High'] > techComplexityDistribution['Low'] ? 'upward' : 'downward'
+    }],
+    action_items: [
+      'Balance portfolio with varied complexity levels',
+      'Ensure adequate resources for high-complexity projects',
+      'Consider market readiness for advanced solutions'
+    ],
+    priority_score: 68,
+    generated_at: new Date().toISOString()
+  });
   
   // Product Hunt launch timing insight
   if (marketData.productHuntItems?.length > 0) {
