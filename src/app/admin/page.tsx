@@ -184,7 +184,7 @@ export default function AdminPage() {
               Access Denied
             </CardTitle>
             <CardDescription>
-              You don't have admin privileges to access this panel.
+              You don&apos;t have admin privileges to access this panel.
             </CardDescription>
           </CardHeader>
           <CardContent>
