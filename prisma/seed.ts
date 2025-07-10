@@ -21,37 +21,24 @@ async function main() {
     
     // 1. Create default users
     console.log('Creating users...');
-    const hashedPassword = await bcrypt.hash('password123', 10);
+    const adminPassword = await bcrypt.hash('admin123', 10);
+    const demoPassword = await bcrypt.hash('demo123', 10);
     
     const users = await Promise.all([
       prisma.user.create({
         data: {
           email: 'admin@masterlist.com',
           name: 'Admin User',
-          password: hashedPassword,
-          role: 'ADMIN',
-          avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=admin',
-          bio: 'System Administrator',
-          preferences: JSON.stringify({
-            notifications: true,
-            theme: 'system',
-            language: 'en'
-          })
+          password: adminPassword,
+          role: 'admin'
         }
       }),
       prisma.user.create({
         data: {
-          email: 'user@masterlist.com',
-          name: 'Demo User',
-          password: hashedPassword,
-          role: 'USER',
-          avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=user',
-          bio: 'Demo User Account',
-          preferences: JSON.stringify({
-            notifications: true,
-            theme: 'light',
-            language: 'en'
-          })
+          email: 'john@example.com',
+          name: 'John Demo',
+          password: demoPassword,
+          role: 'user'
         }
       })
     ]);
@@ -103,24 +90,15 @@ async function main() {
       data: {
         name: 'Development Team',
         description: 'Main development team for Masterlist projects',
-        avatar: 'https://api.dicebear.com/7.x/shapes/svg?seed=team1',
-        settings: JSON.stringify({
-          allowMemberInvite: true,
-          requireApproval: false,
-          visibility: 'public'
-        }),
-        createdById: users[0].id,
         members: {
           create: [
             {
               userId: users[0].id,
-              role: 'OWNER',
-              permissions: JSON.stringify(['all'])
+              role: 'owner'
             },
             {
               userId: users[1].id,
-              role: 'MEMBER',
-              permissions: JSON.stringify(['read', 'write'])
+              role: 'member'
             }
           ]
         }

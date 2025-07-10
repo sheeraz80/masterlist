@@ -36,7 +36,7 @@ export async function getProjects(params?: {
   const data = await response.json();
   
   return {
-    projects: data.projects || [],
+    projects: data.data || [],
     pagination: data.pagination || {
       total: 0,
       limit: 12,
