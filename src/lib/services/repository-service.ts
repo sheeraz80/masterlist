@@ -110,7 +110,7 @@ export class RepositoryService {
   async linkExistingRepository(projectId: string, githubUrl: string): Promise<Repository> {
     try {
       // Parse GitHub URL
-      const urlParts = githubUrl.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+      const urlParts = githubUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
       if (!urlParts) {
         throw new Error('Invalid GitHub URL format');
       }

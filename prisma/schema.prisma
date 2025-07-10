@@ -720,3 +720,43 @@ enum IncidentStatus {
   RESOLVED
   CLOSED
 }
+
+// Batch Job Management
+model BatchJob {
+  id            String   @id @default(cuid())
+  type          String   // REPOSITORY_CREATION, DEPLOYMENT_SYNC, etc.
+  status        JobStatus @default(PENDING)
+  metadata      Json?    // Job-specific data
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  repositoryLogs RepositoryCreationLog[]
+  
+  @@index([type])
+  @@index([status])
+}
+
+model RepositoryCreationLog {
+  id            String   @id @default(cuid())
+  batchJobId    String
+  projectId     String
+  projectTitle  String
+  status        String   // SUCCESS, FAILED, SKIPPED
+  message       String?
+  error         String?
+  createdAt     DateTime @default(now())
+
+  batchJob      BatchJob @relation(fields: [batchJobId], references: [id], onDelete: Cascade)
+  
+  @@index([batchJobId])
+  @@index([projectId])
+  @@index([status])
+}
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  CANCELLED
+}

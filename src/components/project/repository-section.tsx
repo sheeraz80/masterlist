@@ -145,7 +145,7 @@ export function RepositorySection({ projectId, projectTitle, projectCategory }: 
       case 'ACTIVE': return <CheckCircle className="h-4 w-4 text-green-500" />;
       case 'NEEDS_SETUP': return <Clock className="h-4 w-4 text-yellow-500" />;
       case 'ERROR': return <AlertCircle className="h-4 w-4 text-red-500" />;
-      case 'SYNCING': return <Sync className="h-4 w-4 text-blue-500 animate-spin" />;
+      case 'SYNCING': return <RefreshCw className="h-4 w-4 text-blue-500 animate-spin" />;
       default: return <GitBranch className="h-4 w-4 text-gray-500" />;
     }
   };
@@ -430,7 +430,7 @@ export function RepositorySection({ projectId, projectTitle, projectCategory }: 
         {/* Sync Status */}
         {syncing && (
           <Alert>
-            <Sync className="h-4 w-4 animate-spin" />
+            <RefreshCw className="h-4 w-4 animate-spin" />
             <AlertDescription>
               Synchronizing repository data and running analysis...
             </AlertDescription>
