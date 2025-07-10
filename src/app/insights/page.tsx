@@ -693,7 +693,45 @@ export default function InsightsPage() {
                                       return value.toLocaleString();
                                     }
                                   } else if (Array.isArray(value)) {
-                                    return value.slice(0, 5).join(', ') + (value.length > 5 ? '...' : '');
+                                    // Check if array contains objects (like trending products)
+                                    if (value.length > 0 && typeof value[0] === 'object') {
+                                      // Handle trending products/projects
+                                      if (key === 'top_projects' || key === 'trending_products') {
+                                        return (
+                                          <div className="space-y-1">
+                                            {value.slice(0, 3).map((item, idx) => (
+                                              <div key={idx} className="text-xs bg-background p-1 rounded">
+                                                <div className="font-medium">{item.name}</div>
+                                                {item.description && (
+                                                  <div className="text-muted-foreground truncate">{item.description}</div>
+                                                )}
+                                                {item.stars && (
+                                                  <div className="text-muted-foreground">{item.stars.toLocaleString()} stars</div>
+                                                )}
+                                              </div>
+                                            ))}
+                                          </div>
+                                        );
+                                      } else {
+                                        // Generic array of objects
+                                        return (
+                                          <div className="space-y-1">
+                                            {value.slice(0, 3).map((item, idx) => (
+                                              <div key={idx} className="text-xs bg-background p-1 rounded">
+                                                {Object.entries(item).map(([k, v], i) => (
+                                                  <span key={k}>
+                                                    {i > 0 && ' • '}
+                                                    <span className="font-medium">{k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:</span> {String(v)}
+                                                  </span>
+                                                ))}
+                                              </div>
+                                            ))}
+                                          </div>
+                                        );
+                                      }
+                                    } else {
+                                      return value.slice(0, 5).join(', ') + (value.length > 5 ? '...' : '');
+                                    }
                                   } else if (typeof value === 'object' && value !== null) {
                                     return (
                                       <div className="ml-2 space-y-1">
