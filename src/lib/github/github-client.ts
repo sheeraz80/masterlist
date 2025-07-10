@@ -208,6 +208,45 @@ export class GitHubClient {
     }
   }
 
+  async createFile(options: {
+    owner: string;
+    repo: string;
+    path: string;
+    message: string;
+    content: string;
+    branch?: string;
+  }): Promise<void> {
+    // Retry logic for file creation
+    let retries = 3;
+    let lastError: any;
+    
+    while (retries > 0) {
+      try {
+        await this.createOrUpdateFile(
+          options.owner,
+          options.repo,
+          options.path,
+          options.content,
+          options.message,
+          options.branch
+        );
+        return; // Success
+      } catch (error: any) {
+        lastError = error;
+        if (error.message?.includes('Not Found') && retries > 1) {
+          // Repository might not be fully initialized, wait and retry
+          console.log(`  ⏳ Waiting for repository to be ready, retrying ${options.path}...`);
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          retries--;
+        } else {
+          throw error;
+        }
+      }
+    }
+    
+    throw lastError;
+  }
+
   async createOrUpdateFile(
     owner: string, 
     repo: string, 
@@ -376,6 +415,78 @@ export class GitHubClient {
     };
 
     return templates['node']; // Default to Node for now
+  }
+
+  // Branch protection
+  async createBranchProtection(options: {
+    owner: string;
+    repo: string;
+    branch: string;
+    requiredStatusChecks?: string[];
+    enforceAdmins?: boolean;
+    requiredPullRequestReviews?: {
+      requiredApprovingReviewCount?: number;
+      dismissStaleReviews?: boolean;
+    };
+  }): Promise<void> {
+    try {
+      await this.octokit.repos.updateBranchProtection({
+        owner: options.owner,
+        repo: options.repo,
+        branch: options.branch,
+        required_status_checks: options.requiredStatusChecks ? {
+          strict: true,
+          contexts: options.requiredStatusChecks
+        } : null,
+        enforce_admins: options.enforceAdmins ?? false,
+        required_pull_request_reviews: options.requiredPullRequestReviews || null,
+        restrictions: null
+      });
+    } catch (error) {
+      console.warn(`Failed to create branch protection: ${error.message}`);
+    }
+  }
+
+  // Repository topics
+  async setRepositoryTopics(options: {
+    owner: string;
+    repo: string;
+    topics: string[];
+  }): Promise<void> {
+    try {
+      await this.octokit.repos.replaceAllTopics({
+        owner: options.owner,
+        repo: options.repo,
+        names: options.topics
+      });
+    } catch (error) {
+      console.warn(`Failed to set repository topics: ${error.message}`);
+    }
+  }
+
+  // Security features
+  async enableSecurityFeatures(options: {
+    owner: string;
+    repo: string;
+    vulnerabilityAlerts?: boolean;
+    automatedSecurityFixes?: boolean;
+  }): Promise<void> {
+    try {
+      if (options.vulnerabilityAlerts) {
+        await this.octokit.repos.enableVulnerabilityAlerts({
+          owner: options.owner,
+          repo: options.repo
+        });
+      }
+      if (options.automatedSecurityFixes) {
+        await this.octokit.repos.enableAutomatedSecurityFixes({
+          owner: options.owner,
+          repo: options.repo
+        });
+      }
+    } catch (error) {
+      console.warn(`Failed to enable security features: ${error.message}`);
+    }
   }
 
   // Rate limiting helpers

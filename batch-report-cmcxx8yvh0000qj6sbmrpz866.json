@@ -1,0 +1,735 @@
+{
+  "jobId": "cmcxx8yvh0000qj6sbmrpz866",
+  "status": "COMPLETED",
+  "startTime": "2025-07-10T21:50:27.726Z",
+  "endTime": "Still running",
+  "duration": "64 minutes (ongoing)",
+  "summary": {
+    "totalProjects": 650,
+    "processed": 11,
+    "successful": 0,
+    "failed": 11,
+    "skipped": 0,
+    "repositoriesCreated": 110
+  },
+  "createdRepositories": [
+    {
+      "project": "Session Sentinel",
+      "repository": "corevecta-projects/chrome-extensions-security-session-sentinel",
+      "url": "https://github.com/corevecta-projects/chrome-extensions-security-session-sentinel",
+      "category": "Chrome Extension"
+    },
+    {
+      "project": "Text Style Auditor",
+      "repository": "corevecta-projects/figma-plugins-design-text-style-auditor",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-text-style-auditor",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Live Share Scheduler",
+      "repository": "corevecta-projects/vscode-extensions-developer-tools-live-share-scheduler",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-developer-tools-live-share-scheduler",
+      "category": "VSCode Extension"
+    },
+    {
+      "project": "CiteFinder",
+      "repository": "corevecta-projects/ai-browser-tools-general-citefinder",
+      "url": "https://github.com/corevecta-projects/ai-browser-tools-general-citefinder",
+      "category": "AI Browser Tools"
+    },
+    {
+      "project": "Content Calendar Pro",
+      "repository": "corevecta-projects/notion-templates-general-content-calendar-pro",
+      "url": "https://github.com/corevecta-projects/notion-templates-general-content-calendar-pro",
+      "category": "Notion Templates"
+    },
+    {
+      "project": "Link Visualizer",
+      "repository": "corevecta-projects/obsidian-plugins-security-link-visualizer",
+      "url": "https://github.com/corevecta-projects/obsidian-plugins-security-link-visualizer",
+      "category": "Obsidian Plugin"
+    },
+    {
+      "project": "DeFi Dashboard Lite",
+      "repository": "corevecta-projects/crypto-browser-tools-finance-defi-dashboard-lite",
+      "url": "https://github.com/corevecta-projects/crypto-browser-tools-finance-defi-dashboard-lite",
+      "category": "Crypto Browser Tools"
+    },
+    {
+      "project": "Bulk Email Attachment Downloader",
+      "repository": "corevecta-projects/zapier-apps-general-bulk-email-attachment-downloader",
+      "url": "https://github.com/corevecta-projects/zapier-apps-general-bulk-email-attachment-downloader",
+      "category": "Zapier Apps"
+    },
+    {
+      "project": "TaskSync",
+      "repository": "corevecta-projects/ai-productivity-productivity-tasksync",
+      "url": "https://github.com/corevecta-projects/ai-productivity-productivity-tasksync",
+      "category": "AI Productivity Tools"
+    },
+    {
+      "project": "Landing Page Copy Generator",
+      "repository": "corevecta-projects/ai-writing-productivity-landing-page-copy-generator",
+      "url": "https://github.com/corevecta-projects/ai-writing-productivity-landing-page-copy-generator",
+      "category": "AI Writing Tools"
+    },
+    {
+      "project": "Automated Invoice Tracker",
+      "repository": "corevecta-projects/ai-automation-general-automated-invoice-tracker",
+      "url": "https://github.com/corevecta-projects/ai-automation-general-automated-invoice-tracker",
+      "category": "AI Automation Platforms"
+    },
+    {
+      "project": "AI-Powered YouTube Summarizer & Mind Map",
+      "repository": "corevecta-projects/chrome-extensions-security-ai-powered-youtube-summarizer-mind-map",
+      "url": "https://github.com/corevecta-projects/chrome-extensions-security-ai-powered-youtube-summarizer-mind-map",
+      "category": "Chrome Extension"
+    },
+    {
+      "project": "Privacy Guardian Dashboard",
+      "repository": "corevecta-projects/chrome-extensions-security-privacy-guardian-dashboard",
+      "url": "https://github.com/corevecta-projects/chrome-extensions-security-privacy-guardian-dashboard",
+      "category": "Chrome Extension"
+    },
+    {
+      "project": "Smart Shopping Sidekick",
+      "repository": "corevecta-projects/chrome-extensions-security-smart-shopping-sidekick",
+      "url": "https://github.com/corevecta-projects/chrome-extensions-security-smart-shopping-sidekick",
+      "category": "Chrome Extension"
+    },
+    {
+      "project": "Clipboard Manager Pro",
+      "repository": "corevecta-projects/chrome-extensions-security-clipboard-manager-pro",
+      "url": "https://github.com/corevecta-projects/chrome-extensions-security-clipboard-manager-pro",
+      "category": "Chrome Extension"
+    },
+    {
+      "project": "Batch Renamer",
+      "repository": "corevecta-projects/figma-plugins-design-batch-renamer",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-batch-renamer",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Window Resizer",
+      "repository": "corevecta-projects/figma-plugins-design-window-resizer",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-window-resizer",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "ModHeader",
+      "repository": "corevecta-projects/figma-plugins-developer-tools-modheader",
+      "url": "https://github.com/corevecta-projects/figma-plugins-developer-tools-modheader",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Note-Taking & To-Do List",
+      "repository": "corevecta-projects/figma-plugins-productivity-note-taking-to-do-list",
+      "url": "https://github.com/corevecta-projects/figma-plugins-productivity-note-taking-to-do-list",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Price Comparison Tool",
+      "repository": "corevecta-projects/figma-plugins-e-commerce-price-comparison-tool",
+      "url": "https://github.com/corevecta-projects/figma-plugins-e-commerce-price-comparison-tool",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "StyleDoc Generator",
+      "repository": "corevecta-projects/figma-plugins-developer-tools-styledoc-generator",
+      "url": "https://github.com/corevecta-projects/figma-plugins-developer-tools-styledoc-generator",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Anti-Fingerprinting Tool",
+      "repository": "corevecta-projects/figma-plugins-security-anti-fingerprinting-tool",
+      "url": "https://github.com/corevecta-projects/figma-plugins-security-anti-fingerprinting-tool",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Email Productivity Booster",
+      "repository": "corevecta-projects/figma-plugins-productivity-email-productivity-booster",
+      "url": "https://github.com/corevecta-projects/figma-plugins-productivity-email-productivity-booster",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "SnippetSaver",
+      "repository": "corevecta-projects/vscode-extensions-developer-tools-snippetsaver",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-developer-tools-snippetsaver",
+      "category": "VSCode Extension"
+    },
+    {
+      "project": "CommitCoach",
+      "repository": "corevecta-projects/vscode-extensions-developer-tools-commitcoach",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-developer-tools-commitcoach",
+      "category": "VSCode Extension"
+    },
+    {
+      "project": "CodeLens Pro",
+      "repository": "corevecta-projects/vscode-extensions-developer-tools-codelens-pro",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-developer-tools-codelens-pro",
+      "category": "VSCode Extension"
+    },
+    {
+      "project": "Figma2Notion (Design-to-Docs)",
+      "repository": "corevecta-projects/figma-plugins-design-figma2notion-design-to-docs",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-figma2notion-design-to-docs",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Code Spell Checker Pro",
+      "repository": "corevecta-projects/vscode-extensions-developer-tools-code-spell-checker-pro",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-developer-tools-code-spell-checker-pro",
+      "category": "VSCode Extension"
+    },
+    {
+      "project": "Design Versioner",
+      "repository": "corevecta-projects/figma-plugins-developer-tools-design-versioner",
+      "url": "https://github.com/corevecta-projects/figma-plugins-developer-tools-design-versioner",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Markdown Magic",
+      "repository": "corevecta-projects/vscode-extensions-developer-tools-markdown-magic",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-developer-tools-markdown-magic",
+      "category": "VSCode Extension"
+    },
+    {
+      "project": "Code Metrics Lite",
+      "repository": "corevecta-projects/vscode-extensions-developer-tools-code-metrics-lite",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-developer-tools-code-metrics-lite",
+      "category": "VSCode Extension"
+    },
+    {
+      "project": "CopyForge",
+      "repository": "corevecta-projects/figma-plugins-design-copyforge",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-copyforge",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Color Highlighter Pro",
+      "repository": "corevecta-projects/vscode-extensions-developer-tools-color-highlighter-pro",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-developer-tools-color-highlighter-pro",
+      "category": "VSCode Extension"
+    },
+    {
+      "project": "SpellCheck+ (Content Proofreader)",
+      "repository": "corevecta-projects/figma-plugins-security-spellcheck-content-proofreader",
+      "url": "https://github.com/corevecta-projects/figma-plugins-security-spellcheck-content-proofreader",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "IconSynth",
+      "repository": "corevecta-projects/figma-plugins-design-iconsynth",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-iconsynth",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "A11y Analyzer (Accessibility Assistant)",
+      "repository": "corevecta-projects/figma-plugins-design-a11y-analyzer-accessibility-assistant",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-a11y-analyzer-accessibility-assistant",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "MockFlow AI",
+      "repository": "corevecta-projects/figma-plugins-security-mockflow-ai",
+      "url": "https://github.com/corevecta-projects/figma-plugins-security-mockflow-ai",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "ClientPortal OS",
+      "repository": "corevecta-projects/notion-templates-general-clientportal-os",
+      "url": "https://github.com/corevecta-projects/notion-templates-general-clientportal-os",
+      "category": "Notion Templates"
+    },
+    {
+      "project": "DesignAudit Buddy",
+      "repository": "corevecta-projects/figma-plugins-security-designaudit-buddy",
+      "url": "https://github.com/corevecta-projects/figma-plugins-security-designaudit-buddy",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Flowchart Builder",
+      "repository": "corevecta-projects/figma-plugins-design-flowchart-builder",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-flowchart-builder",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Component Usage Tracker",
+      "repository": "corevecta-projects/figma-plugins-design-component-usage-tracker",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-component-usage-tracker",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "UserFlowMapper",
+      "repository": "corevecta-projects/figma-plugins-design-userflowmapper",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-userflowmapper",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Image Compressor",
+      "repository": "corevecta-projects/figma-plugins-design-image-compressor",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-image-compressor",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Icon Style Converter",
+      "repository": "corevecta-projects/figma-plugins-design-icon-style-converter",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-icon-style-converter",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "GraphGenius",
+      "repository": "corevecta-projects/obsidian-plugins-general-graphgenius",
+      "url": "https://github.com/corevecta-projects/obsidian-plugins-general-graphgenius",
+      "category": "Obsidian Plugin"
+    },
+    {
+      "project": "Design Merge Request (Collaboration Aid)",
+      "repository": "corevecta-projects/figma-plugins-security-design-merge-request-collaboration-aid",
+      "url": "https://github.com/corevecta-projects/figma-plugins-security-design-merge-request-collaboration-aid",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "SmartTags",
+      "repository": "corevecta-projects/obsidian-plugins-security-smarttags",
+      "url": "https://github.com/corevecta-projects/obsidian-plugins-security-smarttags",
+      "category": "Obsidian Plugin"
+    },
+    {
+      "project": "Note Versioning",
+      "repository": "corevecta-projects/obsidian-plugins-general-note-versioning",
+      "url": "https://github.com/corevecta-projects/obsidian-plugins-general-note-versioning",
+      "category": "Obsidian Plugin"
+    },
+    {
+      "project": "PDF Annotator",
+      "repository": "corevecta-projects/obsidian-plugins-general-pdf-annotator",
+      "url": "https://github.com/corevecta-projects/obsidian-plugins-general-pdf-annotator",
+      "category": "Obsidian Plugin"
+    },
+    {
+      "project": "Focus Mode",
+      "repository": "corevecta-projects/obsidian-plugins-design-focus-mode",
+      "url": "https://github.com/corevecta-projects/obsidian-plugins-design-focus-mode",
+      "category": "Obsidian Plugin"
+    },
+    {
+      "project": "Smart Importer",
+      "repository": "corevecta-projects/obsidian-plugins-security-smart-importer",
+      "url": "https://github.com/corevecta-projects/obsidian-plugins-security-smart-importer",
+      "category": "Obsidian Plugin"
+    },
+    {
+      "project": "UI Flow AutoMapper",
+      "repository": "corevecta-projects/figma-plugins-design-ui-flow-automapper",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-ui-flow-automapper",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Note Encryption",
+      "repository": "corevecta-projects/obsidian-plugins-general-note-encryption",
+      "url": "https://github.com/corevecta-projects/obsidian-plugins-general-note-encryption",
+      "category": "Obsidian Plugin"
+    },
+    {
+      "project": "Spec Exporter",
+      "repository": "corevecta-projects/figma-plugins-design-spec-exporter",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-spec-exporter",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Note Merge Tool",
+      "repository": "corevecta-projects/obsidian-plugins-general-note-merge-tool",
+      "url": "https://github.com/corevecta-projects/obsidian-plugins-general-note-merge-tool",
+      "category": "Obsidian Plugin"
+    },
+    {
+      "project": "Smart Duplicate Finder",
+      "repository": "corevecta-projects/figma-plugins-security-smart-duplicate-finder",
+      "url": "https://github.com/corevecta-projects/figma-plugins-security-smart-duplicate-finder",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Fake Filler",
+      "repository": "corevecta-projects/figma-plugins-design-fake-filler",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-fake-filler",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Requestly",
+      "repository": "corevecta-projects/figma-plugins-developer-tools-requestly",
+      "url": "https://github.com/corevecta-projects/figma-plugins-developer-tools-requestly",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Project Management Overlay",
+      "repository": "corevecta-projects/figma-plugins-productivity-project-management-overlay",
+      "url": "https://github.com/corevecta-projects/figma-plugins-productivity-project-management-overlay",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Unused Asset Finder",
+      "repository": "corevecta-projects/figma-plugins-design-unused-asset-finder",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-unused-asset-finder",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "A11y Contrast Pairings",
+      "repository": "corevecta-projects/figma-plugins-security-a11y-contrast-pairings",
+      "url": "https://github.com/corevecta-projects/figma-plugins-security-a11y-contrast-pairings",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Grid Guardian",
+      "repository": "corevecta-projects/figma-plugins-design-grid-guardian",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-grid-guardian",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Shopify Product Card Builder",
+      "repository": "corevecta-projects/figma-plugins-e-commerce-shopify-product-card-builder",
+      "url": "https://github.com/corevecta-projects/figma-plugins-e-commerce-shopify-product-card-builder",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Airtable Content Sync",
+      "repository": "corevecta-projects/figma-plugins-design-airtable-content-sync",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-airtable-content-sync",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Real-Time Stock Chart Generator",
+      "repository": "corevecta-projects/figma-plugins-design-real-time-stock-chart-generator",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-real-time-stock-chart-generator",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Developer's Toolbox",
+      "repository": "corevecta-projects/chrome-extensions-security-developer-s-toolbox",
+      "url": "https://github.com/corevecta-projects/chrome-extensions-security-developer-s-toolbox",
+      "category": "Chrome Extension"
+    },
+    {
+      "project": "Web Page Annotator & Highlighter",
+      "repository": "corevecta-projects/chrome-extensions-security-web-page-annotator-highlighter",
+      "url": "https://github.com/corevecta-projects/chrome-extensions-security-web-page-annotator-highlighter",
+      "category": "Chrome Extension"
+    },
+    {
+      "project": "MicroAnimator (Interactive Exporter)",
+      "repository": "corevecta-projects/figma-plugins-developer-tools-microanimator-interactive-exporter",
+      "url": "https://github.com/corevecta-projects/figma-plugins-developer-tools-microanimator-interactive-exporter",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Isometric Scene Builder",
+      "repository": "corevecta-projects/figma-plugins-design-isometric-scene-builder",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-isometric-scene-builder",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Localization Text Swapper",
+      "repository": "corevecta-projects/figma-plugins-design-localization-text-swapper",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-localization-text-swapper",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Social Media Feed Blocker",
+      "repository": "corevecta-projects/chrome-extensions-productivity-social-media-feed-blocker",
+      "url": "https://github.com/corevecta-projects/chrome-extensions-productivity-social-media-feed-blocker",
+      "category": "Chrome Extension"
+    },
+    {
+      "project": "Advanced Shadow Studio",
+      "repository": "corevecta-projects/figma-plugins-design-advanced-shadow-studio",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-advanced-shadow-studio",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Client Content Portal",
+      "repository": "corevecta-projects/figma-plugins-design-client-content-portal",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-client-content-portal",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Temporary Email Generator",
+      "repository": "corevecta-projects/chrome-extensions-security-temporary-email-generator",
+      "url": "https://github.com/corevecta-projects/chrome-extensions-security-temporary-email-generator",
+      "category": "Chrome Extension"
+    },
+    {
+      "project": "Smart Chat (AI)",
+      "repository": "corevecta-projects/obsidian-plugins-security-smart-chat-ai",
+      "url": "https://github.com/corevecta-projects/obsidian-plugins-security-smart-chat-ai",
+      "category": "Obsidian Plugin"
+    },
+    {
+      "project": "Screenshot to Code (AI)",
+      "repository": "corevecta-projects/chrome-extensions-security-screenshot-to-code-ai",
+      "url": "https://github.com/corevecta-projects/chrome-extensions-security-screenshot-to-code-ai",
+      "category": "Chrome Extension"
+    },
+    {
+      "project": "Version Snapshotter",
+      "repository": "corevecta-projects/figma-plugins-design-version-snapshotter",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-version-snapshotter",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Presentation Mode Pro",
+      "repository": "corevecta-projects/figma-plugins-design-presentation-mode-pro",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-presentation-mode-pro",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Layer Path Copier",
+      "repository": "corevecta-projects/figma-plugins-design-layer-path-copier",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-layer-path-copier",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Automated Task Scheduler",
+      "repository": "corevecta-projects/figma-plugins-productivity-automated-task-scheduler",
+      "url": "https://github.com/corevecta-projects/figma-plugins-productivity-automated-task-scheduler",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "BrandGuard Pro",
+      "repository": "corevecta-projects/figma-plugins-design-brandguard-pro",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-brandguard-pro",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Travel Price Comparator",
+      "repository": "corevecta-projects/figma-plugins-e-commerce-travel-price-comparator",
+      "url": "https://github.com/corevecta-projects/figma-plugins-e-commerce-travel-price-comparator",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "AI Writing Assistant",
+      "repository": "corevecta-projects/figma-plugins-security-ai-writing-assistant",
+      "url": "https://github.com/corevecta-projects/figma-plugins-security-ai-writing-assistant",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "AI Sales & Lead Generation",
+      "repository": "corevecta-projects/figma-plugins-security-ai-sales-lead-generation",
+      "url": "https://github.com/corevecta-projects/figma-plugins-security-ai-sales-lead-generation",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Profit Recovery Tracker",
+      "repository": "corevecta-projects/figma-plugins-design-profit-recovery-tracker",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-profit-recovery-tracker",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Web Page Health Checker",
+      "repository": "corevecta-projects/chrome-extensions-security-web-page-health-checker",
+      "url": "https://github.com/corevecta-projects/chrome-extensions-security-web-page-health-checker",
+      "category": "Chrome Extension"
+    },
+    {
+      "project": "AI Scam Detector",
+      "repository": "corevecta-projects/figma-plugins-security-ai-scam-detector",
+      "url": "https://github.com/corevecta-projects/figma-plugins-security-ai-scam-detector",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "AutoLayout Optimizer",
+      "repository": "corevecta-projects/figma-plugins-design-autolayout-optimizer",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-autolayout-optimizer",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Cross-Device Tab Sender",
+      "repository": "corevecta-projects/chrome-extensions-security-cross-device-tab-sender",
+      "url": "https://github.com/corevecta-projects/chrome-extensions-security-cross-device-tab-sender",
+      "category": "Chrome Extension"
+    },
+    {
+      "project": "Secure Password Manager",
+      "repository": "corevecta-projects/figma-plugins-design-secure-password-manager",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-secure-password-manager",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Enhanced Privacy Tracker",
+      "repository": "corevecta-projects/figma-plugins-security-enhanced-privacy-tracker",
+      "url": "https://github.com/corevecta-projects/figma-plugins-security-enhanced-privacy-tracker",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Advanced Bookmark Manager",
+      "repository": "corevecta-projects/figma-plugins-design-advanced-bookmark-manager",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-advanced-bookmark-manager",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Recipe Card Cleaner",
+      "repository": "corevecta-projects/chrome-extensions-security-recipe-card-cleaner",
+      "url": "https://github.com/corevecta-projects/chrome-extensions-security-recipe-card-cleaner",
+      "category": "Chrome Extension"
+    },
+    {
+      "project": "Tab Group Saver",
+      "repository": "corevecta-projects/figma-plugins-design-tab-group-saver",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-tab-group-saver",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "Sentiment Router",
+      "repository": "corevecta-projects/zapier-apps-general-sentiment-router",
+      "url": "https://github.com/corevecta-projects/zapier-apps-general-sentiment-router",
+      "category": "Zapier Apps"
+    },
+    {
+      "project": "Developer Debugger",
+      "repository": "corevecta-projects/figma-plugins-developer-tools-developer-debugger",
+      "url": "https://github.com/corevecta-projects/figma-plugins-developer-tools-developer-debugger",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "AI Invoice Categorizer",
+      "repository": "corevecta-projects/zapier-apps-general-ai-invoice-categorizer",
+      "url": "https://github.com/corevecta-projects/zapier-apps-general-ai-invoice-categorizer",
+      "category": "Zapier Apps"
+    },
+    {
+      "project": "Social Content Repurposer",
+      "repository": "corevecta-projects/zapier-apps-social-media-social-content-repurposer",
+      "url": "https://github.com/corevecta-projects/zapier-apps-social-media-social-content-repurposer",
+      "category": "Zapier Apps"
+    },
+    {
+      "project": "Meeting Summary Generator",
+      "repository": "corevecta-projects/zapier-apps-general-meeting-summary-generator",
+      "url": "https://github.com/corevecta-projects/zapier-apps-general-meeting-summary-generator",
+      "category": "Zapier Apps"
+    },
+    {
+      "project": "DocuGen",
+      "repository": "corevecta-projects/vscode-extensions-developer-tools-docugen",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-developer-tools-docugen",
+      "category": "VSCode Extension"
+    },
+    {
+      "project": "CodeTimer",
+      "repository": "corevecta-projects/vscode-extensions-productivity-codetimer",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-productivity-codetimer",
+      "category": "VSCode Extension"
+    },
+    {
+      "project": "Price Drop & Stock Alert for Amazon",
+      "repository": "corevecta-projects/chrome-extensions-security-price-drop-stock-alert-for-amazon",
+      "url": "https://github.com/corevecta-projects/chrome-extensions-security-price-drop-stock-alert-for-amazon",
+      "category": "Chrome Extension"
+    },
+    {
+      "project": "EnvSwitch",
+      "repository": "corevecta-projects/vscode-extensions-developer-tools-envswitch",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-developer-tools-envswitch",
+      "category": "VSCode Extension"
+    },
+    {
+      "project": "FileSize Status",
+      "repository": "corevecta-projects/vscode-extensions-developer-tools-filesize-status",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-developer-tools-filesize-status",
+      "category": "VSCode Extension"
+    },
+    {
+      "project": "Contrast Guardian",
+      "repository": "corevecta-projects/figma-plugins-developer-tools-contrast-guardian",
+      "url": "https://github.com/corevecta-projects/figma-plugins-developer-tools-contrast-guardian",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "PageMerge",
+      "repository": "corevecta-projects/vscode-extensions-developer-tools-pagemerge",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-developer-tools-pagemerge",
+      "category": "VSCode Extension"
+    },
+    {
+      "project": "Test Runner Lite",
+      "repository": "corevecta-projects/vscode-extensions-developer-tools-test-runner-lite",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-developer-tools-test-runner-lite",
+      "category": "VSCode Extension"
+    },
+    {
+      "project": "TaskFlow",
+      "repository": "corevecta-projects/obsidian-plugins-productivity-taskflow",
+      "url": "https://github.com/corevecta-projects/obsidian-plugins-productivity-taskflow",
+      "category": "Obsidian Plugin"
+    },
+    {
+      "project": "TokenTransformer",
+      "repository": "corevecta-projects/figma-plugins-design-tokentransformer",
+      "url": "https://github.com/corevecta-projects/figma-plugins-design-tokentransformer",
+      "category": "Figma Plugin"
+    },
+    {
+      "project": "AI Refactor Buddy",
+      "repository": "corevecta-projects/vscode-extensions-security-ai-refactor-buddy",
+      "url": "https://github.com/corevecta-projects/vscode-extensions-security-ai-refactor-buddy",
+      "category": "VSCode Extension"
+    }
+  ],
+  "failures": [
+    {
+      "project": "Session Sentinel",
+      "error": "Cannot read properties of undefined (reading 'login')",
+      "timestamp": "2025-07-10T21:50:29.584Z"
+    },
+    {
+      "project": "Text Style Auditor",
+      "error": "Cannot read properties of undefined (reading 'login')",
+      "timestamp": "2025-07-10T21:50:41.567Z"
+    },
+    {
+      "project": "Live Share Scheduler",
+      "error": "Cannot read properties of undefined (reading 'login')",
+      "timestamp": "2025-07-10T21:50:53.571Z"
+    },
+    {
+      "project": "CiteFinder",
+      "error": "Cannot read properties of undefined (reading 'login')",
+      "timestamp": "2025-07-10T21:51:05.324Z"
+    },
+    {
+      "project": "Content Calendar Pro",
+      "error": "Cannot read properties of undefined (reading 'login')",
+      "timestamp": "2025-07-10T21:51:17.612Z"
+    },
+    {
+      "project": "Link Visualizer",
+      "error": "Cannot read properties of undefined (reading 'login')",
+      "timestamp": "2025-07-10T21:51:29.389Z"
+    },
+    {
+      "project": "DeFi Dashboard Lite",
+      "error": "Cannot read properties of undefined (reading 'login')",
+      "timestamp": "2025-07-10T21:51:41.165Z"
+    },
+    {
+      "project": "Bulk Email Attachment Downloader",
+      "error": "Cannot read properties of undefined (reading 'login')",
+      "timestamp": "2025-07-10T21:51:52.944Z"
+    },
+    {
+      "project": "TaskSync",
+      "error": "Cannot read properties of undefined (reading 'login')",
+      "timestamp": "2025-07-10T21:52:04.924Z"
+    },
+    {
+      "project": "Landing Page Copy Generator",
+      "error": "Cannot read properties of undefined (reading 'login')",
+      "timestamp": "2025-07-10T21:52:16.803Z"
+    },
+    {
+      "project": "Automated Invoice Tracker",
+      "error": "Cannot read properties of undefined (reading 'login')",
+      "timestamp": "2025-07-10T21:52:28.579Z"
+    }
+  ],
+  "skipped": []
+}
