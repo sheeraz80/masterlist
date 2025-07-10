@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
+import { cookies } from 'next/headers';
 import { repoAutomation } from '@/lib/services/repository-automation-service';
 import { prisma } from '@/lib/prisma';
 
@@ -8,8 +7,23 @@ import { prisma } from '@/lib/prisma';
 export async function POST(request: NextRequest) {
   try {
     // Check authentication
-    const session = await getServerSession(authOptions);
-    if (!session || session.user?.email !== process.env.ADMIN_EMAIL) {
+    const cookieStore = cookies();
+    const authToken = cookieStore.get('auth-token');
+    
+    if (!authToken) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+    
+    // Verify admin
+    const session = await prisma.session.findUnique({
+      where: { token: authToken.value },
+      include: { user: true }
+    });
+    
+    if (!session || session.user.email !== process.env.ADMIN_EMAIL) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -64,8 +78,22 @@ export async function POST(request: NextRequest) {
 // Get batch creation job status
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session || session.user?.email !== process.env.ADMIN_EMAIL) {
+    const cookieStore = cookies();
+    const authToken = cookieStore.get('auth-token');
+    
+    if (!authToken) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+    
+    const session = await prisma.session.findUnique({
+      where: { token: authToken.value },
+      include: { user: true }
+    });
+    
+    if (!session || session.user.email !== process.env.ADMIN_EMAIL) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

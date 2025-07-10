@@ -1,14 +1,29 @@
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
 import { RepositoryBatchMonitor } from '@/components/admin/repository-batch-monitor';
+import { prisma } from '@/lib/prisma';
 
 export default async function AdminRepositoriesPage() {
-  const session = await getServerSession(authOptions);
+  // Simple auth check - verify the auth token
+  const cookieStore = cookies();
+  const authToken = cookieStore.get('auth-token');
   
-  // Check if user is admin
-  if (!session || session.user?.email !== process.env.ADMIN_EMAIL) {
-    redirect('/');
+  if (!authToken) {
+    redirect('/login');
+  }
+  
+  // Verify the token belongs to admin
+  try {
+    const session = await prisma.session.findUnique({
+      where: { token: authToken.value },
+      include: { user: true }
+    });
+    
+    if (!session || session.user.email !== process.env.ADMIN_EMAIL) {
+      redirect('/login');
+    }
+  } catch (error) {
+    redirect('/login');
   }
 
   return (

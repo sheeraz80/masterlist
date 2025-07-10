@@ -81,6 +81,11 @@ export default function HomePage() {
                   View Analytics <TrendingUp className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
+              <Button asChild size="lg" className="bg-yellow-500 text-black hover:bg-yellow-400">
+                <Link href="/admin/repositories">
+                  Admin: Repository Management
+                </Link>
+              </Button>
             </div>
           </div>
           <div className="absolute inset-0 bg-black/10" />

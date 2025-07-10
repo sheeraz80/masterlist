@@ -1,0 +1,8 @@
+# Ignore uncompressed SQL files
+*.sql
+
+# Keep compressed backups
+!*.sql.gz
+
+# Keep this file
+!.gitignore
