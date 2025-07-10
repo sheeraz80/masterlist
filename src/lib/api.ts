@@ -10,7 +10,7 @@ export async function getProjects(params?: {
   search?: string;
   category?: string;
 }): Promise<{
-  projects: Project[];
+  data: Project[];
   pagination: {
     total: number;
     limit: number;
@@ -36,7 +36,7 @@ export async function getProjects(params?: {
   const data = await response.json();
   
   return {
-    projects: data.data || [],
+    data: data.data || [],
     pagination: data.pagination || {
       total: 0,
       limit: 12,
@@ -55,6 +55,10 @@ export async function getProject(id: string): Promise<Project> {
     throw new Error('Failed to fetch project');
   }
   return response.json();
+}
+
+export async function getProjectById(id: string): Promise<Project> {
+  return getProject(id);
 }
 
 export async function getStats(): Promise<Stats> {
