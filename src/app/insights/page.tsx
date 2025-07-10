@@ -370,11 +370,60 @@ export default function InsightsPage() {
                   <CardContent className="space-y-4">
                     {insight.data_points.length > 0 && (
                       <div>
-                        <h4 className="font-medium mb-2">Data Points</h4>
-                        <div className="bg-muted p-3 rounded-lg">
-                          <pre className="text-xs overflow-x-auto">
-                            {JSON.stringify(insight.data_points[0], null, 2)}
-                          </pre>
+                        <h4 className="font-medium mb-2">Key Metrics</h4>
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          {insight.data_points.map((dataPoint, dpIndex) => (
+                            <div key={dpIndex} className="space-y-2">
+                              {Object.entries(dataPoint).map(([key, value]) => {
+                                // Format the key to be more readable
+                                const formattedKey = key
+                                  .replace(/_/g, ' ')
+                                  .replace(/\b\w/g, l => l.toUpperCase());
+                                
+                                // Handle different value types
+                                const renderValue = () => {
+                                  if (typeof value === 'number') {
+                                    // Format numbers appropriately
+                                    if (key.includes('revenue') || key.includes('Revenue')) {
+                                      return `$${value.toLocaleString()}`;
+                                    } else if (key.includes('ratio') || key.includes('score') || key.includes('interest')) {
+                                      return `${value}%`;
+                                    } else {
+                                      return value.toLocaleString();
+                                    }
+                                  } else if (Array.isArray(value)) {
+                                    return value.slice(0, 3).join(', ') + (value.length > 3 ? '...' : '');
+                                  } else if (typeof value === 'object' && value !== null) {
+                                    // Handle nested objects
+                                    return (
+                                      <div className="ml-2 space-y-1">
+                                        {Object.entries(value).slice(0, 3).map(([k, v]) => (
+                                          <div key={k} className="text-xs">
+                                            <span className="font-medium">{k.replace(/_/g, ' ')}:</span> {
+                                              Array.isArray(v) ? v.slice(0, 2).join(', ') : String(v)
+                                            }
+                                          </div>
+                                        ))}
+                                      </div>
+                                    );
+                                  } else {
+                                    return String(value);
+                                  }
+                                };
+                                
+                                return (
+                                  <div key={key} className="bg-muted p-2 rounded">
+                                    <div className="text-xs font-medium text-muted-foreground">
+                                      {formattedKey}
+                                    </div>
+                                    <div className="text-sm font-medium mt-1">
+                                      {renderValue()}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          ))}
                         </div>
                       </div>
                     )}
