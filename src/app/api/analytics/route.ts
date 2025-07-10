@@ -54,6 +54,17 @@ interface AnalyticsData {
     active_users_last_week: number;
     trending_categories: string[];
   };
+  projects: Array<{
+    id: string;
+    title: string;
+    qualityScore: number;
+    technicalComplexity: number;
+    revenuePotential: number;
+    activitiesCount: number;
+    category: string;
+    developmentTime: string;
+    competitionLevel: string;
+  }>;
 }
 
 export const GET = withRateLimit(
@@ -424,6 +435,17 @@ function generateAnalytics(
       new_projects_last_week: newProjectsCount,
       active_users_last_week: activeUsersCount,
       trending_categories: trendingCategories
-    }
+    },
+    projects: projects.map(project => ({
+      id: project.id,
+      title: project.title || 'Untitled Project',
+      qualityScore: project.quality_score || 0,
+      technicalComplexity: project.technical_complexity || 0,
+      revenuePotential: project.revenue_potential?.realistic || 0,
+      activitiesCount: project.activities_count || 0,
+      category: project.category || 'Uncategorized',
+      developmentTime: project.development_time || 'Unknown',
+      competitionLevel: project.competition_level || 'Unknown'
+    }))
   };
 }

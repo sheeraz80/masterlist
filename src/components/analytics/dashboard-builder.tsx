@@ -257,7 +257,6 @@ export function DashboardBuilder() {
   };
 
   return (
-    <DndProvider backend={HTML5Backend}>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -391,6 +390,5 @@ export function DashboardBuilder() {
           </Card>
         </div>
       </div>
-    </DndProvider>
   );
 }
