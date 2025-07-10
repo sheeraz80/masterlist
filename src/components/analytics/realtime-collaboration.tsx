@@ -7,8 +7,9 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { 
   Users, Activity, Eye, Edit, MessageSquare, 
-  TrendingUp, Clock, Zap, Globe
+  TrendingUp, Clock, Zap, Globe, RefreshCw, AlertTriangle
 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { formatDistanceToNow } from 'date-fns';
 
 interface RealtimeCollaborationProps {
@@ -16,7 +17,15 @@ interface RealtimeCollaborationProps {
 }
 
 export function RealtimeCollaboration({ currentTab }: RealtimeCollaborationProps) {
-  const { isConnected, metrics, onlineUsers, recentActivities } = useRealtime({
+  const { 
+    isConnected, 
+    metrics, 
+    onlineUsers, 
+    recentActivities, 
+    isLoadingMetrics, 
+    metricsError,
+    refreshMetrics 
+  } = useRealtime({
     analyticsTab: currentTab
   });
 
@@ -34,6 +43,54 @@ export function RealtimeCollaboration({ currentTab }: RealtimeCollaborationProps
     return 'text-gray-500';
   };
 
+  if (isLoadingMetrics) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="h-2 w-2 rounded-full bg-yellow-500 animate-pulse" />
+            <span className="text-sm text-muted-foreground">Loading real-time data...</span>
+          </div>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-24 bg-muted animate-pulse rounded-lg" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (metricsError) {
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="h-2 w-2 rounded-full bg-red-500" />
+            <span className="text-sm text-muted-foreground">Real-time service unavailable</span>
+          </div>
+          <Button variant="outline" size="sm" onClick={refreshMetrics}>
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Retry
+          </Button>
+        </div>
+        <Card>
+          <CardContent className="p-6 text-center">
+            <AlertTriangle className="h-12 w-12 text-orange-500 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold mb-2">Real-time Features Unavailable</h3>
+            <p className="text-muted-foreground mb-4">
+              Unable to connect to the real-time collaboration service. 
+              This may be because the Socket.io server is not running.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Error: {metricsError}
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       {/* Connection Status */}
@@ -41,13 +98,18 @@ export function RealtimeCollaboration({ currentTab }: RealtimeCollaborationProps
         <div className="flex items-center space-x-2">
           <div className={`h-2 w-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`} />
           <span className="text-sm text-muted-foreground">
-            {isConnected ? 'Connected' : 'Disconnected'}
+            {isConnected ? 'Connected to database' : 'Service unavailable'}
           </span>
         </div>
-        <Badge variant="outline" className="gap-1">
-          <Users className="h-3 w-3" />
-          {onlineUsers} online
-        </Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="gap-1">
+            <Users className="h-3 w-3" />
+            {onlineUsers} active users
+          </Badge>
+          <Button variant="ghost" size="sm" onClick={refreshMetrics}>
+            <RefreshCw className="h-4 w-4" />
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

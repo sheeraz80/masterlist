@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,25 +32,55 @@ export function AIInsightsSimple() {
     if (!query.trim()) return;
     
     setLoading(true);
+    setResponse('');
+    
     try {
       const res = await fetch(`/api/analytics/ai-insights?type=query&q=${encodeURIComponent(query)}`);
+      
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      }
+      
       const data = await res.json();
-      setResponse(data.answer || 'No response');
+      
+      if (data.error) {
+        setResponse(`**AI Service Error:** ${data.error}\n\nThis may be because:\n- Ollama service is not running\n- DeepSeek models are not installed\n- Network connectivity issues\n\nPlease check the AI service status and try again.`);
+      } else {
+        setResponse(data.answer || '**No Response:** The AI service returned an empty response. Please try rephrasing your question or check if the Ollama service is properly configured.');
+      }
     } catch (error) {
-      setResponse('Error processing query');
+      console.error('AI Query Error:', error);
+      setResponse(`**Connection Error:** Unable to connect to the AI insights service.\n\n**Possible causes:**\n- AI service (Ollama) is not running\n- Network connectivity issues\n- Server configuration problems\n\n**To resolve:**\n1. Ensure Ollama is installed and running\n2. Check if DeepSeek models are available\n3. Verify API endpoints are accessible\n\nError details: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
   };
 
-  // Mock data for visualization
-  const successData = [
-    { name: 'AI Assistant', value: 92, risk: 'low' },
-    { name: 'E-commerce Platform', value: 85, risk: 'low' },
-    { name: 'Health Tracker', value: 78, risk: 'medium' },
-    { name: 'Social Network', value: 65, risk: 'medium' },
-    { name: 'Blockchain App', value: 45, risk: 'high' }
-  ];
+  // Fetch real prediction data
+  const [predictionsLoading, setPredictionsLoading] = useState(true);
+  const [predictionsData, setPredictionsData] = useState<any[]>([]);
+  const [predictionsError, setPredictionsError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchPredictions = async () => {
+      try {
+        const res = await fetch('/api/analytics/ai-insights?type=predictions');
+        const data = await res.json();
+        
+        if (data.error) {
+          setPredictionsError(data.error);
+        } else {
+          setPredictionsData(data.predictions || []);
+        }
+      } catch (error) {
+        setPredictionsError('Unable to load AI predictions');
+      } finally {
+        setPredictionsLoading(false);
+      }
+    };
+
+    fetchPredictions();
+  }, []);
 
   const trendData = [
     { month: 'Jan', ai: 45, web3: 30, health: 35, ecommerce: 40 },
@@ -213,26 +243,66 @@ export function AIInsightsSimple() {
               <span>AI Success Predictions</span>
             </CardTitle>
             <CardDescription>
-              ML-powered project success probability
+              ML-powered project success probability based on real data
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {successData.map((project) => (
-                <div key={project.name} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">{project.name}</span>
-                    <Badge 
-                      variant={project.risk === 'low' ? 'default' : project.risk === 'medium' ? 'secondary' : 'destructive'}
-                      className="text-xs"
-                    >
-                      {project.value}% • {project.risk} risk
-                    </Badge>
+            {predictionsLoading ? (
+              <div className="space-y-3">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="h-4 bg-gray-200 rounded w-32 animate-pulse" />
+                      <div className="h-6 bg-gray-200 rounded w-20 animate-pulse" />
+                    </div>
+                    <div className="h-2 bg-gray-200 rounded animate-pulse" />
                   </div>
-                  <Progress value={project.value} className="h-2" />
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : predictionsError ? (
+              <div className="text-center py-6">
+                <AlertTriangle className="h-12 w-12 text-orange-500 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">AI Predictions Unavailable</h3>
+                <p className="text-muted-foreground text-sm mb-4">
+                  {predictionsError}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  This feature requires the ML prediction service to be running.
+                </p>
+              </div>
+            ) : predictionsData.length === 0 ? (
+              <div className="text-center py-6">
+                <Target className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No Predictions Available</h3>
+                <p className="text-muted-foreground text-sm">
+                  No projects found for AI analysis. Add some projects to see predictions.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {predictionsData.map((project) => (
+                  <div key={project.projectId} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">{project.name}</span>
+                      <div className="flex items-center gap-2">
+                        <Badge 
+                          variant={project.risk === 'low' ? 'default' : project.risk === 'medium' ? 'secondary' : 'destructive'}
+                          className="text-xs"
+                        >
+                          {project.value}% • {project.risk} risk
+                        </Badge>
+                        {project.confidence && (
+                          <span className="text-xs text-muted-foreground">
+                            {Math.round(project.confidence * 100)}% confidence
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <Progress value={project.value} className="h-2" />
+                  </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

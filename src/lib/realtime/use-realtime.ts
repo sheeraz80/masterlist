@@ -2,11 +2,42 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
-// Mock auth hook for development - replace with actual auth when available
-const useAuth = () => ({
-  userId: 'demo-user-' + Math.random().toString(36).substr(2, 9),
-  isLoaded: true
-});
+
+// Real auth hook that checks for actual user authentication
+const useAuth = () => {
+  const [user, setUser] = useState<any>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/me', {
+          credentials: 'include'
+        });
+        
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData.user);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error('Auth check failed:', error);
+        setUser(null);
+      } finally {
+        setIsLoaded(true);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  return {
+    userId: user?.id || null,
+    isLoaded,
+    user
+  };
+};
 
 interface UserActivity {
   userId: string;
@@ -33,68 +64,53 @@ export function useRealtime(options: UseRealtimeOptions = {}) {
   const { userId, isLoaded } = useAuth();
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(true); // Mock connection for demo
-  // Mock data for demonstration
   const [metrics, setMetrics] = useState<RealtimeMetrics>({
-    activeUsers: 3 + Math.floor(Math.random() * 5),
-    recentActivities: [
-      {
-        userId: 'user-1',
-        userName: 'Alice Johnson',
-        action: 'updated project',
-        projectId: 'proj-1',
-        projectTitle: 'AI Chat Assistant',
-        timestamp: new Date(Date.now() - 2 * 60 * 1000),
-        metadata: {}
-      },
-      {
-        userId: 'user-2',
-        userName: 'Bob Smith',
-        action: 'viewed analytics',
-        timestamp: new Date(Date.now() - 5 * 60 * 1000),
-        metadata: {}
-      },
-      {
-        userId: 'user-3',
-        userName: 'Carol Davis',
-        action: 'commented on',
-        projectId: 'proj-2',
-        projectTitle: 'E-commerce Platform',
-        timestamp: new Date(Date.now() - 8 * 60 * 1000),
-        metadata: {}
-      },
-      {
-        userId: 'user-4',
-        userName: 'David Wilson',
-        action: 'updated project',
-        projectId: 'proj-3',
-        projectTitle: 'Mobile App',
-        timestamp: new Date(Date.now() - 15 * 60 * 1000),
-        metadata: {}
-      }
-    ],
-    topCollaborations: [
-      { projectId: 'proj-1', userCount: 4 },
-      { projectId: 'proj-2', userCount: 3 },
-      { projectId: 'proj-3', userCount: 2 }
-    ]
+    activeUsers: 0,
+    recentActivities: [],
+    topCollaborations: []
   });
+  const [isLoadingMetrics, setIsLoadingMetrics] = useState(true);
+  const [metricsError, setMetricsError] = useState<string | null>(null);
   const [onlineUsers, setOnlineUsers] = useState<Set<string>>(new Set());
   const [projectViewers, setProjectViewers] = useState<Map<string, Set<string>>>(new Map());
 
-  // Initialize socket connection (disabled for demo)
-  useEffect(() => {
-    if (!isLoaded || !userId) return;
+  // Fetch real-time metrics from API
+  const fetchMetrics = useCallback(async () => {
+    try {
+      setIsLoadingMetrics(true);
+      setMetricsError(null);
+      
+      const response = await fetch('/api/realtime/metrics', {
+        credentials: 'include'
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        setMetrics(result.data);
+        setIsConnected(true);
+      } else {
+        setMetricsError(result.error || 'Failed to load metrics');
+        setIsConnected(false);
+      }
+    } catch (error) {
+      console.error('Failed to fetch real-time metrics:', error);
+      setMetricsError('Unable to connect to real-time service');
+      setIsConnected(false);
+    } finally {
+      setIsLoadingMetrics(false);
+    }
+  }, []);
 
-    // Mock socket connection - replace with actual implementation when ready
-    console.log('Mock socket connection initialized for user:', userId);
+  // Initialize real-time metrics fetching
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    // Fetch metrics immediately
+    fetchMetrics();
     
-    // Simulate periodic updates
-    const interval = setInterval(() => {
-      setMetrics(prev => ({
-        ...prev,
-        activeUsers: 3 + Math.floor(Math.random() * 5)
-      }));
-    }, 30000); // Update every 30 seconds
+    // Set up periodic updates every 30 seconds
+    const interval = setInterval(fetchMetrics, 30000);
 
     return () => {
       clearInterval(interval);
@@ -166,9 +182,13 @@ export function useRealtime(options: UseRealtimeOptions = {}) {
   return {
     isConnected,
     metrics,
-    onlineUsers: metrics.activeUsers, // Use mock data
-    projectViewers: options.projectId ? 2 : 0, // Mock viewer count
+    onlineUsers: metrics.activeUsers,
+    projectViewers: options.projectId ? 
+      (metrics.topCollaborations.find(c => c.projectId === options.projectId)?.userCount || 0) : 0,
     emitProjectUpdate,
-    recentActivities: metrics.recentActivities
+    recentActivities: metrics.recentActivities,
+    isLoadingMetrics,
+    metricsError,
+    refreshMetrics: fetchMetrics
   };
 }
