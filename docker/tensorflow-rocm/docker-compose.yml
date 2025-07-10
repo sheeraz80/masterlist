@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  tensorflow-rocm:
+    build: .
+    image: masterlist-tensorflow-rocm:latest
+    container_name: ml-analytics-service
+    
+    # ROCm GPU access
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    
+    # Required for GPU access
+    group_add:
+      - video
+    
+    # Security options
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    
+    # Shared memory for GPU operations
+    shm_size: 16G
+    ipc: host
+    
+    # Environment variables
+    environment:
+      - ROCM_VERSION=6.4.1
+      - HSA_OVERRIDE_GFX_VERSION=11.0.0  # Adjust based on your GPU
+      - TF_CPP_MIN_LOG_LEVEL=1
+    
+    # Port mapping
+    ports:
+      - "8000:8000"
+    
+    # Volume mounts
+    volumes:
+      - ./models:/app/models
+      - ./logs:/app/logs
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
