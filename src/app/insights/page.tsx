@@ -538,6 +538,211 @@ export default function InsightsPage() {
             </div>
           </TabsContent>
 
+          {/* Risks Tab */}
+          <TabsContent value="risks" className="space-y-6">
+            <div className="space-y-4">
+              {risk_insights.map((insight) => (
+                <Card key={insight.id}>
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start space-x-3">
+                        <AlertTriangle className="h-6 w-6 text-red-500 mt-1" />
+                        <div>
+                          <CardTitle className="text-lg">{insight.title}</CardTitle>
+                          <CardDescription className="mt-1">{insight.description}</CardDescription>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Badge variant="destructive" className="bg-red-100 text-red-800">
+                          {insight.confidence}% confidence
+                        </Badge>
+                        <Badge variant={insight.impact === 'high' || insight.impact === 'critical' ? 'destructive' : 'secondary'}>
+                          {insight.impact} impact
+                        </Badge>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {insight.data_points.length > 0 && (
+                      <div>
+                        <h4 className="font-medium mb-2">Risk Indicators</h4>
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          {insight.data_points.map((dataPoint, dpIndex) => (
+                            <div key={dpIndex} className="space-y-2">
+                              {Object.entries(dataPoint).map(([key, value]) => {
+                                const formattedKey = key
+                                  .replace(/_/g, ' ')
+                                  .replace(/\b\w/g, l => l.toUpperCase());
+                                
+                                const renderValue = () => {
+                                  if (typeof value === 'number') {
+                                    if (key.includes('ratio') || key.includes('percentage') || key.includes('score')) {
+                                      return `${value}%`;
+                                    } else {
+                                      return value.toLocaleString();
+                                    }
+                                  } else if (Array.isArray(value)) {
+                                    if (value.length > 0 && typeof value[0] === 'object') {
+                                      return (
+                                        <div className="space-y-1">
+                                          {value.slice(0, 3).map((item, idx) => (
+                                            <div key={idx} className="text-xs bg-background p-1 rounded">
+                                              {Object.entries(item).map(([k, v], i) => (
+                                                <span key={k}>
+                                                  {i > 0 && ' • '}
+                                                  <span className="font-medium">{k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:</span> {String(v)}
+                                                </span>
+                                              ))}
+                                            </div>
+                                          ))}
+                                        </div>
+                                      );
+                                    } else {
+                                      return value.slice(0, 3).join(', ') + (value.length > 3 ? '...' : '');
+                                    }
+                                  } else if (typeof value === 'object' && value !== null) {
+                                    return (
+                                      <div className="ml-2 space-y-1">
+                                        {Object.entries(value).slice(0, 3).map(([k, v]) => (
+                                          <div key={k} className="text-xs">
+                                            <span className="font-medium">{k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:</span> {String(v)}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    );
+                                  } else {
+                                    return String(value);
+                                  }
+                                };
+                                
+                                return (
+                                  <div key={key} className="bg-muted p-2 rounded">
+                                    <div className="text-xs font-medium text-muted-foreground">
+                                      {formattedKey}
+                                    </div>
+                                    <div className="text-sm font-medium mt-1">
+                                      {renderValue()}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div>
+                      <h4 className="font-medium mb-2">Mitigation Actions</h4>
+                      <ul className="space-y-1">
+                        {insight.action_items.map((action, i) => (
+                          <li key={i} className="flex items-start space-x-2 text-sm">
+                            <span className="text-red-500 mt-1">•</span>
+                            <span>{action}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* Trends Tab */}
+          <TabsContent value="trends" className="space-y-6">
+            <div className="space-y-4">
+              {trend_insights.map((insight) => (
+                <Card key={insight.id}>
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start space-x-3">
+                        <TrendingUp className="h-6 w-6 text-blue-500 mt-1" />
+                        <div>
+                          <CardTitle className="text-lg">{insight.title}</CardTitle>
+                          <CardDescription className="mt-1">{insight.description}</CardDescription>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Badge variant="default" className="bg-blue-100 text-blue-800">
+                          {insight.confidence}% confidence
+                        </Badge>
+                        <Badge variant={insight.impact === 'high' ? 'default' : 'secondary'}>
+                          {insight.impact} impact
+                        </Badge>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {insight.data_points.length > 0 && (
+                      <div>
+                        <h4 className="font-medium mb-2">Trend Data</h4>
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          {insight.data_points.map((dataPoint, dpIndex) => (
+                            <div key={dpIndex} className="space-y-2">
+                              {Object.entries(dataPoint).map(([key, value]) => {
+                                const formattedKey = key
+                                  .replace(/_/g, ' ')
+                                  .replace(/\b\w/g, l => l.toUpperCase());
+                                
+                                const renderValue = () => {
+                                  if (typeof value === 'number') {
+                                    if (key.includes('ratio') || key.includes('rate') || key.includes('percentage')) {
+                                      return `${value}%`;
+                                    } else {
+                                      return value.toLocaleString();
+                                    }
+                                  } else if (Array.isArray(value)) {
+                                    return value.slice(0, 5).join(', ') + (value.length > 5 ? '...' : '');
+                                  } else if (typeof value === 'object' && value !== null) {
+                                    return (
+                                      <div className="ml-2 space-y-1">
+                                        {Object.entries(value).slice(0, 3).map(([k, v]) => (
+                                          <div key={k} className="text-xs">
+                                            <span className="font-medium">{k.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}:</span> {String(v)}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    );
+                                  } else {
+                                    return String(value);
+                                  }
+                                };
+                                
+                                return (
+                                  <div key={key} className="bg-muted p-2 rounded">
+                                    <div className="text-xs font-medium text-muted-foreground">
+                                      {formattedKey}
+                                    </div>
+                                    <div className="text-sm font-medium mt-1">
+                                      {renderValue()}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div>
+                      <h4 className="font-medium mb-2">Strategic Actions</h4>
+                      <ul className="space-y-1">
+                        {insight.action_items.map((action, i) => (
+                          <li key={i} className="flex items-start space-x-2 text-sm">
+                            <span className="text-blue-500 mt-1">•</span>
+                            <span>{action}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
           {/* Market Analysis Tab */}
           <TabsContent value="market" className="space-y-6">
             <div className="grid gap-6 lg:grid-cols-3">
