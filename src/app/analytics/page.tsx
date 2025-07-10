@@ -226,23 +226,25 @@ export default function AnalyticsPage() {
 
         {/* Main Analytics Tabs */}
         <Tabs defaultValue="ai-insights" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 lg:grid-cols-13">
-            <TabsTrigger value="ai-insights" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white data-[state=active]:bg-gradient-to-r">
+          <div className="overflow-x-auto pb-2">
+            <TabsList className="flex w-max min-w-full justify-start gap-1">
+            <TabsTrigger value="ai-insights" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white data-[state=active]:bg-gradient-to-r whitespace-nowrap">
               AI Insights
             </TabsTrigger>
-            <TabsTrigger value="realtime">Live</TabsTrigger>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="trends">Trends</TabsTrigger>
-            <TabsTrigger value="compare">Compare</TabsTrigger>
-            <TabsTrigger value="roi">ROI</TabsTrigger>
-            <TabsTrigger value="categories">Categories</TabsTrigger>
-            <TabsTrigger value="quality">Quality</TabsTrigger>
-            <TabsTrigger value="revenue">Revenue</TabsTrigger>
-            <TabsTrigger value="projects">Projects</TabsTrigger>
-            <TabsTrigger value="insights">Insights</TabsTrigger>
-            <TabsTrigger value="builder">Builder</TabsTrigger>
-            <TabsTrigger value="d3-viz">D3 Viz</TabsTrigger>
-          </TabsList>
+            <TabsTrigger value="realtime" className="whitespace-nowrap">Live</TabsTrigger>
+            <TabsTrigger value="overview" className="whitespace-nowrap">Overview</TabsTrigger>
+            <TabsTrigger value="trends" className="whitespace-nowrap">Trends</TabsTrigger>
+            <TabsTrigger value="compare" className="whitespace-nowrap">Compare</TabsTrigger>
+            <TabsTrigger value="roi" className="whitespace-nowrap">ROI</TabsTrigger>
+            <TabsTrigger value="categories" className="whitespace-nowrap">Categories</TabsTrigger>
+            <TabsTrigger value="quality" className="whitespace-nowrap">Quality</TabsTrigger>
+            <TabsTrigger value="revenue" className="whitespace-nowrap">Revenue</TabsTrigger>
+            <TabsTrigger value="projects" className="whitespace-nowrap">Projects</TabsTrigger>
+            <TabsTrigger value="insights" className="whitespace-nowrap">Insights</TabsTrigger>
+            <TabsTrigger value="builder" className="whitespace-nowrap">Builder</TabsTrigger>
+            <TabsTrigger value="d3-viz" className="whitespace-nowrap">D3 Viz</TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* AI Insights Tab - NEW! */}
           <TabsContent value="ai-insights" className="space-y-6">

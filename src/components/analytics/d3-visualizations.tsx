@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Network, Layers, TreePine, Clock, 
   GitBranch, Zap, Target, RefreshCw 
@@ -35,6 +34,11 @@ function NetworkGraph({ projects }: { projects: Project[] }) {
   useEffect(() => {
     if (!svgRef.current || projects.length === 0) return;
 
+    // Limit projects to prevent performance issues - take top 50 projects by quality score
+    const limitedProjects = projects
+      .sort((a, b) => (b.qualityScore || 0) - (a.qualityScore || 0))
+      .slice(0, 50);
+
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
@@ -43,7 +47,7 @@ function NetworkGraph({ projects }: { projects: Project[] }) {
     const margin = { top: 20, right: 20, bottom: 20, left: 20 };
 
     // Create nodes and links
-    const nodes = projects.map(p => ({
+    const nodes = limitedProjects.map(p => ({
       id: p.id,
       title: p.title.substring(0, 20) + (p.title.length > 20 ? '...' : ''),
       category: p.category,
@@ -53,27 +57,49 @@ function NetworkGraph({ projects }: { projects: Project[] }) {
       size: Math.sqrt(p.revenuePotential / 10000) + 5
     }));
 
-    // Create links based on category similarity and quality correlation
+    // Create links based on category similarity and quality correlation (optimized)
     const links: Array<{ source: string; target: string; strength: number }> = [];
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const node1 = nodes[i];
-        const node2 = nodes[j];
-        
-        // Link projects in same category or similar quality
-        if (node1.category === node2.category || 
-            Math.abs(node1.quality - node2.quality) <= 2) {
+    const maxLinks = 150; // Limit total links to prevent performance issues
+    
+    // First, create strong links within same categories
+    const categorizedNodes = d3.group(nodes, d => d.category);
+    categorizedNodes.forEach((categoryNodes) => {
+      if (categoryNodes.length > 1) {
+        // Link each node to 2-3 others in same category
+        categoryNodes.forEach((node, i) => {
+          const connectTo = Math.min(3, categoryNodes.length - 1);
+          for (let j = 1; j <= connectTo && links.length < maxLinks; j++) {
+            const targetIndex = (i + j) % categoryNodes.length;
+            if (targetIndex !== i) {
+              links.push({
+                source: node.id,
+                target: categoryNodes[targetIndex].id,
+                strength: 0.8
+              });
+            }
+          }
+        });
+      }
+    });
+    
+    // Then add some cross-category links for similar quality scores
+    if (links.length < maxLinks) {
+      const qualitySorted = [...nodes].sort((a, b) => a.quality - b.quality);
+      for (let i = 0; i < qualitySorted.length - 1 && links.length < maxLinks; i++) {
+        const node1 = qualitySorted[i];
+        const node2 = qualitySorted[i + 1];
+        if (node1.category !== node2.category && Math.abs(node1.quality - node2.quality) <= 1) {
           links.push({
             source: node1.id,
             target: node2.id,
-            strength: node1.category === node2.category ? 0.8 : 0.3
+            strength: 0.3
           });
         }
       }
     }
 
     // Color scale for categories
-    const categories = [...new Set(projects.map(p => p.category))];
+    const categories = [...new Set(limitedProjects.map(p => p.category))];
     const colorScale = d3.scaleOrdinal(d3.schemeCategory10)
       .domain(categories);
 
@@ -223,6 +249,15 @@ function TreemapVisualization({ projects }: { projects: Project[] }) {
   useEffect(() => {
     if (!svgRef.current || projects.length === 0) return;
 
+    // Limit projects for performance - take top 100 projects
+    const limitedProjects = projects
+      .sort((a, b) => {
+        if (metric === 'revenue') return (b.revenuePotential || 0) - (a.revenuePotential || 0);
+        if (metric === 'quality') return (b.qualityScore || 0) - (a.qualityScore || 0);
+        return (b.activitiesCount || 0) - (a.activitiesCount || 0);
+      })
+      .slice(0, 100);
+
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
@@ -230,7 +265,7 @@ function TreemapVisualization({ projects }: { projects: Project[] }) {
     const height = 500;
 
     // Group projects by category
-    const categoryGroups = d3.group(projects, d => d.category);
+    const categoryGroups = d3.group(limitedProjects, d => d.category);
     
     // Create hierarchy data
     const hierarchyData = {
@@ -357,6 +392,9 @@ function TimelineVisualization({ projects }: { projects: Project[] }) {
   useEffect(() => {
     if (!svgRef.current || projects.length === 0) return;
 
+    // Limit projects for performance but still show timeline trends
+    const limitedProjects = projects.slice(0, 500);
+
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
@@ -368,7 +406,7 @@ function TimelineVisualization({ projects }: { projects: Project[] }) {
 
     // Process data by month
     const projectsByMonth = d3.rollup(
-      projects,
+      limitedProjects,
       v => ({
         count: v.length,
         totalRevenue: d3.sum(v, d => d.revenuePotential),
@@ -584,33 +622,83 @@ function TimelineVisualization({ projects }: { projects: Project[] }) {
 
 // Main D3 Visualizations Component
 export function D3Visualizations({ projects }: D3VisualizationsProps) {
+  const [activeVisualization, setActiveVisualization] = useState<'network' | 'treemap' | 'timeline'>('network');
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2">
-        <Zap className="h-6 w-6 text-purple-600" />
-        <h2 className="text-2xl font-bold">Advanced Visualizations</h2>
-        <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-          D3.js Powered
-        </Badge>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Zap className="h-6 w-6 text-purple-600" />
+          <h2 className="text-2xl font-bold">Advanced Visualizations</h2>
+          <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+            D3.js Powered
+          </Badge>
+        </div>
+        <div className="flex items-center gap-2">
+          <Badge variant="outline">
+            {projects.length} total projects
+          </Badge>
+          {projects.length > 100 && (
+            <Badge variant="secondary" className="text-orange-600">
+              ⚡ Performance optimized
+            </Badge>
+          )}
+        </div>
       </div>
 
-      <Tabs defaultValue="network" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="network" className="flex items-center gap-2">
-            <Network className="h-4 w-4" />
-            Network
-          </TabsTrigger>
-          <TabsTrigger value="treemap" className="flex items-center gap-2">
-            <TreePine className="h-4 w-4" />
-            Treemap
-          </TabsTrigger>
-          <TabsTrigger value="timeline" className="flex items-center gap-2">
-            <Clock className="h-4 w-4" />
-            Timeline
-          </TabsTrigger>
-        </TabsList>
+      {projects.length > 500 && (
+        <Card className="border-orange-200 bg-orange-50">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2 text-orange-800">
+              <Target className="h-4 w-4" />
+              <span className="text-sm">
+                <strong>Performance Mode:</strong> Visualizations are limited to top projects for optimal performance. 
+                Network shows top 50, Treemap shows top 100, Timeline shows 500 most recent.
+              </span>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
-        <TabsContent value="network">
+      <div className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <span>Visualization Type</span>
+              <div className="flex gap-2">
+                <Button
+                  variant={activeVisualization === 'network' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setActiveVisualization('network')}
+                  className="flex items-center gap-2"
+                >
+                  <Network className="h-4 w-4" />
+                  Network
+                </Button>
+                <Button
+                  variant={activeVisualization === 'treemap' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setActiveVisualization('treemap')}
+                  className="flex items-center gap-2"
+                >
+                  <TreePine className="h-4 w-4" />
+                  Treemap
+                </Button>
+                <Button
+                  variant={activeVisualization === 'timeline' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setActiveVisualization('timeline')}
+                  className="flex items-center gap-2"
+                >
+                  <Clock className="h-4 w-4" />
+                  Timeline
+                </Button>
+              </div>
+            </CardTitle>
+          </CardHeader>
+        </Card>
+
+        {activeVisualization === 'network' && (
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -626,9 +714,9 @@ export function D3Visualizations({ projects }: D3VisualizationsProps) {
               <NetworkGraph projects={projects} />
             </CardContent>
           </Card>
-        </TabsContent>
+        )}
 
-        <TabsContent value="treemap">
+        {activeVisualization === 'treemap' && (
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -644,9 +732,9 @@ export function D3Visualizations({ projects }: D3VisualizationsProps) {
               <TreemapVisualization projects={projects} />
             </CardContent>
           </Card>
-        </TabsContent>
+        )}
 
-        <TabsContent value="timeline">
+        {activeVisualization === 'timeline' && (
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -662,8 +750,8 @@ export function D3Visualizations({ projects }: D3VisualizationsProps) {
               <TimelineVisualization projects={projects} />
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
+        )}
+      </div>
     </div>
   );
 }
