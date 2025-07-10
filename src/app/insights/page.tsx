@@ -392,7 +392,29 @@ export default function InsightsPage() {
                                       return value.toLocaleString();
                                     }
                                   } else if (Array.isArray(value)) {
-                                    return value.slice(0, 3).join(', ') + (value.length > 3 ? '...' : '');
+                                    // Check if array contains objects
+                                    if (value.length > 0 && typeof value[0] === 'object') {
+                                      return (
+                                        <div className="space-y-1">
+                                          {value.slice(0, 3).map((item, idx) => (
+                                            <div key={idx} className="text-xs bg-background p-1 rounded">
+                                              {Object.entries(item).map(([k, v], i) => (
+                                                <span key={k}>
+                                                  {i > 0 && ' • '}
+                                                  <span className="font-medium">{k.replace(/_/g, ' ')}:</span> {
+                                                    k.includes('revenue') || k.includes('Revenue') ? `$${Number(v).toLocaleString()}` :
+                                                    typeof v === 'number' ? v.toLocaleString() : String(v)
+                                                  }
+                                                </span>
+                                              ))}
+                                            </div>
+                                          ))}
+                                          {value.length > 3 && <div className="text-xs text-muted-foreground">...and {value.length - 3} more</div>}
+                                        </div>
+                                      );
+                                    } else {
+                                      return value.slice(0, 3).join(', ') + (value.length > 3 ? '...' : '');
+                                    }
                                   } else if (typeof value === 'object' && value !== null) {
                                     // Handle nested objects
                                     return (
