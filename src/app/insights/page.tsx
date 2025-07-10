@@ -346,7 +346,7 @@ export default function InsightsPage() {
           {/* Opportunities Tab */}
           <TabsContent value="opportunities" className="space-y-6">
             <div className="space-y-4">
-              {opportunity_insights.map((insight) => (
+              {opportunity_insights.map((insight: any) => (
                 <Card key={insight.id}>
                   <CardHeader>
                     <div className="flex items-start justify-between">
@@ -440,20 +440,32 @@ export default function InsightsPage() {
                       </ul>
                     </div>
 
-                    {insight.project_ids.length > 0 && (
+                    {(insight.related_projects?.length > 0 || insight.project_ids.length > 0) && (
                       <div>
                         <h4 className="font-medium mb-2">Related Projects</h4>
                         <div className="flex flex-wrap gap-2">
-                          {insight.project_ids.slice(0, 5).map(id => (
-                            <Button key={id} variant="outline" size="sm" asChild>
-                              <Link href={`/projects/${id}`}>
-                                Project {id}
-                              </Link>
-                            </Button>
-                          ))}
-                          {insight.project_ids.length > 5 && (
+                          {insight.related_projects ? (
+                            // Use related_projects if available (new format with titles)
+                            insight.related_projects.slice(0, 5).map(project => (
+                              <Button key={project.id} variant="outline" size="sm" asChild>
+                                <Link href={`/projects/${project.id}`}>
+                                  {project.title || `Project ${project.id}`}
+                                </Link>
+                              </Button>
+                            ))
+                          ) : (
+                            // Fallback to project_ids (old format)
+                            insight.project_ids.slice(0, 5).map(id => (
+                              <Button key={id} variant="outline" size="sm" asChild>
+                                <Link href={`/projects/${id}`}>
+                                  View Project
+                                </Link>
+                              </Button>
+                            ))
+                          )}
+                          {(insight.related_projects?.length || insight.project_ids.length) > 5 && (
                             <Badge variant="outline">
-                              +{insight.project_ids.length - 5} more
+                              +{(insight.related_projects?.length || insight.project_ids.length) - 5} more
                             </Badge>
                           )}
                         </div>
