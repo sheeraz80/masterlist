@@ -2,6 +2,8 @@
  * Template file contents for different project types
  */
 
+import { PLATFORM_TEMPLATES } from './platform-templates';
+
 export const TEMPLATE_FILES = {
   'chrome-extension': {
     'manifest.json': {
@@ -797,7 +799,10 @@ EXPOSE 3000
 
 CMD ["node", "dist/index.js"]`
     }
-  }
+  },
+  
+  // Add all platform-specific templates
+  ...PLATFORM_TEMPLATES
 };
 
 /**

@@ -860,16 +860,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
   private selectTemplate(project: any): string {
     const categoryTemplateMap: Record<string, string> = {
       'chrome-extensions': 'chrome-extension',
-      'figma-plugins': 'web-app-nextjs', // Figma plugins are web-based
+      'figma-plugins': 'figma-plugin',  // Now using proper Figma plugin template
       'vscode-extensions': 'vscode-extension',
       'ai-browser-tools': 'chrome-extension',
-      'notion-templates': 'web-app-nextjs',
-      'obsidian-plugins': 'web-app-nextjs',
+      'notion-templates': 'notion-integration',  // Now using proper Notion template
+      'obsidian-plugins': 'obsidian-plugin',  // Now using proper Obsidian plugin template
       'crypto-browser-tools': 'chrome-extension',
-      'zapier-apps': 'api-backend-express',
-      'ai-productivity': 'web-app-nextjs',
-      'ai-writing': 'web-app-nextjs',
-      'ai-automation': 'api-backend-express',
+      'zapier-apps': 'zapier-app',  // Now using proper Zapier app template
+      'ai-productivity': 'ai-web-app',  // Now using AI-specific web app template
+      'ai-writing': 'ai-web-app',  // Now using AI-specific web app template
+      'ai-automation': 'ai-backend-api',  // Now using AI-specific backend template
       'web-apps': 'web-app-nextjs',
       'mobile-apps': 'mobile-app-react-native',
       'api-backend': 'api-backend-express',
@@ -908,7 +908,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
       'web-app-nextjs': '.next',
       'web-app-vite': 'dist',
       'chrome-extension': 'dist',
-      'cli-tool': 'dist'
+      'cli-tool': 'dist',
+      'figma-plugin': 'dist',
+      'obsidian-plugin': 'main.js',
+      'zapier-app': 'build',
+      'notion-integration': '.next',
+      'ai-web-app': '.next',
+      'ai-backend-api': 'dist',
+      'vscode-extension': 'dist',
+      'api-backend-express': 'dist'
     };
     return outputMap[project.template] || 'dist';
   }
@@ -1121,6 +1129,49 @@ By contributing, you agree that your contributions will be licensed under the MI
 ├── routes/
 ├── middleware/
 ├── services/
+└── utils/`,
+      'figma-plugin': `src/
+├── code.ts
+├── ui.html
+├── ui.css
+├── ui.ts
+└── types/`,
+      'obsidian-plugin': `src/
+├── main.ts
+├── modal.ts
+├── settings.ts
+├── styles.css
+└── types/`,
+      'zapier-app': `src/
+├── index.js
+├── triggers/
+├── actions/
+├── searches/
+└── test/`,
+      'notion-integration': `src/
+├── app/
+├── lib/
+│   └── notion.ts
+├── components/
+└── pages/
+    └── api/
+        └── notion/`,
+      'ai-web-app': `src/
+├── app/
+│   ├── api/
+│   │   └── ai/
+│   └── chat/
+├── components/
+├── lib/
+│   └── ai/
+└── hooks/`,
+      'ai-backend-api': `src/
+├── index.ts
+├── routes/
+│   └── ai/
+├── services/
+│   └── ai/
+├── middleware/
 └── utils/`
     };
     
@@ -1357,6 +1408,36 @@ Remember: The goal is to create a high-quality solution that users will love and
         dev: 'npm run dev',
         build: 'npm run build',
         test: 'npm test'
+      },
+      'figma-plugin': {
+        dev: 'npm run dev',
+        build: 'npm run build',
+        test: 'npm test'
+      },
+      'obsidian-plugin': {
+        dev: 'npm run dev',
+        build: 'npm run build',
+        test: 'npm test'
+      },
+      'zapier-app': {
+        dev: 'zapier test',
+        build: 'zapier build',
+        test: 'zapier test'
+      },
+      'notion-integration': {
+        dev: 'npm run dev',
+        build: 'npm run build',
+        test: 'npm test'
+      },
+      'ai-web-app': {
+        dev: 'npm run dev',
+        build: 'npm run build',
+        test: 'npm test'
+      },
+      'ai-backend-api': {
+        dev: 'npm run dev',
+        build: 'npm run build',
+        test: 'npm test'
       }
     };
     
@@ -1394,7 +1475,54 @@ Remember: The goal is to create a high-quality solution that users will love and
 - **Database**: PostgreSQL / MongoDB (configurable)
 - **Authentication**: JWT
 - **API Documentation**: Swagger/OpenAPI
-- **Testing**: Jest & Supertest`
+- **Testing**: Jest & Supertest`,
+      
+      'figma-plugin': `- **Platform**: Figma Plugin API
+- **Language**: TypeScript
+- **UI Framework**: React (for UI)
+- **Build System**: TypeScript Compiler
+- **Figma APIs**: Scene Node APIs, UI APIs, Network APIs
+- **Testing**: Jest for unit tests`,
+      
+      'obsidian-plugin': `- **Platform**: Obsidian Plugin API
+- **Language**: TypeScript
+- **Build Tool**: esbuild
+- **Obsidian APIs**: Vault API, Editor API, Workspace API
+- **Testing**: Jest
+- **Development**: Hot reload support`,
+      
+      'zapier-app': `- **Platform**: Zapier CLI Platform
+- **Language**: JavaScript/Node.js
+- **Zapier CLI**: Version 14.x
+- **Authentication**: OAuth2 / API Key
+- **Testing**: Jest with Zapier test utilities
+- **Deployment**: Zapier Platform`,
+      
+      'notion-integration': `- **Frontend**: Next.js 14 with TypeScript
+- **Backend**: Notion API SDK
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Database**: Notion as backend
+- **Authentication**: Notion OAuth
+- **Deployment**: Vercel`,
+      
+      'ai-web-app': `- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript 5.0+
+- **AI Integration**: OpenAI API / Anthropic Claude
+- **UI**: React Server Components, Streaming UI
+- **Styling**: Tailwind CSS 3.0
+- **State Management**: Zustand
+- **Real-time**: Server-Sent Events
+- **Deployment**: Vercel Edge Functions`,
+      
+      'ai-backend-api': `- **Runtime**: Node.js 18+
+- **Framework**: Express.js with TypeScript
+- **AI Services**: OpenAI, Claude, LangChain
+- **Database**: PostgreSQL with Prisma ORM
+- **Vector DB**: Pinecone / Weaviate
+- **Queue**: Bull for background jobs
+- **Caching**: Redis
+- **Monitoring**: OpenTelemetry`
     };
     
     return stacks[template] || stacks['web-app-nextjs'];
