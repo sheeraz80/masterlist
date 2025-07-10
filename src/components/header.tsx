@@ -17,7 +17,8 @@ import {
   Lightbulb,
   LogOut,
   User,
-  Layers
+  Layers,
+  Globe
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -36,6 +37,8 @@ import { ConnectionStatus } from '@/components/connection-status';
 const navItems = [
   { href: '/', label: 'Dashboard', icon: Home },
   { href: '/projects', label: 'Projects', icon: FileText },
+  { href: '/repositories', label: 'Repositories', icon: GitBranch },
+  { href: '/deployments', label: 'Deployments', icon: Globe },
   { href: '/categories', label: 'Categories', icon: Layers },
   { href: '/search', label: 'Search', icon: Search },
   { href: '/analytics', label: 'Analytics', icon: BarChart3 },
