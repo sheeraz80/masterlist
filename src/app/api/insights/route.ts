@@ -80,18 +80,18 @@ export const GET = withRateLimit(
         : undefined;
     
       // Get real data insights from both internal and external sources
-      const [realData, marketData] = await Promise.all([
+      const [realData, categoryInsights, marketData] = await Promise.all([
         aiInsightsService.generateDataDrivenInsights(),
-        marketDataService.analyzeMarketTrends(
-          // Get top categories for market analysis
-          (await aiInsightsService.generateCategoryInsights())
-            .slice(0, 5)
-            .map(c => c.category)
-        )
+        aiInsightsService.generateCategoryInsights(),
+        null // Placeholder for market data
       ]);
       
+      // Now fetch market data with top categories
+      const topCategories = categoryInsights.slice(0, 5).map(c => c.category);
+      const enhancedMarketData = await marketDataService.analyzeMarketTrends(topCategories);
+      
       // Generate insights report with both internal and external data
-      const insightsReport = await generateRealInsightsReport(realData, marketData, {
+      const insightsReport = await generateRealInsightsReport(realData, enhancedMarketData, {
         category,
         type,
         minConfidence
@@ -263,7 +263,7 @@ async function generateRealInsightsReport(realData: any, marketData: any, filter
     });
   }
   
-  // Market validation insight - combine internal data with Google Trends
+  // Enhanced market validation with multiple sources
   if (marketData.trends.length > 0) {
     const validatedCategories = categoryStats.filter(cat => {
       const marketTrend = marketData.trends.find(t => 
@@ -278,12 +278,23 @@ async function generateRealInsightsReport(realData: any, marketData: any, filter
         t.keyword.toLowerCase() === topValidated.category.toLowerCase()
       );
       
+      // Find supporting evidence from other sources
+      const redditSupport = marketData.redditTrends?.filter(r => 
+        r.title.toLowerCase().includes(topValidated.category.toLowerCase())
+      ).length || 0;
+      
+      const devArticles = marketData.devToArticles?.filter(d => 
+        d.tags.some(tag => tag.toLowerCase().includes(topValidated.category.toLowerCase()))
+      ).length || 0;
+      
+      const confidenceBoost = (redditSupport > 0 ? 2 : 0) + (devArticles > 0 ? 1 : 0);
+      
       insights.push({
         id: 'insight_market_validation',
-        title: `${topValidated.category} Validated by External Market Trends`,
-        description: `${topValidated.category} shows ${marketTrend?.trend_value}% market interest (${marketTrend?.direction}) on Google Trends, aligning with internal performance metrics.`,
+        title: `${topValidated.category} Validated by Multiple Market Signals`,
+        description: `${topValidated.category} shows ${marketTrend?.trend_value}% Google Trends interest (${marketTrend?.direction}), ${redditSupport} Reddit discussions, and ${devArticles} trending developer articles.`,
         type: 'opportunity',
-        confidence: 94,
+        confidence: Math.min(99, 94 + confidenceBoost),
         impact: 'high',
         category: topValidated.category,
         project_ids: topValidated.projects.slice(0, 3),
@@ -296,18 +307,50 @@ async function generateRealInsightsReport(realData: any, marketData: any, filter
           external_validation: {
             google_trends_score: marketTrend?.trend_value,
             trend_direction: marketTrend?.direction,
-            related_topics: marketTrend?.related_topics
+            related_topics: marketTrend?.related_topics,
+            reddit_discussions: redditSupport,
+            dev_articles: devArticles,
+            top_regions: marketTrend?.geographic_data?.slice(0, 3).map(g => g.region)
           }
         }],
         action_items: [
           `Accelerate ${topValidated.category} development to capture market momentum`,
+          `Target top regions: ${marketTrend?.geographic_data?.slice(0, 3).map(g => g.region).join(', ')}`,
           `Research trending subtopics: ${marketTrend?.related_topics?.slice(0, 3).join(', ')}`,
-          'Leverage market validation for investor/stakeholder communications'
+          'Leverage multi-source validation for investor communications'
         ],
         priority_score: 96,
         generated_at: new Date().toISOString()
       });
     }
+  }
+  
+  // Regional opportunity insight
+  if (marketData.analysis?.regional_opportunities?.length > 0) {
+    const topRegion = marketData.analysis.regional_opportunities[0];
+    
+    insights.push({
+      id: 'insight_regional_opportunity',
+      title: `${topRegion.region} Shows Strongest Market Interest`,
+      description: `${topRegion.region} demonstrates ${topRegion.strength}% average interest across ${topRegion.categories.join(', ')} categories, presenting localization opportunities.`,
+      type: 'opportunity',
+      confidence: 86,
+      impact: 'medium',
+      category: 'Geographic Expansion',
+      project_ids: [],
+      data_points: [{
+        regional_data: marketData.analysis.regional_opportunities.slice(0, 5),
+        top_categories_by_region: topRegion.categories
+      }],
+      action_items: [
+        `Consider ${topRegion.region}-specific features or partnerships`,
+        `Translate key projects for ${topRegion.region} market`,
+        'Research local regulations and market conditions',
+        'Connect with regional developer communities'
+      ],
+      priority_score: 82,
+      generated_at: new Date().toISOString()
+    });
   }
   
   // GitHub trending insight
@@ -348,37 +391,80 @@ async function generateRealInsightsReport(realData: any, marketData: any, filter
     });
   }
   
-  // Hacker News emerging tech insight
-  if (marketData.hackerNewsTopics.length > 0) {
+  // Community sentiment and emerging tech insight
+  if (marketData.hackerNewsTopics.length > 0 || marketData.analysis?.developer_sentiment) {
     const emergingTech = marketData.analysis.emerging_technologies;
+    const sentiment = marketData.analysis.developer_sentiment;
     
     if (emergingTech.length > 0) {
       insights.push({
         id: 'insight_emerging_tech',
-        title: 'Emerging Technologies Creating New Opportunities',
-        description: `Hacker News discussions highlight ${emergingTech.slice(0, 3).join(', ')} as key emerging areas with high community interest.`,
+        title: 'Developer Community Signals New Opportunities',
+        description: `Community discussions highlight ${emergingTech.slice(0, 3).join(', ')} as emerging technologies. Positive sentiment around: ${sentiment?.positive_topics?.slice(0, 2).join(', ') || 'innovation'}.`,
         type: 'opportunity',
-        confidence: 79,
+        confidence: 83,
         impact: 'medium',
         category: 'Market Intelligence',
         project_ids: [],
         data_points: [{
           emerging_technologies: emergingTech,
+          developer_sentiment: sentiment,
           top_discussions: marketData.hackerNewsTopics.slice(0, 3).map(s => ({
             title: s.title,
             score: s.score,
             engagement: s.descendants
+          })),
+          trending_on_product_hunt: marketData.productHuntItems?.slice(0, 2).map(p => ({
+            name: p.name,
+            votes: p.votes_count,
+            topics: p.topics
           }))
         }],
         action_items: [
           `Research ${emergingTech[0]} integration opportunities`,
+          `Build with trending tools: ${sentiment?.trending_tools?.slice(0, 3).join(', ') || 'modern stack'}`,
           'Monitor tech community discussions for early signals',
-          'Consider proof-of-concept projects in emerging areas'
+          `Address developer concerns: ${sentiment?.concerns?.[0] || 'performance'}`
         ],
-        priority_score: 70,
+        priority_score: 75,
         generated_at: new Date().toISOString()
       });
     }
+  }
+  
+  // Product Hunt launch timing insight
+  if (marketData.productHuntItems?.length > 0) {
+    const topProducts = marketData.productHuntItems.slice(0, 3);
+    const commonTopics = new Set<string>();
+    topProducts.forEach(p => p.topics.forEach(t => commonTopics.add(t)));
+    
+    insights.push({
+      id: 'insight_launch_timing',
+      title: 'Product Launch Trends Signal Market Readiness',
+      description: `Recent Product Hunt successes focus on ${Array.from(commonTopics).slice(0, 3).join(', ')}. Top launch garnered ${topProducts[0].votes_count} votes.`,
+      type: 'trend',
+      confidence: 77,
+      impact: 'medium',
+      category: 'Launch Strategy',
+      project_ids: [],
+      data_points: [{
+        trending_products: topProducts.map(p => ({
+          name: p.name,
+          tagline: p.tagline,
+          votes: p.votes_count,
+          topics: p.topics
+        })),
+        common_topics: Array.from(commonTopics)
+      }],
+      action_items: [
+        'Study successful launch patterns from top products',
+        `Position products around trending topics: ${Array.from(commonTopics).slice(0, 3).join(', ')}`,
+        'Prepare compelling taglines focusing on clear value props',
+        'Build pre-launch community for initial momentum'
+      ],
+      priority_score: 68,
+      generated_at: new Date().toISOString()
+    });
   }
 
   // Filter insights based on provided filters
@@ -442,22 +528,46 @@ async function generateRealInsightsReport(realData: any, marketData: any, filter
     ]
   });
   
-  // Add external market trends
+  // Add comprehensive external market trends
   if (marketData.analysis.hottest_categories.length > 0) {
     marketTrends.push({
-      trend_name: 'External Market Validation',
+      trend_name: 'Multi-Source Market Validation',
       direction: 'rising',
-      strength: 85,
+      strength: 88,
       affected_categories: marketData.analysis.hottest_categories,
       evidence: [
-        `Google Trends shows high interest in: ${marketData.analysis.hottest_categories.join(', ')}`,
+        `Google Trends validates: ${marketData.analysis.hottest_categories.join(', ')}`,
         `${marketData.githubProjects.length} trending GitHub projects analyzed`,
-        `${marketData.hackerNewsTopics.length} top Hacker News discussions tracked`
+        `${marketData.redditTrends?.length || 0} active Reddit discussions tracked`,
+        `${marketData.devToArticles?.length || 0} trending developer articles`,
+        `Top market opportunity: ${marketData.analysis.market_opportunities[0]?.confidence_score}% confidence`
       ],
       implications: [
-        'Align portfolio strategy with market demand',
+        'Strong multi-source validation indicates market readiness',
         'Prioritize development in validated categories',
-        'Monitor external signals for early opportunities'
+        'Leverage community engagement for growth',
+        'Consider regional expansion strategies'
+      ]
+    });
+  }
+  
+  // Developer ecosystem trend
+  if (marketData.analysis?.developer_sentiment?.trending_tools?.length > 0) {
+    const tools = marketData.analysis.developer_sentiment.trending_tools;
+    marketTrends.push({
+      trend_name: 'Developer Tool Adoption Shift',
+      direction: 'rising',
+      strength: 75,
+      affected_categories: ['Developer Tools', 'Productivity', 'AI/ML'],
+      evidence: [
+        `Trending tools: ${tools.slice(0, 3).join(', ')}`,
+        `${marketData.devToArticles?.length || 0} technical articles published`,
+        'High engagement on developer platforms'
+      ],
+      implications: [
+        `Build integrations with ${tools[0]} for developer adoption`,
+        'Focus on developer experience and documentation',
+        'Consider open-source strategies for community growth'
       ]
     });
   }
