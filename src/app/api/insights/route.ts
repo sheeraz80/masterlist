@@ -15,6 +15,7 @@ interface Insight {
   impact: 'low' | 'medium' | 'high' | 'critical';
   category?: string;
   project_ids: string[];
+  related_projects?: Array<{ id: string; title: string }>;
   data_points: Array<Record<string, unknown>>;
   action_items: string[];
   priority_score: number;
@@ -130,7 +131,8 @@ async function generateRealInsightsReport(realData: any, marketData: any, filter
       confidence: 92,
       impact: 'high',
       category: topCategory.category,
-      project_ids: topCategory.projects.slice(0, 5),
+      project_ids: topCategory.projects.slice(0, 5).map((p: any) => p.id),
+      related_projects: topCategory.projects.slice(0, 5),
       data_points: [{
         category: topCategory.category,
         avg_revenue: Math.round(categoryAvgRevenue),
@@ -297,7 +299,8 @@ async function generateRealInsightsReport(realData: any, marketData: any, filter
         confidence: Math.min(99, 94 + confidenceBoost),
         impact: 'high',
         category: topValidated.category,
-        project_ids: topValidated.projects.slice(0, 3),
+        project_ids: topValidated.projects.slice(0, 3).map((p: any) => p.id),
+        related_projects: topValidated.projects.slice(0, 3),
         data_points: [{
           internal_metrics: {
             avg_revenue: topValidated.avgRevenue,

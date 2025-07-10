@@ -246,7 +246,7 @@ export async function generateDataDrivenInsights() {
       acc[category].count++;
       acc[category].totalQuality += project.qualityScore || 0;
       acc[category].totalRevenue += revenue;
-      acc[category].projects.push(project.id);
+      acc[category].projects.push({ id: project.id, title: project.title });
       
       if ((project.qualityScore || 0) >= 8) {
         acc[category].highQualityCount++;
