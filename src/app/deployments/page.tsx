@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { 
   Cloud, Globe, Activity, AlertCircle, CheckCircle,
   Clock, Zap, Server, TrendingUp, Settings, Plus,
-  RefreshCw, ExternalLink, Terminal, Shield, Database
+  RefreshCw, ExternalLink, Terminal, Shield, Database,
+  BarChart3
 } from 'lucide-react';
 
 // UI Components
@@ -30,6 +32,7 @@ import { DeploymentList } from '@/components/deployments/deployment-list';
 import { DeploymentStats } from '@/components/deployments/deployment-stats';
 import { PlatformStatus } from '@/components/deployments/platform-status';
 import { CreateDeploymentDialog } from '@/components/deployments/create-deployment-dialog';
+import { RealTimeMonitor } from '@/components/deployments/real-time-monitor';
 
 // Types
 import type { DeploymentListResponse, DeploymentStatsResponse } from '@/types/deployment';
@@ -86,6 +89,12 @@ export default function DeploymentsPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          <Button variant="outline" asChild>
+            <Link href="/deployments/analytics">
+              <BarChart3 className="h-4 w-4 mr-2" />
+              Analytics
+            </Link>
+          </Button>
           <Button variant="outline" onClick={() => refetchDeployments()}>
             <RefreshCw className="h-4 w-4 mr-2" />
             Refresh
@@ -111,44 +120,64 @@ export default function DeploymentsPage() {
         <DeploymentStats stats={statsData} className="mb-8" />
       ) : null}
 
-      {/* Filters */}
-      <Card className="mb-6">
-        <CardContent className="p-4">
-          <div className="flex flex-col md:flex-row gap-4">
-            <Input
-              placeholder="Search deployments..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="md:w-96"
-            />
-            <Select value={selectedPlatform} onValueChange={setSelectedPlatform}>
-              <SelectTrigger className="md:w-48">
-                <SelectValue placeholder="All Platforms" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Platforms</SelectItem>
-                <SelectItem value="VERCEL">Vercel</SelectItem>
-                <SelectItem value="NETLIFY">Netlify</SelectItem>
-                <SelectItem value="AWS_AMPLIFY">AWS Amplify</SelectItem>
-                <SelectItem value="CLOUDFLARE_PAGES">Cloudflare Pages</SelectItem>
-                <SelectItem value="GITHUB_PAGES">GitHub Pages</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={selectedEnvironment} onValueChange={setSelectedEnvironment}>
-              <SelectTrigger className="md:w-48">
-                <SelectValue placeholder="All Environments" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Environments</SelectItem>
-                <SelectItem value="production">Production</SelectItem>
-                <SelectItem value="staging">Staging</SelectItem>
-                <SelectItem value="preview">Preview</SelectItem>
-                <SelectItem value="development">Development</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Real-Time Monitor and Filters */}
+      <div className="grid gap-6 lg:grid-cols-3 mb-6">
+        {/* Real-Time Monitor */}
+        <div className="lg:col-span-2">
+          <RealTimeMonitor />
+        </div>
+
+        {/* Filters */}
+        <div className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Filters</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="text-sm font-medium mb-2 block">Search</label>
+                <Input
+                  placeholder="Search deployments..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-2 block">Platform</label>
+                <Select value={selectedPlatform} onValueChange={setSelectedPlatform}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="All Platforms" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Platforms</SelectItem>
+                    <SelectItem value="VERCEL">Vercel</SelectItem>
+                    <SelectItem value="NETLIFY">Netlify</SelectItem>
+                    <SelectItem value="AWS_AMPLIFY">AWS Amplify</SelectItem>
+                    <SelectItem value="CLOUDFLARE_PAGES">Cloudflare Pages</SelectItem>
+                    <SelectItem value="GITHUB_PAGES">GitHub Pages</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-2 block">Environment</label>
+                <Select value={selectedEnvironment} onValueChange={setSelectedEnvironment}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="All Environments" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Environments</SelectItem>
+                    <SelectItem value="production">Production</SelectItem>
+                    <SelectItem value="staging">Staging</SelectItem>
+                    <SelectItem value="preview">Preview</SelectItem>
+                    <SelectItem value="development">Development</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
 
       {/* Deployments List */}
       <Tabs defaultValue="active" className="space-y-4">
