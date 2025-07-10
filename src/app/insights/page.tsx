@@ -394,9 +394,42 @@ export default function InsightsPage() {
                                   } else if (Array.isArray(value)) {
                                     // Check if array contains objects
                                     if (value.length > 0 && typeof value[0] === 'object') {
-                                      return (
-                                        <div className="space-y-1">
-                                          {value.slice(0, 3).map((item, idx) => (
+                                      // Smart rendering based on context
+                                      const renderArrayItem = (item: any, idx: number) => {
+                                        // For Hacker News discussions
+                                        if (key === 'top_discussions' && item.title) {
+                                          return (
+                                            <div key={idx} className="text-xs bg-background p-1 rounded">
+                                              <div className="font-medium">{item.title}</div>
+                                              <div className="text-muted-foreground">
+                                                {item.score} points • {item.engagement} comments
+                                              </div>
+                                            </div>
+                                          );
+                                        }
+                                        // For Product Hunt items
+                                        else if (key === 'trending_on_product_hunt' && item.name) {
+                                          return (
+                                            <div key={idx} className="text-xs bg-background p-1 rounded">
+                                              <div className="font-medium">{item.name}</div>
+                                              <div className="text-muted-foreground">
+                                                {item.votes} votes • Topics: {item.topics?.slice(0, 2).join(', ')}
+                                              </div>
+                                            </div>
+                                          );
+                                        }
+                                        // For revenue categories
+                                        else if (key === 'top_revenue_categories' && item.category) {
+                                          return (
+                                            <div key={idx} className="text-xs bg-background p-1 rounded">
+                                              <span className="font-medium">{item.category}</span>
+                                              <span className="text-muted-foreground"> • Avg: ${Number(item.avg_revenue).toLocaleString()}</span>
+                                            </div>
+                                          );
+                                        }
+                                        // Generic object rendering
+                                        else {
+                                          return (
                                             <div key={idx} className="text-xs bg-background p-1 rounded">
                                               {Object.entries(item).map(([k, v], i) => (
                                                 <span key={k}>
@@ -408,7 +441,13 @@ export default function InsightsPage() {
                                                 </span>
                                               ))}
                                             </div>
-                                          ))}
+                                          );
+                                        }
+                                      };
+                                      
+                                      return (
+                                        <div className="space-y-1">
+                                          {value.slice(0, 3).map(renderArrayItem)}
                                           {value.length > 3 && <div className="text-xs text-muted-foreground">...and {value.length - 3} more</div>}
                                         </div>
                                       );
