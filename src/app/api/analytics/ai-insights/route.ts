@@ -125,6 +125,75 @@ export const GET = withRateLimit(
           return NextResponse.json(strategy);
         }
 
+        case 'predictions': {
+          try {
+            // Get real project data for predictions
+            const topProjects = projects
+              .sort((a, b) => (b.qualityScore || 0) - (a.qualityScore || 0))
+              .slice(0, 10);
+
+            const predictions = await Promise.all(
+              topProjects.map(async (project) => {
+                try {
+                  const features = {
+                    quality_score: project.qualityScore || 5,
+                    technical_complexity: project.technicalComplexity || 5,
+                    revenue_potential: JSON.parse(project.revenuePotential || '{}').realistic || 0,
+                    category_popularity: 0.5,
+                    competition_level: project.competitionLevel === 'Low' ? 1 : 
+                                    project.competitionLevel === 'Medium' ? 2 : 3,
+                    team_size: 1,
+                    activities_count: project.activitiesCount || 0
+                  };
+
+                  // Try ML prediction, fallback to simple calculation
+                  let prediction;
+                  try {
+                    prediction = await mlClient.predictSuccess(features);
+                  } catch (mlError) {
+                    // Fallback calculation
+                    const qualityFactor = features.quality_score / 10;
+                    const revenueFactor = Math.min(features.revenue_potential / 100000, 1);
+                    const complexityPenalty = 1 - (features.technical_complexity / 15);
+                    const score = (qualityFactor * 0.4 + revenueFactor * 0.4 + complexityPenalty * 0.2) * 100;
+                    
+                    prediction = {
+                      success_probability: Math.max(10, Math.min(95, score)),
+                      confidence: 0.7,
+                      risk_level: score > 70 ? 'low' : score > 40 ? 'medium' : 'high'
+                    };
+                  }
+
+                  return {
+                    name: project.title.substring(0, 20) + (project.title.length > 20 ? '...' : ''),
+                    value: Math.round(prediction.success_probability),
+                    risk: prediction.risk_level,
+                    confidence: prediction.confidence,
+                    projectId: project.id
+                  };
+                } catch (error) {
+                  return {
+                    name: project.title.substring(0, 20) + (project.title.length > 20 ? '...' : ''),
+                    value: 50,
+                    risk: 'medium',
+                    confidence: 0.5,
+                    projectId: project.id
+                  };
+                }
+              })
+            );
+
+            return NextResponse.json({
+              predictions: predictions.filter(p => p.value > 0)
+            });
+          } catch (error) {
+            console.error('Predictions error:', error);
+            return NextResponse.json({
+              error: 'AI prediction service unavailable. ML models may not be properly configured.'
+            });
+          }
+        }
+
         case 'query': {
           if (!question) {
             return NextResponse.json(
