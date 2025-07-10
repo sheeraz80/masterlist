@@ -199,6 +199,81 @@ export const PUT = withRateLimit(
   rateLimits.write
 );
 
+export const PATCH = withRateLimit(
+  async (request: NextRequest) => {
+    try {
+      const url = new URL(request.url);
+      const id = url.pathname.split('/').pop();
+
+      if (!id) {
+        return NextResponse.json(
+          { error: 'Project ID is required' },
+          { status: 400 }
+        );
+      }
+
+      const body = await request.json();
+
+      // Check if project exists
+      const existingProject = await prisma.project.findUnique({
+        where: { id },
+        select: { id: true, title: true }
+      });
+
+      if (!existingProject) {
+        return NextResponse.json(
+          { error: 'Project not found' },
+          { status: 404 }
+        );
+      }
+
+      // Prepare update data (only include fields that are provided)
+      const updateData: any = {
+        updatedAt: new Date()
+      };
+
+      if (body.title !== undefined) updateData.title = body.title;
+      if (body.problem !== undefined) updateData.problem = body.problem;
+      if (body.solution !== undefined) updateData.solution = body.solution;
+      if (body.category !== undefined) updateData.category = body.category;
+      if (body.targetUsers !== undefined) updateData.targetUsers = body.targetUsers;
+      if (body.revenueModel !== undefined) updateData.revenueModel = body.revenueModel;
+      if (body.keyFeatures !== undefined) updateData.keyFeatures = body.keyFeatures;
+      if (body.tags !== undefined) updateData.tags = body.tags;
+
+      const project = await prisma.project.update({
+        where: { id },
+        data: updateData,
+        include: {
+          owner: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              avatar: true
+            }
+          },
+          _count: {
+            select: {
+              comments: true,
+              activities: true
+            }
+          }
+        }
+      });
+
+      return NextResponse.json(project);
+    } catch (error) {
+      console.error('Error updating project:', error);
+      return NextResponse.json(
+        { error: 'Failed to update project' },
+        { status: 500 }
+      );
+    }
+  },
+  rateLimits.write
+);
+
 export const DELETE = withRateLimit(
   requireAuth(async (request: NextRequest, user: AuthUser) => {
     try {
