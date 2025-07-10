@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { 
   enhanceProjectDescription, 
-  generateImplementationPrompt 
+  generateImplementationPrompt,
+  generateCustomImplementationPrompt 
 } from '@/lib/project-enhancement/enhance-projects';
 
 export async function POST(
@@ -152,6 +153,23 @@ export async function GET(
   try {
     const { id: projectId } = await params;
     
+    // Parse query parameters for custom configuration
+    const url = new URL(request.url);
+    const customConfig = {
+      includeAuth: url.searchParams.get('includeAuth') === 'true',
+      includeDatabase: url.searchParams.get('includeDatabase') === 'true',
+      includePayments: url.searchParams.get('includePayments') === 'true',
+      includeAnalytics: url.searchParams.get('includeAnalytics') === 'true',
+      includeTests: url.searchParams.get('includeTests') === 'true',
+      includeDocs: url.searchParams.get('includeDocs') === 'true',
+      deploymentTarget: url.searchParams.get('deploymentTarget') || 'vercel',
+      techStack: url.searchParams.get('techStack') || 'react-nextjs',
+      complexity: url.searchParams.get('complexity') || 'production',
+      additionalFeatures: url.searchParams.get('additionalFeatures') || '',
+      customInstructions: url.searchParams.get('customInstructions') || '',
+      specializedPrompts: url.searchParams.get('specializedPrompts') ? url.searchParams.get('specializedPrompts')!.split(',') : []
+    };
+    
     // Fetch the project
     const dbProject = await prisma.project.findUnique({
       where: { id: projectId }
@@ -188,8 +206,8 @@ export async function GET(
         : dbProject.tags || []
     };
     
-    // Generate implementation prompt
-    const prompt = generateImplementationPrompt(project);
+    // Generate implementation prompt with custom config
+    const prompt = generateCustomImplementationPrompt(project, customConfig);
     
     return NextResponse.json({
       prompt,

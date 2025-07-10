@@ -687,3 +687,719 @@ ${project.revenue_model}
 
 Remember: Focus on solving the user's problem elegantly with minimal complexity.`;
 }
+
+// Generate customized implementation prompt based on user preferences
+export function generateCustomImplementationPrompt(project: Project, config: any): string {
+  const trend = MARKET_TRENDS[project.category] || {};
+  
+  // Tech stack specific configurations with latest stable/LTS versions
+  const techStackConfigs = {
+    'react-nextjs': {
+      framework: 'React 18.3.1 + Next.js 15.0.5',
+      styles: 'Tailwind CSS 3.4.17 + shadcn/ui',
+      state: 'Zustand 5.0.2 or React Context',
+      database: 'Prisma 6.1.0 + PostgreSQL 17',
+      auth: 'NextAuth.js 5.0.0',
+      payment: 'Stripe 17.4.0',
+      deployment: 'Vercel',
+      runtime: 'Node.js 20 LTS',
+      packageManager: 'pnpm 9.15.0'
+    },
+    'vue-nuxt': {
+      framework: 'Vue 3.5.13 + Nuxt 3.14.0',
+      styles: 'Tailwind CSS 3.4.17 + Nuxt UI 2.18.7',
+      state: 'Pinia 2.3.0',
+      database: 'Drizzle 0.37.0 + PostgreSQL 17',
+      auth: 'Nuxt Auth 0.9.6',
+      payment: 'Stripe 17.4.0',
+      deployment: 'Netlify',
+      runtime: 'Node.js 20 LTS',
+      packageManager: 'pnpm 9.15.0'
+    },
+    'angular': {
+      framework: 'Angular 19.0.5',
+      styles: 'Angular Material 19.0.4 + Tailwind CSS 3.4.17',
+      state: 'NgRx 18.1.1',
+      database: 'TypeORM 0.3.21 + PostgreSQL 17',
+      auth: 'Angular Auth 0.14.2',
+      payment: 'Stripe 17.4.0',
+      deployment: 'AWS',
+      runtime: 'Node.js 20 LTS',
+      packageManager: 'npm 10.9.2'
+    },
+    'svelte': {
+      framework: 'Svelte 5.15.0 + SvelteKit 2.10.0',
+      styles: 'Tailwind CSS 3.4.17 + DaisyUI 4.12.14',
+      state: 'Svelte 5 stores',
+      database: 'Prisma 6.1.0 + PostgreSQL 17',
+      auth: 'Auth.js 5.7.2',
+      payment: 'Stripe 17.4.0',
+      deployment: 'Vercel',
+      runtime: 'Node.js 20 LTS',
+      packageManager: 'pnpm 9.15.0'
+    },
+    'vanilla-js': {
+      framework: 'Vanilla JavaScript + Vite 6.0.7',
+      styles: 'Tailwind CSS 3.4.17',
+      state: 'Local storage + events',
+      database: 'Firebase 11.1.0',
+      auth: 'Firebase Auth 11.1.0',
+      payment: 'Stripe.js 3.9.0',
+      deployment: 'Netlify',
+      runtime: 'Node.js 20 LTS',
+      packageManager: 'npm 10.9.2'
+    },
+    'typescript-node': {
+      framework: 'TypeScript 5.7.2 + Express.js 4.21.2',
+      styles: 'N/A (Backend only)',
+      state: 'In-memory + Redis 7.4.1',
+      database: 'Prisma 6.1.0 + PostgreSQL 17',
+      auth: 'Passport.js 0.7.0',
+      payment: 'Stripe 17.4.0',
+      deployment: 'DigitalOcean',
+      runtime: 'Node.js 20 LTS',
+      packageManager: 'pnpm 9.15.0'
+    },
+    'python-django': {
+      framework: 'Django 5.1.5 + Django REST Framework 3.15.2',
+      styles: 'Bootstrap 5.3.3 + HTMX 2.0.4',
+      state: 'Django sessions + Redis 5.2.1',
+      database: 'Django ORM + PostgreSQL 17',
+      auth: 'Django Auth + django-allauth 65.3.0',
+      payment: 'Stripe 12.4.0',
+      deployment: 'Heroku',
+      runtime: 'Python 3.12 LTS',
+      packageManager: 'poetry 1.8.5'
+    },
+    'python-fastapi': {
+      framework: 'FastAPI 0.115.6 + Pydantic 2.10.4',
+      styles: 'N/A (API only)',
+      state: 'Redis 5.2.1',
+      database: 'SQLAlchemy 2.0.36 + PostgreSQL 17',
+      auth: 'FastAPI Security + python-jose 3.3.0',
+      payment: 'Stripe 12.4.0',
+      deployment: 'DigitalOcean',
+      runtime: 'Python 3.12 LTS',
+      packageManager: 'poetry 1.8.5'
+    }
+  };
+
+  const selectedStack = techStackConfigs[config.techStack] || techStackConfigs['react-nextjs'];
+  
+  // Complexity level configurations
+  const complexityConfigs = {
+    'mvp': {
+      features: 'Core functionality only',
+      testing: 'Basic validation',
+      deployment: 'Simple deployment',
+      scale: 'Single instance'
+    },
+    'standard': {
+      features: 'Core + 2-3 additional features',
+      testing: 'Unit tests for critical paths',
+      deployment: 'CI/CD pipeline',
+      scale: 'Horizontal scaling ready'
+    },
+    'production': {
+      features: 'Full feature set',
+      testing: 'Comprehensive test suite',
+      deployment: 'Production-grade CI/CD',
+      scale: 'Auto-scaling infrastructure'
+    },
+    'enterprise': {
+      features: 'Full feature set + admin tools',
+      testing: 'Full test coverage + E2E tests',
+      deployment: 'Enterprise CI/CD + monitoring',
+      scale: 'Multi-region deployment'
+    }
+  };
+
+  const selectedComplexity = complexityConfigs[config.complexity] || complexityConfigs['production'];
+
+  return `# Custom Implementation Prompt for: ${project.title}
+
+## Project Overview
+**Category**: ${project.category}
+**Problem**: ${project.problem}
+**Solution**: ${project.solution}
+**Complexity Level**: ${config.complexity.toUpperCase()}
+
+## Technology Stack Configuration
+- **Framework**: ${selectedStack.framework}
+- **Runtime**: ${selectedStack.runtime}
+- **Package Manager**: ${selectedStack.packageManager}
+- **Styling**: ${selectedStack.styles}
+- **State Management**: ${selectedStack.state}
+- **Database**: ${selectedStack.database}
+- **Authentication**: ${selectedStack.auth}
+- **Payments**: ${selectedStack.payment}
+- **Deployment**: ${config.deploymentTarget || selectedStack.deployment}
+
+## Implementation Requirements
+
+### Core Architecture
+- **Privacy-First**: All sensitive data processing happens locally
+- **Performance**: Sub-100ms response times for all operations
+- **Scalability**: ${selectedComplexity.scale}
+- **Testing Strategy**: ${selectedComplexity.testing}
+
+### Required Features
+${project.key_features.map((feature, i) => `${i + 1}. ${feature}`).join('\n')}
+
+### Technical Implementation
+
+#### ${config.includeAuth ? '✅' : '❌'} User Authentication
+${config.includeAuth ? `- Implement secure authentication using ${selectedStack.auth}
+- Include user registration, login, logout, and password reset
+- Add role-based access control (RBAC)
+- Implement session management and JWT tokens
+- Add social login options (Google, GitHub)` : '- Skip authentication implementation'}
+
+#### ${config.includeDatabase ? '✅' : '❌'} Database Integration
+${config.includeDatabase ? `- Set up ${selectedStack.database}
+- Design optimized database schema
+- Implement data migrations and seeding
+- Add database connection pooling
+- Include backup and recovery procedures` : '- Use local storage or mock data'}
+
+#### ${config.includePayments ? '✅' : '❌'} Payment Processing
+${config.includePayments ? `- Integrate ${selectedStack.payment} for payments
+- Implement subscription management
+- Add invoice generation and billing
+- Include payment method management
+- Set up webhook handling for payment events
+- Add tax calculation and compliance` : '- Skip payment integration'}
+
+#### ${config.includeAnalytics ? '✅' : '❌'} Analytics & Tracking
+${config.includeAnalytics ? `- Implement privacy-compliant analytics
+- Add user behavior tracking
+- Create custom event tracking
+- Include performance monitoring
+- Add A/B testing framework
+- Generate usage reports and dashboards` : '- Skip analytics implementation'}
+
+#### ${config.includeTests ? '✅' : '❌'} Testing Suite
+${config.includeTests ? `- Set up comprehensive testing framework
+- Include unit tests for all business logic
+- Add integration tests for API endpoints
+- Implement E2E tests for critical user flows
+- Add visual regression testing
+- Include performance testing` : '- Skip testing implementation'}
+
+#### ${config.includeDocs ? '✅' : '❌'} Documentation
+${config.includeDocs ? `- Create comprehensive API documentation
+- Add user guides and tutorials
+- Include developer setup instructions
+- Generate component documentation
+- Add deployment guides
+- Include troubleshooting sections` : '- Minimal documentation only'}
+
+### Revenue Model Implementation
+${project.revenue_model}
+
+**Pricing Integration**:
+- Implement tiered subscription model
+- Add usage-based billing
+- Include promotional codes and discounts
+- Set up affiliate tracking
+- Add revenue analytics dashboard
+
+### Additional Features
+${config.additionalFeatures ? `
+**Requested Additional Features**:
+${config.additionalFeatures.split('\n').map(f => f.trim()).filter(f => f).map(f => `- ${f}`).join('\n')}
+` : ''}
+
+### Custom Requirements
+${config.customInstructions ? `
+**Specific Instructions**:
+${config.customInstructions}
+` : ''}
+
+${config.specializedPrompts && config.specializedPrompts.length > 0 ? combineSpecializedPrompts(config.specializedPrompts) : ''}
+
+### Deployment Configuration
+- **Platform**: ${config.deploymentTarget}
+- **Environment**: Production-ready with staging
+- **Monitoring**: Health checks and error tracking
+- **Scaling**: ${selectedComplexity.scale}
+- **Security**: SSL/TLS, security headers, rate limiting
+
+### Development Phases
+1. **Setup & Architecture** (Week 1): Project setup, database design, authentication
+2. **Core Features** (Week 2-3): Implement main functionality and UI
+3. **Integration** (Week 4): Payment processing, analytics, and third-party services
+4. **Testing & Polish** (Week 5): Testing, optimization, and bug fixes
+5. **Deployment** (Week 6): Production deployment and monitoring setup
+
+### Success Metrics
+- **Quality Score**: ${project.quality_score}/10
+- **Revenue Target**: $${project.revenue_potential?.realistic || 0}/month
+- **Performance**: <100ms API response times
+- **Uptime**: 99.9% availability
+- **User Satisfaction**: >4.5/5 rating
+
+### Technical Constraints
+- Maximum bundle size: 500KB (gzipped)
+- Database queries: <50ms average
+- Memory usage: <512MB peak
+- Security: OWASP Top 10 compliance
+- Accessibility: WCAG 2.1 AA compliance
+
+## Final Implementation Notes
+- Follow ${config.complexity} best practices
+- Prioritize ${config.complexity === 'mvp' ? 'speed and simplicity' : config.complexity === 'enterprise' ? 'security and scalability' : 'balance of features and performance'}
+- Focus on solving the user's core problem effectively
+- Ensure code is maintainable and well-documented
+- Implement proper error handling and logging
+- Add monitoring and alerting for production
+
+**Remember**: This is a ${config.complexity} implementation focusing on ${selectedStack.framework}. Prioritize ${config.complexity === 'mvp' ? 'getting to market quickly' : config.complexity === 'enterprise' ? 'enterprise-grade features and security' : 'production-ready quality with good performance'}.`;
+}
+
+// Specialized prompt templates for different aspects
+export const SPECIALIZED_PROMPTS = {
+  lean: {
+    id: 'lean',
+    title: 'Lean Startup Methodology',
+    description: 'Focus on MVP, rapid iteration, and customer validation',
+    category: 'Business',
+    template: `
+## Lean Startup Implementation
+
+### Build-Measure-Learn Cycle
+- **Build**: Start with minimal viable features
+- **Measure**: Track key metrics and user feedback
+- **Learn**: Iterate based on data and insights
+
+### MVP Strategy
+- Core feature identification (maximum 3 features)
+- Rapid prototyping and deployment
+- A/B testing framework for feature validation
+- Customer interview integration
+- Pivot-ready architecture
+
+### Metrics & Analytics
+- Implement cohort analysis
+- Track activation, retention, referral
+- Set up funnel analytics
+- Customer lifetime value tracking
+- Churn analysis and prevention
+
+### Validation Framework
+- Problem-solution fit validation
+- Product-market fit measurement
+- Customer development process
+- Hypothesis-driven development
+- Risk assessment and mitigation
+
+### Time-to-Market Optimization
+- Feature flag implementation
+- Continuous deployment pipeline
+- Automated testing for rapid releases
+- Performance monitoring
+- User feedback collection system
+`
+  },
+
+  privacy: {
+    id: 'privacy',
+    title: 'Privacy-First Architecture',
+    description: 'Data protection, GDPR/CCPA compliance, and user privacy',
+    category: 'Legal & Compliance',
+    template: `
+## Privacy-First Implementation
+
+### Data Protection Principles
+- **Data Minimization**: Collect only necessary data
+- **Purpose Limitation**: Use data only for stated purposes
+- **Transparency**: Clear privacy policies and consent
+- **User Control**: Easy data access, correction, and deletion
+
+### GDPR/CCPA Compliance
+- Lawful basis for data processing
+- Data Protection Impact Assessment (DPIA)
+- Right to erasure implementation
+- Data portability features
+- Consent management system
+- Privacy by design architecture
+
+### Technical Privacy Measures
+- End-to-end encryption for sensitive data
+- Local data processing where possible
+- Anonymization and pseudonymization
+- Secure data transmission (TLS 1.3+)
+- Regular security audits and penetration testing
+
+### Privacy Controls
+- Granular privacy settings
+- Opt-in/opt-out mechanisms
+- Cookie consent management
+- Third-party integration controls
+- Data retention policies
+
+### Compliance Documentation
+- Privacy policy generation
+- Data processing records
+- Incident response procedures
+- Staff training materials
+- Regular compliance audits
+`
+  },
+
+  compliance: {
+    id: 'compliance',
+    title: 'Regulatory Compliance',
+    description: 'Industry standards, SOC 2, ISO 27001, and regulatory requirements',
+    category: 'Legal & Compliance',
+    template: `
+## Regulatory Compliance Framework
+
+### SOC 2 Type II Compliance
+- Security controls implementation
+- Availability and processing integrity
+- Confidentiality measures
+- Privacy protection controls
+- Continuous monitoring and reporting
+
+### ISO 27001 Information Security
+- Information Security Management System (ISMS)
+- Risk assessment and treatment
+- Security policies and procedures
+- Incident management processes
+- Business continuity planning
+
+### Industry-Specific Compliance
+- HIPAA (Healthcare): PHI protection, BAA agreements
+- PCI DSS (Payments): Secure payment processing
+- FERPA (Education): Student data protection
+- FINRA (Finance): Financial data regulations
+- GDPR (EU): Data protection requirements
+
+### Audit Preparation
+- Documentation management system
+- Control testing procedures
+- Evidence collection automation
+- Compliance reporting dashboards
+- Third-party vendor assessments
+
+### Compliance Monitoring
+- Automated compliance checks
+- Policy violation detection
+- Regular internal audits
+- Risk assessment updates
+- Remediation tracking
+`
+  },
+
+  legal: {
+    id: 'legal',
+    title: 'Legal Framework',
+    description: 'Terms of service, intellectual property, and legal protection',
+    category: 'Legal & Compliance',
+    template: `
+## Legal Framework Implementation
+
+### Terms of Service & Legal Documents
+- Comprehensive Terms of Service
+- Privacy Policy and Cookie Policy
+- Acceptable Use Policy
+- Data Processing Agreements
+- Service Level Agreements (SLAs)
+
+### Intellectual Property Protection
+- Trademark and copyright notices
+- Software licensing compliance
+- Open source license management
+- Trade secret protection
+- Patent landscape analysis
+
+### User Agreement Management
+- Click-wrap and browse-wrap agreements
+- Age verification systems
+- International jurisdiction handling
+- Dispute resolution mechanisms
+- Force majeure provisions
+
+### Liability & Risk Management
+- Limitation of liability clauses
+- Indemnification provisions
+- Insurance requirements
+- Risk assessment procedures
+- Legal compliance monitoring
+
+### International Considerations
+- Multi-jurisdiction compliance
+- Cross-border data transfer agreements
+- Local law requirements
+- Currency and tax implications
+- International dispute resolution
+`
+  },
+
+  payment: {
+    id: 'payment',
+    title: 'Payment Processing & FinTech',
+    description: 'Secure payments, PCI compliance, and financial regulations',
+    category: 'Financial',
+    template: `
+## Payment Processing Implementation
+
+### PCI DSS Compliance
+- Secure cardholder data environment
+- Network security controls
+- Vulnerability management program
+- Access control measures
+- Regular monitoring and testing
+
+### Payment Gateway Integration
+- Multi-gateway support (Stripe, PayPal, Square)
+- Payment method diversity (cards, wallets, crypto)
+- Recurring billing and subscriptions
+- International payment processing
+- Currency conversion and localization
+
+### Financial Security
+- Tokenization of payment data
+- 3D Secure authentication
+- Fraud detection and prevention
+- Risk scoring algorithms
+- Transaction monitoring
+
+### Compliance & Reporting
+- Anti-Money Laundering (AML) checks
+- Know Your Customer (KYC) verification
+- Tax calculation and reporting
+- Financial reconciliation
+- Audit trail maintenance
+
+### User Experience
+- One-click payments
+- Saved payment methods
+- Payment retry logic
+- Refund and chargeback handling
+- Payment status notifications
+`
+  },
+
+  security: {
+    id: 'security',
+    title: 'Cybersecurity Framework',
+    description: 'Application security, threat protection, and security monitoring',
+    category: 'Technical',
+    template: `
+## Cybersecurity Implementation
+
+### Application Security
+- OWASP Top 10 protection
+- Secure coding practices
+- Input validation and sanitization
+- SQL injection prevention
+- Cross-site scripting (XSS) protection
+
+### Authentication & Authorization
+- Multi-factor authentication (MFA)
+- Single sign-on (SSO) integration
+- Role-based access control (RBAC)
+- Session management
+- OAuth 2.0 and OpenID Connect
+
+### Infrastructure Security
+- Web Application Firewall (WAF)
+- DDoS protection and mitigation
+- Network segmentation
+- Intrusion detection systems
+- Security monitoring and SIEM
+
+### Data Security
+- Encryption at rest and in transit
+- Key management systems
+- Database security controls
+- Backup encryption
+- Secure data disposal
+
+### Incident Response
+- Security incident response plan
+- Threat hunting procedures
+- Vulnerability management
+- Security awareness training
+- Regular security assessments
+`
+  },
+
+  performance: {
+    id: 'performance',
+    title: 'Performance Optimization',
+    description: 'Speed, scalability, and performance monitoring',
+    category: 'Technical',
+    template: `
+## Performance Optimization Framework
+
+### Frontend Performance
+- Core Web Vitals optimization
+- Code splitting and lazy loading
+- Image optimization and compression
+- CDN implementation
+- Browser caching strategies
+
+### Backend Performance
+- Database query optimization
+- Connection pooling
+- Caching layers (Redis, Memcached)
+- API response optimization
+- Background job processing
+
+### Scalability Architecture
+- Horizontal scaling strategies
+- Load balancing implementation
+- Microservices architecture
+- Auto-scaling configuration
+- Container orchestration
+
+### Monitoring & Analytics
+- Real User Monitoring (RUM)
+- Application Performance Monitoring (APM)
+- Database performance tracking
+- Error tracking and alerting
+- Performance budgets and SLAs
+
+### Optimization Techniques
+- Compression and minification
+- Resource bundling
+- Progressive loading
+- Service worker implementation
+- Performance testing automation
+`
+  },
+
+  accessibility: {
+    id: 'accessibility',
+    title: 'Accessibility & Inclusion',
+    description: 'WCAG compliance, inclusive design, and accessibility testing',
+    category: 'Design & UX',
+    template: `
+## Accessibility Implementation
+
+### WCAG 2.1 AA Compliance
+- Perceivable content for all users
+- Operable interface elements
+- Understandable information and UI
+- Robust content for assistive technologies
+
+### Inclusive Design Principles
+- Color contrast compliance (4.5:1 ratio)
+- Keyboard navigation support
+- Screen reader compatibility
+- Voice control integration
+- Motor disability accommodations
+
+### Assistive Technology Support
+- ARIA labels and landmarks
+- Focus management
+- Alternative text for images
+- Captions for video content
+- Sign language interpretation options
+
+### Testing & Validation
+- Automated accessibility testing
+- Manual testing with assistive tools
+- User testing with disabled users
+- Accessibility audit procedures
+- Compliance reporting
+
+### International Standards
+- Section 508 compliance (US)
+- EN 301 549 compliance (EU)
+- JIS X 8341 compliance (Japan)
+- DDA compliance (Australia)
+- AODA compliance (Ontario)
+`
+  },
+
+  sustainability: {
+    id: 'sustainability',
+    title: 'Sustainable Development',
+    description: 'Green coding, carbon footprint reduction, and environmental impact',
+    category: 'Environmental',
+    template: `
+## Sustainable Development Framework
+
+### Green Coding Practices
+- Energy-efficient algorithms
+- Optimized database queries
+- Minimal resource consumption
+- Efficient caching strategies
+- Code optimization for performance
+
+### Carbon Footprint Reduction
+- Green hosting providers
+- Renewable energy data centers
+- Efficient server utilization
+- CDN optimization for proximity
+- Image and asset optimization
+
+### Sustainable Architecture
+- Serverless computing adoption
+- Edge computing implementation
+- Efficient scaling strategies
+- Resource monitoring and optimization
+- Sustainable deployment practices
+
+### Environmental Impact Measurement
+- Carbon footprint tracking
+- Energy consumption monitoring
+- Sustainability reporting
+- Environmental KPIs
+- Carbon offset integration
+
+### Sustainable Business Practices
+- Digital-first documentation
+- Remote work optimization
+- Paperless operations
+- Sustainable supply chain
+- Environmental policy compliance
+`
+  }
+};
+
+// Function to get specialized prompts by category
+export function getSpecializedPromptsByCategory(category: string): typeof SPECIALIZED_PROMPTS[keyof typeof SPECIALIZED_PROMPTS][] {
+  return Object.values(SPECIALIZED_PROMPTS).filter(prompt => 
+    prompt.category === category || category === 'all'
+  );
+}
+
+// Function to combine multiple specialized prompts
+export function combineSpecializedPrompts(selectedPromptIds: string[]): string {
+  const selectedPrompts = selectedPromptIds
+    .map(id => SPECIALIZED_PROMPTS[id as keyof typeof SPECIALIZED_PROMPTS])
+    .filter(Boolean);
+
+  if (selectedPrompts.length === 0) return '';
+
+  return `
+## Specialized Implementation Aspects
+
+${selectedPrompts.map(prompt => `${prompt.template}`).join('\n\n---\n')}
+
+## Integration Guidelines
+
+### Implementation Priority
+1. **Critical**: Security, Privacy, Legal compliance
+2. **High**: Performance, Accessibility 
+3. **Medium**: Lean methodology, Sustainability
+4. **Project-specific**: Industry compliance requirements
+
+### Cross-functional Considerations
+- Ensure all aspects work together cohesively
+- Regular review of implementation against each aspect
+- Continuous monitoring and improvement
+- Documentation of decisions and trade-offs
+
+### Risk Management
+- Identify conflicts between different aspects
+- Prioritize based on project requirements
+- Plan for aspect-specific testing and validation
+- Establish monitoring for each aspect
+`;
+}

@@ -22,6 +22,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Tooltip,
   TooltipContent,
@@ -87,6 +93,35 @@ export default function ProjectDetailPage() {
   const [isEnhancing, setIsEnhancing] = useState(false);
   const [showPrompt, setShowPrompt] = useState(false);
   const [implementationPrompt, setImplementationPrompt] = useState('');
+  const [showPromptCustomizer, setShowPromptCustomizer] = useState(false);
+  const [promptConfig, setPromptConfig] = useState({
+    includeAuth: true,
+    includeDatabase: true,
+    includePayments: true,
+    includeAnalytics: false,
+    includeTests: true,
+    includeDocs: false,
+    deploymentTarget: 'vercel',
+    techStack: 'react-nextjs',
+    complexity: 'production',
+    additionalFeatures: '',
+    customInstructions: '',
+    specializedPrompts: [] as string[]
+  });
+  const [availablePrompts, setAvailablePrompts] = useState<any[]>([]);
+  const [promptCategories, setPromptCategories] = useState<string[]>([]);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [editForm, setEditForm] = useState({
+    title: '',
+    problem: '',
+    solution: '',
+    category: '',
+    targetUsers: '',
+    revenueModel: '',
+    keyFeatures: [] as string[],
+    tags: [] as string[]
+  });
+  const [isUpdating, setIsUpdating] = useState(false);
 
   // Fetch project data
   const { data: project, isLoading, error } = useQuery<Project>({
@@ -94,6 +129,40 @@ export default function ProjectDetailPage() {
     queryFn: () => getProject(projectId),
     enabled: !!projectId
   });
+
+  // Populate edit form when project loads
+  useEffect(() => {
+    if (project) {
+      setEditForm({
+        title: project.title || '',
+        problem: project.problem || '',
+        solution: project.solution || '',
+        category: project.category || '',
+        targetUsers: project.target_users || '',
+        revenueModel: project.revenue_model || '',
+        keyFeatures: project.key_features || [],
+        tags: project.tags || []
+      });
+    }
+  }, [project]);
+
+  // Fetch specialized prompts
+  useEffect(() => {
+    const fetchSpecializedPrompts = async () => {
+      try {
+        const response = await fetch('/api/specialized-prompts');
+        if (response.ok) {
+          const data = await response.json();
+          setAvailablePrompts(data.prompts || []);
+          setPromptCategories(data.categories || []);
+        }
+      } catch (error) {
+        console.error('Error fetching specialized prompts:', error);
+      }
+    };
+
+    fetchSpecializedPrompts();
+  }, []);
 
   // Calculate additional metrics
   const projectMetrics = useMemo(() => {
@@ -304,18 +373,7 @@ export default function ProjectDetailPage() {
               <Button 
                 variant="outline" 
                 size="sm"
-                onClick={async () => {
-                  try {
-                    const response = await fetch(`/api/projects/${projectId}/enhance`);
-                    if (response.ok) {
-                      const data = await response.json();
-                      setImplementationPrompt(data.prompt);
-                      setShowPrompt(true);
-                    }
-                  } catch (error) {
-                    console.error('Failed to generate prompt:', error);
-                  }
-                }}
+                onClick={() => setShowPromptCustomizer(true)}
               >
                 <Code className="h-4 w-4 mr-2" />
                 Get Prompt
@@ -323,10 +381,7 @@ export default function ProjectDetailPage() {
               <Button 
                 variant="outline" 
                 size="sm"
-                onClick={() => {
-                  // Navigate to edit page (could be implemented later)
-                  alert('Edit functionality would open an edit form or navigate to edit page');
-                }}
+                onClick={() => setShowEditDialog(true)}
               >
                 <Edit className="h-4 w-4 mr-2" />
                 Edit
@@ -1010,6 +1065,438 @@ export default function ProjectDetailPage() {
             <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
               <code className="text-sm">{implementationPrompt}</code>
             </pre>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Project Dialog */}
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Project: {project.title}</DialogTitle>
+            <DialogDescription>
+              Update project details and settings.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-4 space-y-6">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-2">
+                <Label htmlFor="title">Project Title</Label>
+                <Input
+                  id="title"
+                  value={editForm.title}
+                  onChange={(e) => setEditForm(prev => ({ ...prev, title: e.target.value }))}
+                  placeholder="Enter project title"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="category">Category</Label>
+                <Select value={editForm.category} onValueChange={(value) => setEditForm(prev => ({ ...prev, category: value }))}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="VSCode Extension">VSCode Extension</SelectItem>
+                    <SelectItem value="Chrome Extension">Chrome Extension</SelectItem>
+                    <SelectItem value="Figma Plugin">Figma Plugin</SelectItem>
+                    <SelectItem value="Notion Templates">Notion Templates</SelectItem>
+                    <SelectItem value="Obsidian Plugin">Obsidian Plugin</SelectItem>
+                    <SelectItem value="AI Browser Tools">AI Browser Tools</SelectItem>
+                    <SelectItem value="Crypto Browser Tools">Crypto Browser Tools</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="problem">Problem Statement</Label>
+              <Textarea
+                id="problem"
+                value={editForm.problem}
+                onChange={(e) => setEditForm(prev => ({ ...prev, problem: e.target.value }))}
+                placeholder="Describe the problem this project solves"
+                rows={3}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="solution">Solution Description</Label>
+              <Textarea
+                id="solution"
+                value={editForm.solution}
+                onChange={(e) => setEditForm(prev => ({ ...prev, solution: e.target.value }))}
+                placeholder="Describe how this project solves the problem"
+                rows={3}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="targetUsers">Target Users</Label>
+              <Textarea
+                id="targetUsers"
+                value={editForm.targetUsers}
+                onChange={(e) => setEditForm(prev => ({ ...prev, targetUsers: e.target.value }))}
+                placeholder="Describe the target user base"
+                rows={2}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="revenueModel">Revenue Model</Label>
+              <Textarea
+                id="revenueModel"
+                value={editForm.revenueModel}
+                onChange={(e) => setEditForm(prev => ({ ...prev, revenueModel: e.target.value }))}
+                placeholder="Describe the revenue model and pricing strategy"
+                rows={3}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="keyFeatures">Key Features (one per line)</Label>
+              <Textarea
+                id="keyFeatures"
+                value={editForm.keyFeatures.join('\n')}
+                onChange={(e) => setEditForm(prev => ({ 
+                  ...prev, 
+                  keyFeatures: e.target.value.split('\n').filter(f => f.trim()) 
+                }))}
+                placeholder="Enter key features, one per line"
+                rows={4}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="tags">Tags (comma-separated)</Label>
+              <Input
+                id="tags"
+                value={editForm.tags.join(', ')}
+                onChange={(e) => setEditForm(prev => ({ 
+                  ...prev, 
+                  tags: e.target.value.split(',').map(t => t.trim()).filter(t => t) 
+                }))}
+                placeholder="Enter tags separated by commas"
+              />
+            </div>
+
+            <div className="flex justify-end gap-2 pt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => setShowEditDialog(false)}
+                disabled={isUpdating}
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={async () => {
+                  setIsUpdating(true);
+                  try {
+                    const response = await fetch(`/api/projects/${projectId}`, {
+                      method: 'PATCH',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                        title: editForm.title,
+                        problem: editForm.problem,
+                        solution: editForm.solution,
+                        category: editForm.category,
+                        targetUsers: editForm.targetUsers,
+                        revenueModel: editForm.revenueModel,
+                        keyFeatures: JSON.stringify(editForm.keyFeatures),
+                        tags: JSON.stringify(editForm.tags)
+                      }),
+                    });
+
+                    if (response.ok) {
+                      setShowEditDialog(false);
+                      router.refresh();
+                      window.location.reload();
+                    } else {
+                      alert('Failed to update project');
+                    }
+                  } catch (error) {
+                    console.error('Update failed:', error);
+                    alert('Failed to update project');
+                  } finally {
+                    setIsUpdating(false);
+                  }
+                }}
+                disabled={isUpdating}
+              >
+                {isUpdating ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Updating...
+                  </>
+                ) : (
+                  'Update Project'
+                )}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Interactive Prompt Customizer */}
+      <Dialog open={showPromptCustomizer} onOpenChange={setShowPromptCustomizer}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Customize Implementation Prompt</DialogTitle>
+            <DialogDescription>
+              Configure your implementation requirements to generate a tailored prompt.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-6 space-y-6">
+            {/* Tech Stack Selection */}
+            <div className="space-y-3">
+              <Label className="text-base font-medium">Technology Stack</Label>
+              <Select value={promptConfig.techStack} onValueChange={(value) => setPromptConfig(prev => ({ ...prev, techStack: value }))}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select tech stack" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="react-nextjs">React + Next.js</SelectItem>
+                  <SelectItem value="vue-nuxt">Vue + Nuxt.js</SelectItem>
+                  <SelectItem value="angular">Angular</SelectItem>
+                  <SelectItem value="svelte">Svelte/SvelteKit</SelectItem>
+                  <SelectItem value="vanilla-js">Vanilla JavaScript</SelectItem>
+                  <SelectItem value="typescript-node">TypeScript + Node.js</SelectItem>
+                  <SelectItem value="python-django">Python + Django</SelectItem>
+                  <SelectItem value="python-fastapi">Python + FastAPI</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Complexity Level */}
+            <div className="space-y-3">
+              <Label className="text-base font-medium">Implementation Complexity</Label>
+              <Select value={promptConfig.complexity} onValueChange={(value) => setPromptConfig(prev => ({ ...prev, complexity: value }))}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select complexity level" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="mvp">MVP - Basic functionality only</SelectItem>
+                  <SelectItem value="standard">Standard - Core features with polish</SelectItem>
+                  <SelectItem value="production">Production - Full-featured and scalable</SelectItem>
+                  <SelectItem value="enterprise">Enterprise - Advanced features and security</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Deployment Target */}
+            <div className="space-y-3">
+              <Label className="text-base font-medium">Deployment Platform</Label>
+              <Select value={promptConfig.deploymentTarget} onValueChange={(value) => setPromptConfig(prev => ({ ...prev, deploymentTarget: value }))}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select deployment target" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="vercel">Vercel</SelectItem>
+                  <SelectItem value="netlify">Netlify</SelectItem>
+                  <SelectItem value="aws">AWS</SelectItem>
+                  <SelectItem value="digital-ocean">DigitalOcean</SelectItem>
+                  <SelectItem value="heroku">Heroku</SelectItem>
+                  <SelectItem value="docker">Docker + Self-hosted</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Feature Toggles */}
+            <div className="space-y-4">
+              <Label className="text-base font-medium">Include Features</Label>
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="auth"
+                    checked={promptConfig.includeAuth}
+                    onCheckedChange={(checked) => setPromptConfig(prev => ({ ...prev, includeAuth: checked }))}
+                  />
+                  <Label htmlFor="auth" className="text-sm">User Authentication</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="database"
+                    checked={promptConfig.includeDatabase}
+                    onCheckedChange={(checked) => setPromptConfig(prev => ({ ...prev, includeDatabase: checked }))}
+                  />
+                  <Label htmlFor="database" className="text-sm">Database Integration</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="payments"
+                    checked={promptConfig.includePayments}
+                    onCheckedChange={(checked) => setPromptConfig(prev => ({ ...prev, includePayments: checked }))}
+                  />
+                  <Label htmlFor="payments" className="text-sm">Payment Processing</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="analytics"
+                    checked={promptConfig.includeAnalytics}
+                    onCheckedChange={(checked) => setPromptConfig(prev => ({ ...prev, includeAnalytics: checked }))}
+                  />
+                  <Label htmlFor="analytics" className="text-sm">Analytics & Tracking</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="tests"
+                    checked={promptConfig.includeTests}
+                    onCheckedChange={(checked) => setPromptConfig(prev => ({ ...prev, includeTests: checked }))}
+                  />
+                  <Label htmlFor="tests" className="text-sm">Unit Tests</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="docs"
+                    checked={promptConfig.includeDocs}
+                    onCheckedChange={(checked) => setPromptConfig(prev => ({ ...prev, includeDocs: checked }))}
+                  />
+                  <Label htmlFor="docs" className="text-sm">Documentation</Label>
+                </div>
+              </div>
+            </div>
+
+            {/* Additional Features */}
+            <div className="space-y-3">
+              <Label htmlFor="additionalFeatures" className="text-base font-medium">Additional Features</Label>
+              <Textarea
+                id="additionalFeatures"
+                value={promptConfig.additionalFeatures}
+                onChange={(e) => setPromptConfig(prev => ({ ...prev, additionalFeatures: e.target.value }))}
+                placeholder="List any additional features you want included (e.g., real-time notifications, file uploads, admin dashboard)"
+                rows={3}
+              />
+            </div>
+
+            {/* Custom Instructions */}
+            <div className="space-y-3">
+              <Label htmlFor="customInstructions" className="text-base font-medium">Custom Instructions</Label>
+              <Textarea
+                id="customInstructions"
+                value={promptConfig.customInstructions}
+                onChange={(e) => setPromptConfig(prev => ({ ...prev, customInstructions: e.target.value }))}
+                placeholder="Add any specific requirements, constraints, or preferences for the implementation"
+                rows={3}
+              />
+            </div>
+
+            {/* Specialized Prompts */}
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label className="text-base font-medium">Specialized Implementation Aspects</Label>
+                <p className="text-sm text-muted-foreground">
+                  Select specialized aspects to include comprehensive guidance for your implementation
+                </p>
+              </div>
+              
+              {promptCategories.length > 0 && (
+                <div className="space-y-4">
+                  {promptCategories.map(category => {
+                    const categoryPrompts = availablePrompts.filter(p => p.category === category);
+                    return (
+                      <div key={category} className="space-y-3">
+                        <h4 className="font-medium text-sm text-muted-foreground uppercase tracking-wide">
+                          {category}
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {categoryPrompts.map(prompt => (
+                            <div
+                              key={prompt.id}
+                              className={cn(
+                                "p-3 border rounded-lg cursor-pointer transition-all hover:border-primary/50",
+                                promptConfig.specializedPrompts.includes(prompt.id)
+                                  ? "border-primary bg-primary/5"
+                                  : "border-border"
+                              )}
+                              onClick={() => {
+                                setPromptConfig(prev => ({
+                                  ...prev,
+                                  specializedPrompts: prev.specializedPrompts.includes(prompt.id)
+                                    ? prev.specializedPrompts.filter(id => id !== prompt.id)
+                                    : [...prev.specializedPrompts, prompt.id]
+                                }));
+                              }}
+                            >
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2">
+                                    <Checkbox
+                                      checked={promptConfig.specializedPrompts.includes(prompt.id)}
+                                      onChange={() => {}} // Handled by div onClick
+                                    />
+                                    <h5 className="font-medium text-sm">{prompt.title}</h5>
+                                  </div>
+                                  <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                                    {prompt.description}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              
+              {availablePrompts.length === 0 && (
+                <div className="text-center py-8 text-muted-foreground">
+                  <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-muted flex items-center justify-center">
+                    <LightbulbIcon className="w-6 h-6" />
+                  </div>
+                  <p className="text-sm">Loading specialized prompts...</p>
+                </div>
+              )}
+              
+              {promptConfig.specializedPrompts.length > 0 && (
+                <div className="mt-4 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+                  <p className="text-sm text-primary font-medium">
+                    {promptConfig.specializedPrompts.length} specialized aspect{promptConfig.specializedPrompts.length === 1 ? '' : 's'} selected
+                  </p>
+                  <p className="text-xs text-primary/80 mt-1">
+                    These will be integrated into your implementation prompt with detailed guidelines and best practices.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end gap-2 pt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => setShowPromptCustomizer(false)}
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={async () => {
+                  try {
+                    // Create query parameters from config
+                    const params = new URLSearchParams();
+                    Object.entries(promptConfig).forEach(([key, value]) => {
+                      if (Array.isArray(value)) {
+                        params.append(key, value.join(','));
+                      } else {
+                        params.append(key, String(value));
+                      }
+                    });
+                    
+                    const response = await fetch(`/api/projects/${projectId}/enhance?${params.toString()}`);
+                    if (response.ok) {
+                      const data = await response.json();
+                      setImplementationPrompt(data.prompt);
+                      setShowPromptCustomizer(false);
+                      setShowPrompt(true);
+                    }
+                  } catch (error) {
+                    console.error('Failed to generate prompt:', error);
+                  }
+                }}
+              >
+                Generate Custom Prompt
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
