@@ -20,6 +20,7 @@ import {
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { getCategoryGradient } from '@/lib/constants/categories';
 import { formatNumber } from '@/lib/utils';
 
 interface ProjectCardProps {
@@ -28,19 +29,6 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project, viewMode = 'grid' }: ProjectCardProps) {
-  const getCategoryGradient = (category: string) => {
-    const gradients = {
-      'AI Browser Tools': 'from-purple-500 to-pink-500',
-      'AI Productivity Tools': 'from-blue-500 to-cyan-500',
-      'Crypto Browser Tools': 'from-orange-500 to-red-500',
-      'Chrome Extension': 'from-green-500 to-emerald-500',
-      'Figma Plugin': 'from-indigo-500 to-purple-500',
-      'VSCode Extension': 'from-yellow-500 to-orange-500',
-      'Obsidian Plugin': 'from-teal-500 to-green-500',
-      'Notion Templates': 'from-pink-500 to-rose-500',
-    };
-    return gradients[category] || 'from-gray-500 to-gray-600';
-  };
 
   const getQualityColor = (score: number) => {
     if (score >= 8) return 'text-green-600 bg-green-100';
@@ -50,10 +38,10 @@ export function ProjectCard({ project, viewMode = 'grid' }: ProjectCardProps) {
   };
 
   const gradient = getCategoryGradient(project.category);
-  const qualityColor = getQualityColor(project.quality_score);
+  const qualityColor = getQualityColor(project.quality_score || 0);
   const hasAI = project.tags?.includes('AI');
-  const isQuickWin = project.technical_complexity <= 3 && project.quality_score >= 7;
-  const isHighRevenue = project.revenue_potential.realistic >= 30000;
+  const isQuickWin = (project.technical_complexity || 0) <= 3 && (project.quality_score || 0) >= 7;
+  const isHighRevenue = (project.revenue_potential?.realistic || 0) >= 30000;
 
   if (viewMode === 'list') {
     return (

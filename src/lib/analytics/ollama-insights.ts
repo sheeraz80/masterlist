@@ -163,7 +163,12 @@ Provide a comprehensive analysis in the following JSON format:
         model: await this.selectModel('structured'),
         prompt,
         format: 'json',
-        stream: false
+        stream: false,
+        options: {
+          num_predict: 512,  // Limit response size for faster generation
+          temperature: 0.3,   // Lower temperature for more consistent JSON
+          timeout: 30000      // 30 second timeout
+        }
       });
 
       const analysis = JSON.parse(response.response);
@@ -224,7 +229,12 @@ Focus on the top 5 most significant trends.`;
         model: await this.selectModel('structured'),
         prompt,
         format: 'json',
-        stream: false
+        stream: false,
+        options: {
+          num_predict: 512,  // Limit response size for faster generation
+          temperature: 0.3,   // Lower temperature for more consistent JSON
+          timeout: 30000      // 30 second timeout
+        }
       });
 
       return JSON.parse(response.response);
@@ -270,7 +280,12 @@ Provide strategic analysis in JSON format:
         model: await this.selectModel('structured'),
         prompt,
         format: 'json',
-        stream: false
+        stream: false,
+        options: {
+          num_predict: 512,  // Limit response size for faster generation
+          temperature: 0.3,   // Lower temperature for more consistent JSON
+          timeout: 30000      // 30 second timeout
+        }
       });
 
       return JSON.parse(response.response);
