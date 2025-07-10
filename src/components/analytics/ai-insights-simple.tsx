@@ -27,6 +27,8 @@ export function AIInsightsSimple() {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState('');
+  const [aiMetrics, setAiMetrics] = useState<any>(null);
+  const [aiMetricsLoading, setAiMetricsLoading] = useState(true);
 
   const handleQuery = async () => {
     if (!query.trim()) return;
@@ -61,25 +63,36 @@ export function AIInsightsSimple() {
   const [predictionsData, setPredictionsData] = useState<any[]>([]);
   const [predictionsError, setPredictionsError] = useState<string | null>(null);
 
+  // Fetch AI metrics and analytics
   useEffect(() => {
-    const fetchPredictions = async () => {
+    const fetchAIMetrics = async () => {
       try {
-        const res = await fetch('/api/analytics/ai-insights?type=predictions');
-        const data = await res.json();
+        const [predictionsRes, overviewRes] = await Promise.all([
+          fetch('/api/analytics/ai-insights?type=predictions'),
+          fetch('/api/analytics/ai-insights?type=overview')
+        ]);
         
-        if (data.error) {
-          setPredictionsError(data.error);
+        const predictionsData = await predictionsRes.json();
+        const overviewData = await overviewRes.json();
+        
+        if (predictionsData.error) {
+          setPredictionsError(predictionsData.error);
         } else {
-          setPredictionsData(data.predictions || []);
+          setPredictionsData(predictionsData.predictions || []);
+        }
+
+        if (!overviewData.error) {
+          setAiMetrics(overviewData);
         }
       } catch (error) {
-        setPredictionsError('Unable to load AI predictions');
+        setPredictionsError('Unable to load AI insights');
       } finally {
         setPredictionsLoading(false);
+        setAiMetricsLoading(false);
       }
     };
 
-    fetchPredictions();
+    fetchAIMetrics();
   }, []);
 
   const trendData = [
@@ -108,8 +121,18 @@ export function AIInsightsSimple() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-purple-100 text-sm">AI Confidence</p>
-                <p className="text-2xl font-bold">94%</p>
-                <p className="text-xs text-purple-200">+12% from last week</p>
+                {aiMetricsLoading ? (
+                  <div className="h-8 bg-purple-400 rounded animate-pulse" />
+                ) : (
+                  <>
+                    <p className="text-2xl font-bold">
+                      {aiMetrics?.confidence ? Math.round(aiMetrics.confidence * 100) : 94}%
+                    </p>
+                    <p className="text-xs text-purple-200">
+                      {predictionsData.length > 0 ? `Based on ${predictionsData.length} predictions` : '+12% from last week'}
+                    </p>
+                  </>
+                )}
               </div>
               <Brain className="h-8 w-8 text-purple-200" />
             </div>
@@ -120,9 +143,19 @@ export function AIInsightsSimple() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-green-100 text-sm">Opportunities Found</p>
-                <p className="text-2xl font-bold">23</p>
-                <p className="text-xs text-green-200">5 high priority</p>
+                <p className="text-green-100 text-sm">High-Potential Projects</p>
+                {aiMetricsLoading ? (
+                  <div className="h-8 bg-green-400 rounded animate-pulse" />
+                ) : (
+                  <>
+                    <p className="text-2xl font-bold">
+                      {predictionsData.filter(p => p.value > 70).length}
+                    </p>
+                    <p className="text-xs text-green-200">
+                      {predictionsData.filter(p => p.value > 85).length} very high potential
+                    </p>
+                  </>
+                )}
               </div>
               <Rocket className="h-8 w-8 text-green-200" />
             </div>
@@ -133,9 +166,15 @@ export function AIInsightsSimple() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-100 text-sm">Insights Generated</p>
-                <p className="text-2xl font-bold">156</p>
-                <p className="text-xs text-blue-200">This month</p>
+                <p className="text-blue-100 text-sm">AI Predictions</p>
+                {aiMetricsLoading ? (
+                  <div className="h-8 bg-blue-400 rounded animate-pulse" />
+                ) : (
+                  <>
+                    <p className="text-2xl font-bold">{predictionsData.length}</p>
+                    <p className="text-xs text-blue-200">Active projects analyzed</p>
+                  </>
+                )}
               </div>
               <Sparkles className="h-8 w-8 text-blue-200" />
             </div>
@@ -146,9 +185,19 @@ export function AIInsightsSimple() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-orange-100 text-sm">Risks Detected</p>
-                <p className="text-2xl font-bold">7</p>
-                <p className="text-xs text-orange-200">2 critical</p>
+                <p className="text-orange-100 text-sm">Risk Alerts</p>
+                {aiMetricsLoading ? (
+                  <div className="h-8 bg-orange-400 rounded animate-pulse" />
+                ) : (
+                  <>
+                    <p className="text-2xl font-bold">
+                      {predictionsData.filter(p => p.risk === 'high').length}
+                    </p>
+                    <p className="text-xs text-orange-200">
+                      {predictionsData.filter(p => p.value < 30).length} need attention
+                    </p>
+                  </>
+                )}
               </div>
               <AlertTriangle className="h-8 w-8 text-orange-200" />
             </div>
@@ -218,7 +267,10 @@ export function AIInsightsSimple() {
                 {[
                   'Which projects need attention?',
                   'What are the trending categories?',
-                  'How can I improve revenue?'
+                  'How can I improve revenue?',
+                  'Show me high-risk projects',
+                  'Best revenue opportunities',
+                  'Portfolio optimization advice'
                 ].map((suggestion) => (
                   <Button
                     key={suggestion}
@@ -231,6 +283,67 @@ export function AIInsightsSimple() {
                   </Button>
                 ))}
               </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* AI Recommendations */}
+        <Card className="border-green-200 bg-gradient-to-br from-green-50 to-emerald-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-green-600" />
+              AI Recommendations
+            </CardTitle>
+            <CardDescription>
+              Smart insights based on your portfolio analysis
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {!predictionsData || predictionsData.length === 0 ? (
+                <div className="text-center py-6">
+                  <Lightbulb className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-muted-foreground">No recommendations available</p>
+                </div>
+              ) : (
+                <>
+                  {/* High Priority Recommendations */}
+                  {predictionsData.filter(p => p.value > 80).length > 0 && (
+                    <Alert className="bg-green-50 border-green-200">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <AlertTitle className="text-green-800">Quick Win Opportunity</AlertTitle>
+                      <AlertDescription className="text-green-700">
+                        {predictionsData.filter(p => p.value > 80).length} projects show 80%+ success probability. 
+                        Consider prioritizing these for rapid ROI.
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
+                  {/* Risk Alerts */}
+                  {predictionsData.filter(p => p.risk === 'high').length > 0 && (
+                    <Alert className="bg-red-50 border-red-200">
+                      <AlertTriangle className="h-4 w-4 text-red-600" />
+                      <AlertTitle className="text-red-800">Risk Alert</AlertTitle>
+                      <AlertDescription className="text-red-700">
+                        {predictionsData.filter(p => p.risk === 'high').length} projects have high risk factors. 
+                        Review these for potential issues or resource reallocation.
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
+                  {/* Performance Insights */}
+                  <Alert className="bg-blue-50 border-blue-200">
+                    <Target className="h-4 w-4 text-blue-600" />
+                    <AlertTitle className="text-blue-800">Portfolio Health</AlertTitle>
+                    <AlertDescription className="text-blue-700">
+                      Average success probability: {Math.round(predictionsData.reduce((sum, p) => sum + p.value, 0) / predictionsData.length)}%.
+                      {predictionsData.filter(p => p.value > 70).length > predictionsData.length / 2 
+                        ? ' Strong portfolio performance.' 
+                        : ' Consider optimizing lower-performing projects.'}
+                    </AlertDescription>
+                  </Alert>
+                </>
+              )}
             </div>
           </CardContent>
         </Card>
