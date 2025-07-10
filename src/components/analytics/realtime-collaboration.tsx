@@ -1,16 +1,23 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useRealtime } from '@/lib/realtime/use-realtime';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Switch } from '@/components/ui/switch';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { 
   Users, Activity, Eye, Edit, MessageSquare, 
-  TrendingUp, Clock, Zap, Globe, RefreshCw, AlertTriangle
+  TrendingUp, Clock, Zap, Globe, RefreshCw, AlertTriangle,
+  Bell, BellOff, Settings, Wifi, WifiOff, CheckCircle,
+  UserPlus, UserMinus, FileEdit, Plus, Share
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { formatDistanceToNow } from 'date-fns';
+import { toast } from 'sonner';
 
 interface RealtimeCollaborationProps {
   currentTab?: string;
@@ -28,6 +35,79 @@ export function RealtimeCollaboration({ currentTab }: RealtimeCollaborationProps
   } = useRealtime({
     analyticsTab: currentTab
   });
+
+  // Notification and collaboration state
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [collaborationSettings, setCollaborationSettings] = useState({
+    autoRefresh: true,
+    showUserActivity: true,
+    enableSounds: false,
+    highlightChanges: true
+  });
+  const [connectedUsers, setConnectedUsers] = useState<any[]>([
+    { id: '1', name: 'John Doe', avatar: 'JD', status: 'active', lastSeen: new Date(), currentProject: 'Project Alpha' },
+    { id: '2', name: 'Jane Smith', avatar: 'JS', status: 'idle', lastSeen: new Date(Date.now() - 300000), currentProject: 'Project Beta' },
+    { id: '3', name: 'Mike Johnson', avatar: 'MJ', status: 'active', lastSeen: new Date(), currentProject: 'Project Gamma' }
+  ]);
+
+  // Simulate real-time notifications
+  useEffect(() => {
+    if (!notificationsEnabled) return;
+
+    const interval = setInterval(() => {
+      const activityTypes = [
+        { type: 'project_update', message: 'updated a project quality score', icon: FileEdit },
+        { type: 'user_joined', message: 'joined the collaboration', icon: UserPlus },
+        { type: 'comment_added', message: 'added a comment to a project', icon: MessageSquare },
+        { type: 'goal_achieved', message: 'achieved a performance goal', icon: CheckCircle },
+        { type: 'risk_detected', message: 'flagged a potential risk', icon: AlertTriangle }
+      ];
+
+      const users = ['Alex Chen', 'Sarah Wilson', 'David Brown', 'Emma Davis'];
+      const randomActivity = activityTypes[Math.floor(Math.random() * activityTypes.length)];
+      const randomUser = users[Math.floor(Math.random() * users.length)];
+
+      const notification = {
+        id: Date.now().toString(),
+        user: randomUser,
+        message: randomActivity.message,
+        type: randomActivity.type,
+        icon: randomActivity.icon,
+        timestamp: new Date(),
+        read: false
+      };
+
+      setNotifications(prev => [notification, ...prev.slice(0, 19)]); // Keep last 20
+
+      // Show toast notification
+      if (collaborationSettings.autoRefresh) {
+        toast.info(`${randomUser} ${randomActivity.message}`, {
+          icon: React.createElement(randomActivity.icon, { className: "h-4 w-4" })
+        });
+      }
+    }, 15000); // Every 15 seconds
+
+    return () => clearInterval(interval);
+  }, [notificationsEnabled, collaborationSettings.autoRefresh]);
+
+  const markNotificationAsRead = (notificationId: string) => {
+    setNotifications(prev => prev.map(n => 
+      n.id === notificationId ? { ...n, read: true } : n
+    ));
+  };
+
+  const clearAllNotifications = () => {
+    setNotifications([]);
+    toast.success('All notifications cleared');
+  };
+
+  const toggleCollaborationSetting = (setting: keyof typeof collaborationSettings) => {
+    setCollaborationSettings(prev => ({
+      ...prev,
+      [setting]: !prev[setting]
+    }));
+  };
 
   const getActionIcon = (action: string) => {
     if (action.includes('viewed')) return <Eye className="h-3 w-3" />;
@@ -93,24 +173,92 @@ export function RealtimeCollaboration({ currentTab }: RealtimeCollaborationProps
 
   return (
     <div className="space-y-4">
-      {/* Connection Status */}
+      {/* Enhanced Connection Status & Controls */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <div className={`h-2 w-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`} />
-          <span className="text-sm text-muted-foreground">
-            {isConnected ? 'Connected to database' : 'Service unavailable'}
-          </span>
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            {isConnected ? (
+              <Wifi className="h-4 w-4 text-green-500" />
+            ) : (
+              <WifiOff className="h-4 w-4 text-red-500" />
+            )}
+            <span className="text-sm text-muted-foreground">
+              {isConnected ? 'Connected to database' : 'Service unavailable'}
+            </span>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            {notificationsEnabled ? (
+              <Bell className="h-4 w-4 text-blue-500" />
+            ) : (
+              <BellOff className="h-4 w-4 text-gray-400" />
+            )}
+            <Switch
+              checked={notificationsEnabled}
+              onCheckedChange={setNotificationsEnabled}
+            />
+            <span className="text-xs text-muted-foreground">Notifications</span>
+          </div>
         </div>
+        
         <div className="flex items-center gap-2">
           <Badge variant="outline" className="gap-1">
             <Users className="h-3 w-3" />
-            {onlineUsers} active users
+            {connectedUsers.filter(u => u.status === 'active').length} active
           </Badge>
+          {notifications.filter(n => !n.read).length > 0 && (
+            <Badge variant="destructive" className="gap-1">
+              <Bell className="h-3 w-3" />
+              {notifications.filter(n => !n.read).length}
+            </Badge>
+          )}
           <Button variant="ghost" size="sm" onClick={refreshMetrics}>
             <RefreshCw className="h-4 w-4" />
           </Button>
         </div>
       </div>
+
+      {/* Collaboration Settings */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base">
+            <Settings className="h-4 w-4" />
+            Collaboration Settings
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="flex items-center justify-between">
+              <Label className="text-sm">Auto Refresh</Label>
+              <Switch
+                checked={collaborationSettings.autoRefresh}
+                onCheckedChange={() => toggleCollaborationSetting('autoRefresh')}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label className="text-sm">Show User Activity</Label>
+              <Switch
+                checked={collaborationSettings.showUserActivity}
+                onCheckedChange={() => toggleCollaborationSetting('showUserActivity')}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label className="text-sm">Enable Sounds</Label>
+              <Switch
+                checked={collaborationSettings.enableSounds}
+                onCheckedChange={() => toggleCollaborationSetting('enableSounds')}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label className="text-sm">Highlight Changes</Label>
+              <Switch
+                checked={collaborationSettings.highlightChanges}
+                onCheckedChange={() => toggleCollaborationSetting('highlightChanges')}
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {/* Active Users Card */}
@@ -280,6 +428,146 @@ export function RealtimeCollaboration({ currentTab }: RealtimeCollaborationProps
                   </div>
                 ))
               )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Enhanced Collaboration Features */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Live Notifications */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <Bell className="h-5 w-5" />
+                Live Notifications
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                {notifications.filter(n => !n.read).length > 0 && (
+                  <Badge variant="destructive">
+                    {notifications.filter(n => !n.read).length} new
+                  </Badge>
+                )}
+                <Button variant="ghost" size="sm" onClick={clearAllNotifications}>
+                  Clear All
+                </Button>
+              </div>
+            </div>
+            <CardDescription>
+              Real-time updates from team collaboration
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="h-[300px]">
+              <div className="space-y-3">
+                {notifications.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Bell className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                    <p>No notifications yet</p>
+                  </div>
+                ) : (
+                  notifications.map((notification) => (
+                    <div
+                      key={notification.id}
+                      className={`p-3 rounded-lg border transition-colors cursor-pointer ${
+                        notification.read ? 'bg-gray-50' : 'bg-blue-50 border-blue-200'
+                      }`}
+                      onClick={() => markNotificationAsRead(notification.id)}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`p-1 rounded-full ${
+                          notification.type === 'project_update' ? 'bg-blue-100' :
+                          notification.type === 'user_joined' ? 'bg-green-100' :
+                          notification.type === 'comment_added' ? 'bg-purple-100' :
+                          notification.type === 'goal_achieved' ? 'bg-yellow-100' :
+                          'bg-red-100'
+                        }`}>
+                          <notification.icon className={`h-3 w-3 ${
+                            notification.type === 'project_update' ? 'text-blue-600' :
+                            notification.type === 'user_joined' ? 'text-green-600' :
+                            notification.type === 'comment_added' ? 'text-purple-600' :
+                            notification.type === 'goal_achieved' ? 'text-yellow-600' :
+                            'text-red-600'
+                          }`} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-medium text-sm">{notification.user}</span>
+                            <span className="text-sm text-muted-foreground">{notification.message}</span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            {formatDistanceToNow(notification.timestamp, { addSuffix: true })}
+                          </p>
+                        </div>
+                        {!notification.read && (
+                          <div className="h-2 w-2 rounded-full bg-blue-500" />
+                        )}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+
+        {/* Connected Users */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="h-5 w-5" />
+              Connected Users
+            </CardTitle>
+            <CardDescription>
+              Team members currently active in the system
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {connectedUsers.map((user) => (
+                <div key={user.id} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
+                      <Avatar className="h-8 w-8">
+                        <AvatarFallback className="text-xs font-medium">
+                          {user.avatar}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className={`absolute -bottom-1 -right-1 h-3 w-3 rounded-full border-2 border-white ${
+                        user.status === 'active' ? 'bg-green-500' : 
+                        user.status === 'idle' ? 'bg-yellow-500' : 'bg-gray-400'
+                      }`} />
+                    </div>
+                    <div>
+                      <p className="font-medium text-sm">{user.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {user.status === 'active' ? `Working on ${user.currentProject}` : 
+                         `Last seen ${formatDistanceToNow(user.lastSeen, { addSuffix: true })}`}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant={
+                      user.status === 'active' ? 'default' :
+                      user.status === 'idle' ? 'secondary' : 'outline'
+                    }>
+                      {user.status}
+                    </Badge>
+                    <Button variant="ghost" size="sm">
+                      <MessageSquare className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Invite Collaborators */}
+            <div className="mt-4 pt-4 border-t">
+              <Button variant="outline" className="w-full">
+                <Plus className="h-4 w-4 mr-2" />
+                Invite Collaborators
+              </Button>
             </div>
           </CardContent>
         </Card>

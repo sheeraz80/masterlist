@@ -165,11 +165,6 @@ export function ComparativeDashboard({ projects }: ComparativeDashboardProps) {
 
   return (
     <div className="space-y-6">
-      {/* DEBUG: If you see this, the issue is NOT in ComparativeDashboard */}
-      <div className="bg-red-100 border border-red-300 p-2 text-red-800 text-sm">
-        🔍 DEBUG: ComparativeDashboard is rendering normally. The "tiny link" issue is likely elsewhere.
-      </div>
-      
       {/* Project Selection */}
       <Card>
         <CardHeader>

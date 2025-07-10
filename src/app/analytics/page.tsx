@@ -27,6 +27,10 @@ import { ComparativeDashboard } from '@/components/analytics/comparative-dashboa
 import { ROICalculator } from '@/components/analytics/roi-calculator';
 import { DashboardBuilder } from '@/components/analytics/dashboard-builder';
 import { D3Visualizations } from '@/components/analytics/d3-visualizations';
+import { AdvancedFilters } from '@/components/analytics/advanced-filters';
+import { ExportReporting } from '@/components/analytics/export-reporting';
+import { PerformanceBenchmarking } from '@/components/analytics/performance-benchmarking';
+import { DataValidation } from '@/components/analytics/data-validation';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -243,6 +247,7 @@ export default function AnalyticsPage() {
             <TabsTrigger value="insights" className="whitespace-nowrap">Insights</TabsTrigger>
             <TabsTrigger value="builder" className="whitespace-nowrap">Builder</TabsTrigger>
             <TabsTrigger value="d3-viz" className="whitespace-nowrap">D3 Viz</TabsTrigger>
+            <TabsTrigger value="validation" className="whitespace-nowrap">Data Quality</TabsTrigger>
             </TabsList>
           </div>
 
@@ -258,6 +263,15 @@ export default function AnalyticsPage() {
 
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
+            {/* Advanced Filters */}
+            <AdvancedFilters 
+              projects={analytics.projects || []}
+              onFiltersChange={(filters) => {
+                console.log('Filters changed:', filters);
+                // TODO: Implement filtering logic
+              }}
+            />
+            
             <div className="grid gap-6 md:grid-cols-2">
               {/* Quality Distribution */}
               <Card>
@@ -845,6 +859,9 @@ export default function AnalyticsPage() {
 
           {/* Projects Tab */}
           <TabsContent value="projects" className="space-y-6">
+            {/* Performance Benchmarking */}
+            <PerformanceBenchmarking analytics={analytics} projects={analytics.projects || []} />
+            
             {/* Project Performance Metrics */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               <Card>
@@ -1006,6 +1023,9 @@ export default function AnalyticsPage() {
 
           {/* Insights Tab */}
           <TabsContent value="insights" className="space-y-6">
+            {/* Export & Reporting */}
+            <ExportReporting analytics={analytics} projects={analytics.projects || []} />
+            
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {/* High Potential, Low Complexity */}
               <Card>
@@ -1183,6 +1203,14 @@ export default function AnalyticsPage() {
           {/* D3 Visualizations Tab */}
           <TabsContent value="d3-viz" className="space-y-6">
             <D3Visualizations projects={analytics.projects || []} />
+          </TabsContent>
+
+          {/* Data Validation Tab */}
+          <TabsContent value="validation" className="space-y-6">
+            <DataValidation 
+              analytics={analytics} 
+              projects={analytics.projects || []} 
+            />
           </TabsContent>
         </Tabs>
       </div>
