@@ -27,6 +27,8 @@ import { ComparativeDashboard } from '@/components/analytics/comparative-dashboa
 import { ROICalculator } from '@/components/analytics/roi-calculator';
 import { DashboardBuilder } from '@/components/analytics/dashboard-builder';
 import { D3Visualizations } from '@/components/analytics/d3-visualizations';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const COLORS = [
   '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'
@@ -1171,7 +1173,9 @@ export default function AnalyticsPage() {
 
           {/* Dashboard Builder Tab */}
           <TabsContent value="builder" className="space-y-6">
-            <DashboardBuilder />
+            <DndProvider backend={HTML5Backend}>
+              <DashboardBuilder />
+            </DndProvider>
           </TabsContent>
 
           {/* D3 Visualizations Tab */}

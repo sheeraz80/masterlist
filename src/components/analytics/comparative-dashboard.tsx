@@ -146,6 +146,23 @@ export function ComparativeDashboard({ projects }: ComparativeDashboardProps) {
     };
   };
 
+  if (!projects || projects.length === 0) {
+    return (
+      <Card>
+        <CardContent className="p-6 text-center">
+          <AlertTriangle className="h-12 w-12 text-orange-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold mb-2">No Projects Available</h3>
+          <p className="text-muted-foreground mb-4">
+            No projects found for comparison. Please ensure you have projects in your database.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Projects need to have quality scores, revenue potential, and other metrics to enable comparison.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Project Selection */}
@@ -160,15 +177,21 @@ export function ComparativeDashboard({ projects }: ComparativeDashboardProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <div className="mb-4">
+            <p className="text-sm text-muted-foreground">
+              Showing {Math.min(projects.length, 50)} of {projects.length} projects
+            </p>
+          </div>
           <div className="flex flex-wrap gap-2">
-            {projects.slice(0, 20).map(project => (
+            {projects.slice(0, 50).map(project => (
               <Badge
                 key={project.id}
                 variant={selectedProjects.includes(project.id) ? 'default' : 'outline'}
-                className="cursor-pointer transition-all"
+                className="cursor-pointer transition-all hover:bg-primary/10"
                 onClick={() => toggleProjectSelection(project.id)}
+                title={`${project.title} - Quality: ${project.qualityScore}/10, Revenue: $${(project.revenuePotential || 0).toLocaleString()}`}
               >
-                {project.title}
+                {project.title?.length > 30 ? `${project.title.substring(0, 30)}...` : project.title || `Project ${project.id}`}
                 {selectedProjects.includes(project.id) && (
                   <span className="ml-1">✓</span>
                 )}
