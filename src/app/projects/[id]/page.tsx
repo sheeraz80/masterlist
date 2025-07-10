@@ -28,6 +28,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 // API & Utils
 import { getProject } from '@/lib/api';
@@ -77,6 +84,9 @@ export default function ProjectDetailPage() {
   // State
   const [activeTab, setActiveTab] = useState('overview');
   const [showShareMenu, setShowShareMenu] = useState(false);
+  const [isEnhancing, setIsEnhancing] = useState(false);
+  const [showPrompt, setShowPrompt] = useState(false);
+  const [implementationPrompt, setImplementationPrompt] = useState('');
 
   // Fetch project data
   const { data: project, isLoading, error } = useQuery<Project>({
@@ -261,15 +271,112 @@ export default function ProjectDetailPage() {
               Back to Projects
             </Button>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={async () => {
+                  setIsEnhancing(true);
+                  try {
+                    const response = await fetch(`/api/projects/${projectId}/enhance`, {
+                      method: 'POST'
+                    });
+                    if (response.ok) {
+                      const enhanced = await response.json();
+                      // Refresh the page to show updated data
+                      router.refresh();
+                      window.location.reload();
+                    }
+                  } catch (error) {
+                    console.error('Enhancement failed:', error);
+                  } finally {
+                    setIsEnhancing(false);
+                  }
+                }}
+                disabled={isEnhancing}
+              >
+                {isEnhancing ? (
+                  <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                ) : (
+                  <Sparkles className="h-4 w-4 mr-2" />
+                )}
+                {isEnhancing ? 'Enhancing...' : 'AI Enhance'}
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={async () => {
+                  try {
+                    const response = await fetch(`/api/projects/${projectId}/enhance`);
+                    if (response.ok) {
+                      const data = await response.json();
+                      setImplementationPrompt(data.prompt);
+                      setShowPrompt(true);
+                    }
+                  } catch (error) {
+                    console.error('Failed to generate prompt:', error);
+                  }
+                }}
+              >
+                <Code className="h-4 w-4 mr-2" />
+                Get Prompt
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => {
+                  // Navigate to edit page (could be implemented later)
+                  alert('Edit functionality would open an edit form or navigate to edit page');
+                }}
+              >
                 <Edit className="h-4 w-4 mr-2" />
                 Edit
               </Button>
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => {
+                  const url = window.location.href;
+                  navigator.clipboard.writeText(url).then(() => {
+                    alert('Project link copied to clipboard!');
+                  }).catch(() => {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = url;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('Project link copied to clipboard!');
+                  });
+                }}
+              >
                 <Share2 className="h-4 w-4 mr-2" />
                 Share
               </Button>
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => {
+                  // Create and download JSON export of project
+                  const projectData = {
+                    ...project,
+                    exportedAt: new Date().toISOString(),
+                    exportedBy: 'Masterlist App'
+                  };
+                  
+                  const dataStr = JSON.stringify(projectData, null, 2);
+                  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                  
+                  const url = URL.createObjectURL(dataBlob);
+                  const link = document.createElement('a');
+                  link.href = url;
+                  link.download = `${project.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-export.json`;
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                  URL.revokeObjectURL(url);
+                }}
+              >
                 <Download className="h-4 w-4 mr-2" />
                 Export
               </Button>
@@ -877,6 +984,35 @@ export default function ProjectDetailPage() {
           </Tabs>
         </motion.div>
       </div>
+
+      {/* Implementation Prompt Dialog */}
+      <Dialog open={showPrompt} onOpenChange={setShowPrompt}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Implementation Prompt for {project.title}</DialogTitle>
+            <DialogDescription>
+              Copy this prompt to use with any AI coding assistant to implement this project.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-4">
+            <div className="flex justify-end mb-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  navigator.clipboard.writeText(implementationPrompt);
+                }}
+              >
+                <Copy className="h-4 w-4 mr-2" />
+                Copy to Clipboard
+              </Button>
+            </div>
+            <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
+              <code className="text-sm">{implementationPrompt}</code>
+            </pre>
+          </div>
+        </DialogContent>
+      </Dialog>
     </TooltipProvider>
   );
 }
