@@ -47,7 +47,8 @@ export class EnhancedRepositoryService {
   // Check GitHub configuration and token validity
   private validateGitHubConfiguration(): GitHubConfiguration {
     const token = process.env.GITHUB_TOKEN || process.env.GITHUB_ACCESS_TOKEN;
-    const orgName = process.env.GITHUB_ORG_NAME || process.env.GITHUB_ORGANIZATION;
+    // Use GITHUB_PROJECTS_ORG for project repositories, default to corevecta-projects
+    const orgName = process.env.GITHUB_PROJECTS_ORG || process.env.GITHUB_ORG_NAME || process.env.GITHUB_ORGANIZATION || 'corevecta-projects';
 
     const config: GitHubConfiguration = {
       isConfigured: false,
@@ -434,8 +435,9 @@ export class EnhancedRepositoryService {
         '1. Create a GitHub Personal Access Token at https://github.com/settings/tokens',
         '2. Grant the following scopes: repo, admin:org, admin:repo_hook',
         '3. Set the GITHUB_TOKEN environment variable with your token',
-        '4. Set the GITHUB_ORG_NAME environment variable with your organization name (optional)',
-        '5. Restart your application to load the new configuration'
+        '4. Set the GITHUB_PROJECTS_ORG environment variable to "corevecta-projects" (or your org name)',
+        '5. Ensure you have admin access to the corevecta-projects organization',
+        '6. Restart your application to load the new configuration'
       ],
       envVariables: [
         {
@@ -444,8 +446,13 @@ export class EnhancedRepositoryService {
           required: true
         },
         {
+          name: 'GITHUB_PROJECTS_ORG',
+          description: 'GitHub organization for project repositories (defaults to corevecta-projects)',
+          required: false
+        },
+        {
           name: 'GITHUB_ORG_NAME',
-          description: 'GitHub organization name (optional, defaults to user repositories)',
+          description: 'Alternative org name variable (deprecated, use GITHUB_PROJECTS_ORG)',
           required: false
         }
       ],
@@ -468,13 +475,38 @@ export class EnhancedRepositoryService {
 
   // Helper methods
   private generateRepositoryName(project: Project): string {
+    // Follow a consistent naming convention for corevecta-projects organization
+    // Format: {category-prefix}-{project-name}-{unique-id}
+    const categoryPrefix = this.getCategoryPrefix(project.category);
+    
     const sanitized = project.title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '')
-      .substring(0, 50);
+      .substring(0, 40); // Slightly shorter to accommodate prefix
     
-    return `${sanitized}-${project.id.slice(-8)}`;
+    // Use last 6 chars of ID for uniqueness (shorter but still unique)
+    const uniqueId = project.id.slice(-6);
+    
+    return `${categoryPrefix}-${sanitized}-${uniqueId}`;
+  }
+
+  private getCategoryPrefix(category: string): string {
+    const prefixMap: Record<string, string> = {
+      'Chrome Extension': 'chrome',
+      'VSCode Extension': 'vscode',
+      'Figma Plugin': 'figma',
+      'Web App': 'web',
+      'Mobile App': 'mobile',
+      'Desktop App': 'desktop',
+      'API/Backend': 'api',
+      'Library/Package': 'lib',
+      'AI/ML': 'ai',
+      'Blockchain': 'blockchain',
+      'IoT': 'iot'
+    };
+    
+    return prefixMap[category] || 'project';
   }
 
   private generateRepositoryDescription(project: Project): string {
@@ -486,13 +518,14 @@ export class EnhancedRepositoryService {
   }
 
   private generateRepoPath(project: Project): string {
-    const category = this.mapCategory(project.category);
-    const subcategory = this.inferSubcategory(project);
+    // For corevecta-projects organization, use a flatter structure
+    // The repository name already includes the category prefix
     const projectName = this.generateRepositoryName(project);
+    const category = this.mapCategory(project.category);
     
-    return subcategory 
-      ? `${category}/${subcategory}/${projectName}`
-      : `${category}/${projectName}`;
+    // Optional: Include category folder for better organization in the org
+    // But since repo names are already prefixed, we can keep it flat
+    return projectName; // Flat structure in the organization
   }
 
   private mapCategory(category: string): string {

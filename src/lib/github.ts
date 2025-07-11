@@ -25,11 +25,30 @@ export async function getRepository(owner: string, repo: string, token?: string)
 
 export async function listRepositories(token?: string) {
   const octokit = createGitHubClient(token);
+  const orgName = process.env.GITHUB_PROJECTS_ORG || 
+                  process.env.GITHUB_ORG_NAME || 
+                  process.env.GITHUB_ORGANIZATION;
+  
   try {
-    const { data } = await octokit.repos.listForAuthenticatedUser({
-      sort: 'updated',
-      per_page: 100,
-    });
+    let data;
+    
+    if (orgName) {
+      // List organization repositories
+      const response = await octokit.repos.listForOrg({
+        org: orgName,
+        sort: 'updated',
+        per_page: 100,
+      });
+      data = response.data;
+    } else {
+      // List user repositories
+      const response = await octokit.repos.listForAuthenticatedUser({
+        sort: 'updated',
+        per_page: 100,
+      });
+      data = response.data;
+    }
+    
     return data;
   } catch (error) {
     console.error('Error listing repositories:', error);
@@ -49,18 +68,63 @@ export async function createRepository(
   token?: string
 ) {
   const octokit = createGitHubClient(token);
+  
+  // Check if we should create in an organization
+  const orgName = process.env.GITHUB_PROJECTS_ORG || 
+                  process.env.GITHUB_ORG_NAME || 
+                  process.env.GITHUB_ORGANIZATION;
+  
   try {
-    const { data } = await octokit.repos.createForAuthenticatedUser({
-      name,
-      description: options.description,
-      private: options.private,
-      auto_init: options.auto_init,
-      gitignore_template: options.gitignore_template,
-      license_template: options.license_template,
-    });
+    let data;
+    
+    if (orgName) {
+      // Create repository in organization
+      console.log(`Creating repository '${name}' in organization '${orgName}'`);
+      const response = await octokit.repos.createInOrg({
+        org: orgName,
+        name,
+        description: options.description,
+        private: options.private ?? true,
+        auto_init: options.auto_init ?? true,
+        gitignore_template: options.gitignore_template,
+        license_template: options.license_template,
+      });
+      data = response.data;
+    } else {
+      // Create repository for authenticated user
+      console.log(`Creating repository '${name}' for authenticated user`);
+      const response = await octokit.repos.createForAuthenticatedUser({
+        name,
+        description: options.description,
+        private: options.private,
+        auto_init: options.auto_init,
+        gitignore_template: options.gitignore_template,
+        license_template: options.license_template,
+      });
+      data = response.data;
+    }
+    
     return data;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating repository:', error);
+    
+    // Provide more specific error messages
+    if (error.status === 422) {
+      const errors = error.response?.data?.errors || [];
+      const nameError = errors.find((e: any) => e.field === 'name');
+      if (nameError) {
+        throw new Error(`Repository name error: ${nameError.message}`);
+      }
+      throw new Error('Repository already exists or name is invalid');
+    } else if (error.status === 403) {
+      if (orgName) {
+        throw new Error(`Insufficient permissions to create repository in organization '${orgName}'`);
+      }
+      throw new Error('Insufficient permissions to create repository');
+    } else if (error.status === 401) {
+      throw new Error('GitHub authentication failed - check your token');
+    }
+    
     throw error;
   }
 }
