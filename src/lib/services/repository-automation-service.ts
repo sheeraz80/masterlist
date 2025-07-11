@@ -301,13 +301,18 @@ export class RepositoryAutomationService {
     repository: any,
     project: ProjectDefinition
   ): Promise<void> {
+    const packageName = this.toPackageName(project.title);
     const variables = {
       PROJECT_NAME: project.title,
       PROJECT_DESCRIPTION: project.description.substring(0, 200),
-      PACKAGE_NAME: this.toPackageName(project.title),
+      PACKAGE_NAME: packageName,
       REPO_URL: repository.githubUrl,
       REPO_NAME: repository.githubName,
-      FEATURES_LIST: project.features.map(f => `- ${f}`).join('\n')
+      FEATURES_LIST: project.features.map(f => `- ${f}`).join('\n'),
+      // Additional variables for platform-specific templates
+      PLUGIN_CONST: packageName.toUpperCase().replace(/-/g, '_'),
+      PLUGIN_CLASS: project.title.replace(/[^a-zA-Z0-9]/g, ''),
+      TAGS: project.tags.join(', ')
     };
 
     // Create README.md with proper formatting
@@ -807,6 +812,31 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
       'Web App': 'web-apps',
       'Mobile App': 'mobile-apps',
       'API/Backend': 'api-backend',
+      'WordPress Plugins': 'wordpress-plugins',
+      'Shopify Apps': 'shopify-apps',
+      'OpenAI GPTs': 'openai-gpts',
+      'Slack Apps': 'slack-apps',
+      'GitHub Actions': 'github-actions',
+      'Google Workspace Add-ons': 'google-workspace-addons',
+      'iOS Apps': 'ios-apps',
+      'Android Apps': 'android-apps',
+      'LangChain Agents': 'langchain-agents',
+      'Discord Bots': 'discord-bots',
+      'Ethereum Smart Contracts': 'ethereum-contracts',
+      'Telegram Bots': 'telegram-bots',
+      'Hugging Face Spaces': 'huggingface-spaces',
+      'React Native Apps': 'react-native-apps',
+      'Flutter Apps': 'flutter-apps',
+      'Solana Programs': 'solana-programs',
+      'Unity Assets': 'unity-assets',
+      'Minecraft Plugins': 'minecraft-plugins',
+      'Roblox Games': 'roblox-games',
+      'n8n Workflows': 'n8n-workflows',
+      'Make Scenarios': 'make-scenarios',
+      'Bubble Plugins': 'bubble-plugins',
+      'Retool Apps': 'retool-apps',
+      'AutoGPT Agents': 'autogpt-agents',
+      'CrewAI Agents': 'crewai-agents',
       'Desktop App': 'desktop-apps',
       'CLI Tool': 'cli-tools',
       'Blockchain/Web3': 'blockchain-web3',
@@ -876,7 +906,33 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
       'desktop-apps': 'desktop-electron',
       'cli-tools': 'cli-tool',
       'blockchain-web3': 'blockchain-solidity',
-      'games': 'web-app-nextjs'
+      'games': 'web-app-nextjs',
+      'wordpress-plugins': 'wordpress-plugin',  // PHP-based WordPress plugin
+      'shopify-apps': 'shopify-app',  // Node.js Shopify app
+      'openai-gpts': 'openai-gpt',  // OpenAI GPT configuration
+      'slack-apps': 'slack-app',  // Slack Bolt framework
+      'github-actions': 'github-action',  // GitHub Action YAML
+      'google-workspace-addons': 'google-workspace-addon',  // Google Apps Script
+      'ios-apps': 'ios-app',  // Swift/SwiftUI iOS app
+      'android-apps': 'android-app',  // Kotlin Android app
+      'langchain-agents': 'langchain-agent',  // LangChain AI agent
+      'discord-bots': 'discord-bot',  // Discord.js bot
+      'ethereum-contracts': 'ethereum-contract',  // Solidity smart contract
+      'telegram-bots': 'telegram-bot',  // Telegram bot/mini app
+      'huggingface-spaces': 'huggingface-space',  // Gradio/Streamlit space
+      'react-native-apps': 'react-native-app',  // React Native mobile
+      'flutter-apps': 'flutter-app',  // Flutter cross-platform
+      'solana-programs': 'solana-program',  // Rust Solana program
+      'unity-assets': 'unity-asset',  // Unity C# asset
+      'minecraft-plugins': 'minecraft-plugin',  // Java Minecraft plugin
+      'roblox-games': 'roblox-game',  // Lua Roblox game
+      'n8n-workflows': 'n8n-workflow',  // n8n automation workflow
+      'make-scenarios': 'make-scenario',  // Make.com scenario
+      'bubble-plugins': 'bubble-plugin',  // Bubble.io plugin
+      'retool-apps': 'retool-app',  // Retool internal tool
+      'autogpt-agents': 'autogpt-agent',  // AutoGPT-style agent
+      'crewai-agents': 'crewai-agents',  // CrewAI multi-agent
+      'zapier-integrations': 'zapier-integration'  // Enhanced Zapier
     };
     return categoryTemplateMap[this.mapCategory(project.category)] || 'web-app-nextjs';
   }
@@ -916,7 +972,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
       'ai-web-app': '.next',
       'ai-backend-api': 'dist',
       'vscode-extension': 'dist',
-      'api-backend-express': 'dist'
+      'api-backend-express': 'dist',
+      'wordpress-plugin': 'plugin-name.php',
+      'shopify-app': 'dist',
+      'openai-gpt': 'gpt-config.json',
+      'slack-app': 'dist',
+      'github-action': 'action.yml',
+      'google-workspace-addon': 'Code.gs'
     };
     return outputMap[project.template] || 'dist';
   }

@@ -1,0 +1,108 @@
+{
+  "summary": {
+    "totalProjects": 650,
+    "highQuality": 585,
+    "lowQuality": 0,
+    "averageScore": 86.86923076923077,
+    "duplicatesFound": 3
+  },
+  "lowQualityProjects": [],
+  "duplicates": [
+    {
+      "project1": {
+        "id": "65",
+        "title": "CommitCoach (VSCode Extension)",
+        "description": "writing clear, consistent git commit messages is hard. currently, 4m+ users face data silos, time-consuming manual processes, and lack of automation. faster performance remains a critical challenge, with 73% of users reporting better language support as their primary concern. the lack of effective solutions costs businesses an average of 24 hours per week in lost productivity. | solution: leveraging cutting-edge typescript architecture featuring instant response times, the solution revolutionizes how users interact with their vscode extension. the solution offers advanced ai-powered code completion capabilities with enterprise-grade features. unlike existing solutions, our approach combines ai-powered code completion, real-time collaboration, and multi-cursor support into a unified platform. built on typescript, vs code api, language server protocol, webview api, it delivers 6x faster performance while maintaining complete data privacy through local-first architecture."
+      },
+      "project2": {
+        "id": "582",
+        "title": "CommitCoach (VSCode Extension)",
+        "description": "poor commit messages reduce project clarity. currently, 2m+ users face limited customization options, poor user experience, and data silos. faster performance remains a critical challenge, with 73% of users reporting better language support as their primary concern. the lack of effective solutions costs businesses an average of 29 hours per week in lost productivity. | solution: powered by next-generation typescript technology with zero-latency local processing, the solution revolutionizes how users interact with their vscode extension. the solution offers advanced ai-powered code completion capabilities with enterprise-grade features. unlike existing solutions, our approach combines ai-powered code completion, real-time collaboration, and multi-cursor support into a unified platform. built on typescript, vs code api, language server protocol, webview api, it delivers 3x faster performance while maintaining complete data privacy through local-first architecture."
+      },
+      "similarity": 0.8698412698412699
+    },
+    {
+      "project1": {
+        "id": "32",
+        "title": "CopySync (Figma Text Sync)",
+        "description": "keeping design content in sync with copy documents is a pain. designers often copy-paste updated text from google docs or spreadsheets into figma manually, leading to version mismatches. this is inefficient and error-prone, especially for teams working with content writers. currently, 4m+ users face lack of automation, time-consuming manual processes, and data silos. faster workflows remains a critical challenge, with 73% of users reporting better organization as their primary concern. the lack of effective solutions costs businesses an average of 14 hours per week in lost productivity. | solution: built on a modern typescript foundation featuring instant response times, the solution revolutionizes how users interact with their figma plugin. the solution provides end-to-end encrypted sync with conflict resolution, incremental backups with point-in-time recovery, multi-device support with selective sync. unlike existing solutions, our approach combines ai design generation, design system management, and accessibility checking into a unified platform. built on typescript, figma plugin api, react, canvas api, it delivers 4x faster performance while maintaining complete data privacy through local-first architecture."
+      },
+      "project2": {
+        "id": "6",
+        "title": "CopySync (Figma Text Sync) (Figma Plugin)",
+        "description": "keeping design content in sync with copy documents is a pain. designers often copy-paste updated text from google docs or spreadsheets into figma manually, leading to version mismatches. this is inefficient and error-prone, especially for teams working with content writers. currently, 2m+ users face limited customization options, lack of automation, and time-consuming manual processes. faster workflows remains a critical challenge, with 73% of users reporting better organization as their primary concern. the lack of effective solutions costs businesses an average of 23 hours per week in lost productivity. | solution: leveraging cutting-edge typescript architecture featuring instant response times, the solution revolutionizes how users interact with their figma plugin. the solution provides end-to-end encrypted sync with conflict resolution, incremental backups with point-in-time recovery, multi-device support with selective sync. unlike existing solutions, our approach combines ai design generation, design system management, and accessibility checking into a unified platform. built on typescript, figma plugin api, react, canvas api, it delivers 5x faster performance while maintaining complete data privacy through local-first architecture."
+      },
+      "similarity": 0.8327777777777778
+    },
+    {
+      "project1": {
+        "id": "47",
+        "title": "Figma Spellcheck & Localize (Combination of #16 and #19 effectively)",
+        "description": " currently, 5m+ users face limited customization options, time-consuming manual processes, and collaboration bottlenecks. faster workflows remains a critical challenge, with 73% of users reporting better organization as their primary concern. the lack of effective solutions costs businesses an average of 28 hours per week in lost productivity. | solution: powered by next-generation typescript technology with offline-first functionality, the solution revolutionizes how users interact with their figma plugin. the solution offers advanced ai design generation capabilities with enterprise-grade features. unlike existing solutions, our approach combines ai design generation, design system management, and accessibility checking into a unified platform. built on typescript, figma plugin api, react, canvas api, it delivers 7x faster performance while maintaining complete data privacy through local-first architecture."
+      },
+      "project2": {
+        "id": "21",
+        "title": "Figma Spellcheck & Localize (Combination of #16 and #19 effectively) (Figma Plugin)",
+        "description": " currently, 4m+ users face time-consuming manual processes, lack of automation, and limited customization options. faster workflows remains a critical challenge, with 73% of users reporting better organization as their primary concern. the lack of effective solutions costs businesses an average of 29 hours per week in lost productivity. | solution: built on a modern typescript foundation with offline-first functionality, the solution revolutionizes how users interact with their figma plugin. the solution offers advanced ai design generation capabilities with enterprise-grade features. unlike existing solutions, our approach combines ai design generation, design system management, and accessibility checking into a unified platform. built on typescript, figma plugin api, react, canvas api, it delivers 5x faster performance while maintaining complete data privacy through local-first architecture."
+      },
+      "similarity": 0.837037037037037
+    }
+  ],
+  "categoryAnalysis": [
+    {
+      "category": "Figma Plugin",
+      "projectCount": 114,
+      "averageScore": 89.78070175438596
+    },
+    {
+      "category": "AI Writing Tools",
+      "projectCount": 25,
+      "averageScore": 88
+    },
+    {
+      "category": "Notion Templates",
+      "projectCount": 75,
+      "averageScore": 90
+    },
+    {
+      "category": "Chrome Extension",
+      "projectCount": 55,
+      "averageScore": 90
+    },
+    {
+      "category": "Obsidian Plugin",
+      "projectCount": 75,
+      "averageScore": 90
+    },
+    {
+      "category": "AI Browser Tools",
+      "projectCount": 76,
+      "averageScore": 89.60526315789474
+    },
+    {
+      "category": "VSCode Extension",
+      "projectCount": 103,
+      "averageScore": 90
+    },
+    {
+      "category": "AI Automation Platforms",
+      "projectCount": 15,
+      "averageScore": 61.333333333333336
+    },
+    {
+      "category": "Zapier Apps",
+      "projectCount": 25,
+      "averageScore": 61.6
+    },
+    {
+      "category": "AI Productivity Tools",
+      "projectCount": 25,
+      "averageScore": 58.4
+    },
+    {
+      "category": "Crypto Browser Tools",
+      "projectCount": 62,
+      "averageScore": 90
+    }
+  ]
+}

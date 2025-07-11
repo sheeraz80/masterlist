@@ -3,6 +3,9 @@
  */
 
 import { PLATFORM_TEMPLATES } from './platform-templates';
+import { EXPANDED_PLATFORM_TEMPLATES } from './expanded-platform-templates';
+import { MOBILE_BLOCKCHAIN_TEMPLATES } from './mobile-blockchain-templates';
+import { AI_AGENTS_EMERGING_TEMPLATES } from './ai-agents-emerging-templates';
 
 export const TEMPLATE_FILES = {
   'chrome-extension': {
@@ -802,7 +805,16 @@ CMD ["node", "dist/index.js"]`
   },
   
   // Add all platform-specific templates
-  ...PLATFORM_TEMPLATES
+  ...PLATFORM_TEMPLATES,
+  
+  // Add expanded platform templates
+  ...EXPANDED_PLATFORM_TEMPLATES,
+  
+  // Add mobile and blockchain templates
+  ...MOBILE_BLOCKCHAIN_TEMPLATES,
+  
+  // Add AI agents and emerging platform templates
+  ...AI_AGENTS_EMERGING_TEMPLATES
 };
 
 /**

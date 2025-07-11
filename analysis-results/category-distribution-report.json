@@ -1,0 +1,103 @@
+{
+  "totalProjects": 648,
+  "categories": [
+    {
+      "name": "AI Automation Platforms",
+      "count": 15,
+      "avgQuality": 3.4,
+      "minQuality": 3,
+      "maxQuality": 4
+    },
+    {
+      "name": "Zapier Apps",
+      "count": 25,
+      "avgQuality": 3.24,
+      "minQuality": 3,
+      "maxQuality": 4
+    },
+    {
+      "name": "AI Productivity Tools",
+      "count": 25,
+      "avgQuality": 3.36,
+      "minQuality": 3,
+      "maxQuality": 4
+    },
+    {
+      "name": "AI Writing Tools",
+      "count": 25,
+      "avgQuality": 5.88,
+      "minQuality": 4,
+      "maxQuality": 7
+    },
+    {
+      "name": "Chrome Extension",
+      "count": 55,
+      "avgQuality": 7.8945454545454545,
+      "minQuality": 7,
+      "maxQuality": 8
+    },
+    {
+      "name": "Crypto Browser Tools",
+      "count": 62,
+      "avgQuality": 7.906451612903228,
+      "minQuality": 7,
+      "maxQuality": 8
+    },
+    {
+      "name": "Notion Templates",
+      "count": 75,
+      "avgQuality": 7.922666666666671,
+      "minQuality": 7,
+      "maxQuality": 8
+    },
+    {
+      "name": "Obsidian Plugin",
+      "count": 75,
+      "avgQuality": 7.989333333333334,
+      "minQuality": 7.6,
+      "maxQuality": 8.9
+    },
+    {
+      "name": "AI Browser Tools",
+      "count": 76,
+      "avgQuality": 7.940789473684211,
+      "minQuality": 7,
+      "maxQuality": 8.5
+    },
+    {
+      "name": "VSCode Extension",
+      "count": 103,
+      "avgQuality": 7.963106796116507,
+      "minQuality": 7,
+      "maxQuality": 8
+    },
+    {
+      "name": "Figma Plugin",
+      "count": 112,
+      "avgQuality": 8.083928571428574,
+      "minQuality": 7,
+      "maxQuality": 8.9
+    }
+  ],
+  "underrepresented": [
+    "AI Automation Platforms"
+  ],
+  "needsQualityImprovement": [
+    "AI Automation Platforms",
+    "Zapier Apps",
+    "AI Productivity Tools",
+    "AI Writing Tools",
+    "Chrome Extension",
+    "Crypto Browser Tools",
+    "Notion Templates",
+    "Obsidian Plugin",
+    "AI Browser Tools",
+    "VSCode Extension",
+    "Figma Plugin"
+  ],
+  "missingPlatforms": [],
+  "recommendations": {
+    "projectsNeeded": 5,
+    "qualityImprovementsNeeded": 11
+  }
+}

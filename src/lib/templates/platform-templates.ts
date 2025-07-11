@@ -1218,4 +1218,3 @@ export function getPlatformTemplateFiles(template: string, variables: Record<str
 
   return files;
 }
-`

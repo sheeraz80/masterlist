@@ -112,13 +112,19 @@ export const GET = withRateLimit(
       category: project.category,
       target_users: project.targetUsers || '',
       revenue_model: project.revenueModel || '',
-      revenue_potential: JSON.parse(project.revenuePotential || '{}'),
+      revenue_potential: (() => {
+        try {
+          return JSON.parse(project.revenuePotential || '{}');
+        } catch {
+          return { conservative: 0, realistic: 0, optimistic: 0 };
+        }
+      })(),
       development_time: project.developmentTime || '',
       competition_level: project.competitionLevel || '',
       technical_complexity: project.technicalComplexity || 0,
       quality_score: project.qualityScore || 0,
-      key_features: JSON.parse(project.keyFeatures || '[]'),
-      tags: JSON.parse(project.tags || '[]'),
+      key_features: project.keyFeatures ? project.keyFeatures.split(',').map(f => f.trim()) : [],
+      tags: project.tags ? (project.tags.startsWith('[') ? JSON.parse(project.tags) : project.tags.split(',').map(t => t.trim())) : [],
       priority: project.priority as 'low' | 'medium' | 'high' | 'critical',
       progress: project.progress,
       status: project.status as 'active' | 'completed' | 'archived',

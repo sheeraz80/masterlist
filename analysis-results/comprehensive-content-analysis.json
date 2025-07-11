@@ -1,0 +1,129 @@
+{
+  "summary": {
+    "total": 648,
+    "highContent": 569,
+    "mediumContent": 78,
+    "lowContent": 1,
+    "totalMismatches": 5
+  },
+  "categoryBreakdown": {
+    "AI Automation Platforms": {
+      "total": 15,
+      "highContent": 2,
+      "mediumContent": 13,
+      "lowContent": 0,
+      "avgContentScore": 61.333333333333336,
+      "qualityMismatch": 0
+    },
+    "AI Browser Tools": {
+      "total": 76,
+      "highContent": 68,
+      "mediumContent": 8,
+      "lowContent": 0,
+      "avgContentScore": 71.1842105263158,
+      "qualityMismatch": 3
+    },
+    "AI Productivity Tools": {
+      "total": 25,
+      "highContent": 25,
+      "mediumContent": 0,
+      "lowContent": 0,
+      "avgContentScore": 70,
+      "qualityMismatch": 0
+    },
+    "AI Writing Tools": {
+      "total": 25,
+      "highContent": 0,
+      "mediumContent": 25,
+      "lowContent": 0,
+      "avgContentScore": 49.2,
+      "qualityMismatch": 1
+    },
+    "Chrome Extension": {
+      "total": 55,
+      "highContent": 52,
+      "mediumContent": 3,
+      "lowContent": 0,
+      "avgContentScore": 74.72727272727273,
+      "qualityMismatch": 0
+    },
+    "Crypto Browser Tools": {
+      "total": 62,
+      "highContent": 61,
+      "mediumContent": 1,
+      "lowContent": 0,
+      "avgContentScore": 75.48387096774194,
+      "qualityMismatch": 0
+    },
+    "Figma Plugin": {
+      "total": 112,
+      "highContent": 106,
+      "mediumContent": 6,
+      "lowContent": 0,
+      "avgContentScore": 80.44642857142857,
+      "qualityMismatch": 0
+    },
+    "Notion Templates": {
+      "total": 75,
+      "highContent": 74,
+      "mediumContent": 1,
+      "lowContent": 0,
+      "avgContentScore": 73.46666666666667,
+      "qualityMismatch": 0
+    },
+    "Obsidian Plugin": {
+      "total": 75,
+      "highContent": 74,
+      "mediumContent": 0,
+      "lowContent": 1,
+      "avgContentScore": 75.2,
+      "qualityMismatch": 1
+    },
+    "VSCode Extension": {
+      "total": 103,
+      "highContent": 102,
+      "mediumContent": 1,
+      "lowContent": 0,
+      "avgContentScore": 73.30097087378641,
+      "qualityMismatch": 0
+    },
+    "Zapier Apps": {
+      "total": 25,
+      "highContent": 5,
+      "mediumContent": 20,
+      "lowContent": 0,
+      "avgContentScore": 62,
+      "qualityMismatch": 0
+    }
+  },
+  "lowContentProjects": [
+    {
+      "id": "648",
+      "title": "Smart Linker",
+      "category": "Obsidian Plugin",
+      "dbQualityScore": 7.9,
+      "contentScore": 30,
+      "metrics": {
+        "problemLength": 189,
+        "solutionLength": 214,
+        "featuresCount": 8,
+        "avgFeatureLength": 24.625,
+        "hasDetailedProblem": false,
+        "hasDetailedSolution": false,
+        "hasRichFeatures": false,
+        "contentScore": 30
+      }
+    }
+  ],
+  "qualityMismatches": [
+    {
+      "id": "648",
+      "title": "Smart Linker",
+      "category": "Obsidian Plugin",
+      "dbQualityScore": 7.9,
+      "contentScore": 30,
+      "problem": "Manual note linking and backlinking is slow. This affects millions of users who struggle with perfor...",
+      "solution": "AI suggests and auto-creates links/backlinks between related notes. Our solution leverages AI note g..."
+    }
+  ]
+}
