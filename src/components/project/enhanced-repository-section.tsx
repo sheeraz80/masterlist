@@ -46,7 +46,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Slider } from '@/components/ui/slider';
@@ -367,12 +367,22 @@ Please create a repository that leverages these market insights and includes the
     },
     onError: (error: any) => {
       console.error('Repository creation error:', error);
+      
+      let errorMessage = 'Failed to create repository';
+      
       if (error.details?.githubStatus) {
-        setGitHubError(error.details.githubStatus.errorMessage || 'GitHub configuration error');
+        errorMessage = error.details.githubStatus.errorMessage || 'GitHub configuration error';
         setGitHubSetupInstructions(error.details.setupInstructions || null);
-      } else {
-        setGitHubError(error.message || 'Failed to create repository');
+      } else if (error.message) {
+        errorMessage = error.message;
       }
+      
+      // Handle authentication errors specifically
+      if (error.message?.includes('Authentication required') || error.message?.includes('Unauthorized')) {
+        errorMessage = 'Please log in to create repositories. You can still view projects without logging in.';
+      }
+      
+      setGitHubError(errorMessage);
     }
   });
 

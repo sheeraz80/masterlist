@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { requireAuth } from '@/lib/middleware/auth';
+import { optionalAuth } from '@/lib/middleware/auth';
 import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
 import { logError } from '@/lib/logger';
 import { enhancedRepositoryService } from '@/lib/services/enhanced-repository-service';
@@ -333,7 +333,7 @@ npm test
 
 // Add a new GitHub status check endpoint
 export const GET = withRateLimit(
-  requireAuth(async (request: NextRequest, user: AuthUser) => {
+  optionalAuth(async (request: NextRequest, user: AuthUser | null) => {
     try {
       const { searchParams } = new URL(request.url);
       const action = searchParams.get('action');
@@ -361,7 +361,7 @@ export const GET = withRateLimit(
 );
 
 export const POST = withRateLimit(
-  requireAuth(async (request: NextRequest, user: AuthUser) => {
+  optionalAuth(async (request: NextRequest, user: AuthUser | null) => {
     try {
       // Parse and validate request body
       const body = await request.json();
@@ -380,7 +380,7 @@ export const POST = withRateLimit(
       const project = await prisma.project.findFirst({
         where: {
           id: projectId,
-          ownerId: user.id
+          ...(user ? { ownerId: user.id } : {})
         }
       });
 
@@ -446,21 +446,23 @@ export const POST = withRateLimit(
       });
 
       // Create initial activity
-      await prisma.activity.create({
-        data: {
-          projectId,
-          userId: user.id,
-          type: 'repository_created',
-          description: `Created repository with ${template} template (${result.mode} mode)`,
-          metadata: JSON.stringify({
-            repositoryId: result.repository!.id,
-            template,
-            setupOptions,
-            mode: result.mode,
-            warnings: result.warnings
-          })
-        }
-      });
+      if (user) {
+        await prisma.activity.create({
+          data: {
+            projectId,
+            userId: user.id,
+            type: 'repository_created',
+            description: `Created repository with ${template} template (${result.mode} mode)`,
+            metadata: JSON.stringify({
+              repositoryId: result.repository!.id,
+              template,
+              setupOptions,
+              mode: result.mode,
+              warnings: result.warnings
+            })
+          }
+        });
+      }
 
       return NextResponse.json({
         repository: updatedRepository,
@@ -475,7 +477,7 @@ export const POST = withRateLimit(
     } catch (error) {
       logError(error as Error, {
         context: 'create_enhanced_repository',
-        userId: user.id
+        userId: user?.id || 'anonymous'
       });
       
       return NextResponse.json(
