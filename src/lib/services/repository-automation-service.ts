@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma';
 import { CATEGORY_PROJECT_TEMPLATES } from '@/lib/templates/category-templates';
 import { getTemplateFiles } from '@/lib/templates/template-files';
 import { processTemplate } from '@/lib/templates/autonomous-project';
+import { generateTemplateFiles as generateEnhancedTemplateFiles } from '@/lib/templates/enhanced-template-generation';
+import { generatePlatformReadme } from '@/lib/templates/platform-readme-generator';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -315,8 +317,12 @@ export class RepositoryAutomationService {
       TAGS: project.tags.join(', ')
     };
 
-    // Create README.md with proper formatting
-    const readmeContent = this.generateReadme(project, repository);
+    // Create platform-specific README.md
+    const readmeContent = generatePlatformReadme(project.template, {
+      ...project,
+      ...variables,
+      repoName: repository.githubName
+    });
     await this.githubClient.createFile({
       owner: repository.githubOwner,
       repo: repository.githubName,
@@ -325,8 +331,24 @@ export class RepositoryAutomationService {
       content: readmeContent
     });
 
-    // Get all template files
-    const templateFiles = getTemplateFiles(project.template, variables);
+    // Get enhanced platform-specific template files
+    const enhancedFiles = generateEnhancedTemplateFiles(project.template, {
+      ...project,
+      ...variables
+    });
+    
+    // If no enhanced template found, fall back to original template files
+    let templateFiles;
+    if (Object.keys(enhancedFiles).length > 0) {
+      // Convert enhanced files to the expected format
+      templateFiles = Object.entries(enhancedFiles).map(([path, content]) => ({
+        path,
+        content: typeof content === 'object' ? JSON.stringify(content, null, 2) : content
+      }));
+    } else {
+      // Fall back to original template system
+      templateFiles = getTemplateFiles(project.template, variables);
+    }
     
     // Create all template files
     for (const file of templateFiles) {

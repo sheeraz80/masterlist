@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
 import { 
   ArrowLeft, Star, DollarSign, Clock, Calendar, GitBranch, 
   TrendingUp, Brain, Code, Shield, Target, Users, Sparkles,
@@ -49,7 +50,7 @@ import { getCategoryDefinition, getCategoryGradient } from '@/lib/constants/cate
 import { Project } from '@/types';
 
 // Components
-import { RepositorySection } from '@/components/project/repository-section';
+import { EnhancedRepositorySection } from '@/components/project/enhanced-repository-section';
 import { DeploymentSection } from '@/components/project/deployment-section';
 
 // Types
@@ -446,7 +447,9 @@ export default function ProjectDetailPage() {
           <div className="flex items-start justify-between">
             <div className="space-y-2">
               <h1 className="text-4xl font-bold">{project.title}</h1>
-              <p className="text-muted-foreground text-lg">{project.solution}</p>
+              <div className="text-muted-foreground text-lg prose prose-sm dark:prose-invert max-w-none">
+                <ReactMarkdown>{project.solution}</ReactMarkdown>
+              </div>
               <div className="flex items-center gap-4 mt-4">
                 <Badge className={cn("bg-gradient-to-r", categoryGradient, "text-white")}>
                   {project.category}
@@ -628,6 +631,37 @@ export default function ProjectDetailPage() {
                 </Card>
               </div>
 
+              {/* Problem & Solution */}
+              <div className="grid gap-6 md:grid-cols-2">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <AlertTriangle className="h-5 w-5" />
+                      Problem Statement
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="prose prose-sm dark:prose-invert max-w-none">
+                      <ReactMarkdown>{project.problem || 'No problem statement provided.'}</ReactMarkdown>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <LightbulbIcon className="h-5 w-5" />
+                      Solution Approach
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="prose prose-sm dark:prose-invert max-w-none">
+                      <ReactMarkdown>{project.solution || 'No solution approach provided.'}</ReactMarkdown>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
               {/* Recent Activity */}
               <Card>
                 <CardHeader>
@@ -753,10 +787,13 @@ export default function ProjectDetailPage() {
               </Card>
 
               {/* Repository Integration */}
-              <RepositorySection 
+              <EnhancedRepositorySection 
                 projectId={project.id}
                 projectTitle={project.title}
                 projectCategory={project.category}
+                projectTags={project.tags}
+                projectComplexity={project.technical_complexity}
+                project={project}
               />
 
               {/* Deployment Management */}

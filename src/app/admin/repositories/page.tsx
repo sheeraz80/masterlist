@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 
 export default async function AdminRepositoriesPage() {
   // Simple auth check - verify the auth token
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const authToken = cookieStore.get('auth-token');
   
   if (!authToken) {

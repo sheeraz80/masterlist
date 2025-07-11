@@ -7,7 +7,7 @@ import { prisma } from '@/lib/prisma';
 export async function POST(request: NextRequest) {
   try {
     // Check authentication
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const authToken = cookieStore.get('auth-token');
     
     if (!authToken) {
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 // Get batch creation job status
 export async function GET(request: NextRequest) {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const authToken = cookieStore.get('auth-token');
     
     if (!authToken) {

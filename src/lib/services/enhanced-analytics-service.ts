@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { RepositoryService } from './repository-service';
+import { analyticsOptimizer } from '@/lib/performance/analytics-optimizer';
 import type { RepositoryStatsResponse } from '@/types/repository';
 
 export interface EnhancedAnalyticsData {
@@ -64,24 +65,33 @@ export class EnhancedAnalyticsService {
     this.repositoryService = new RepositoryService();
   }
 
-  async getEnhancedAnalytics(): Promise<EnhancedAnalyticsData> {
+  async getEnhancedAnalytics(options: {
+    useCache?: boolean;
+    forceRefresh?: boolean;
+    includeDetailedMetrics?: boolean;
+  } = {}): Promise<EnhancedAnalyticsData> {
     try {
-      // Fetch all required data in parallel
+      // Use performance optimizer for optimized analytics generation
+      const optimizedAnalytics = await analyticsOptimizer.getOptimizedProjectAnalytics({
+        ...options,
+        timeRange: '30d',
+        includeDetailedMetrics: options.includeDetailedMetrics || false
+      });
+
+      // Fetch additional data in parallel
       const [
-        projectStats,
         repositoryStats,
         codeAnalyses,
         repositories
       ] = await Promise.all([
-        this.getProjectStats(),
         this.getRepositoryStats(),
         this.getCodeAnalysisData(),
         this.getRepositoryData()
       ]);
 
       // Calculate repository linkage rate
-      const repositoryLinkageRate = projectStats.totalProjects > 0 
-        ? (repositories.length / projectStats.totalProjects) * 100 
+      const repositoryLinkageRate = optimizedAnalytics.projectStats.totalProjects > 0 
+        ? (repositories.length / optimizedAnalytics.projectStats.totalProjects) * 100 
         : 0;
 
       // Calculate codebase metrics
@@ -90,17 +100,20 @@ export class EnhancedAnalyticsService {
       // Calculate development activity
       const developmentActivity = this.calculateDevelopmentActivity(repositories);
 
-      // Generate quality trends
-      const qualityTrends = await this.generateQualityTrends();
+      // Generate quality trends (use cached data if available)
+      const qualityTrends = optimizedAnalytics.qualityMetrics || await this.generateQualityTrends();
 
       // Calculate health indicators
       const healthIndicators = this.calculateHealthIndicators(repositories, codeAnalyses);
 
       return {
-        totalProjects: projectStats.totalProjects,
-        activeProjects: projectStats.activeProjects,
-        averageQualityScore: projectStats.averageQualityScore,
-        categoryDistribution: projectStats.categoryDistribution,
+        totalProjects: optimizedAnalytics.projectStats.totalProjects,
+        activeProjects: optimizedAnalytics.projectStats.activeProjects || 0,
+        averageQualityScore: optimizedAnalytics.projectStats.avgQualityScore,
+        categoryDistribution: optimizedAnalytics.categoryStats.reduce((acc, cat) => {
+          acc[cat.category] = cat.projectCount;
+          return acc;
+        }, {} as Record<string, number>),
         repositoryStats,
         repositoryLinkageRate,
         codebaseMetrics,

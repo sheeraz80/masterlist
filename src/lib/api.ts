@@ -9,6 +9,8 @@ export async function getProjects(params?: {
   page?: number;
   search?: string;
   category?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
 }): Promise<{
   data: Project[];
   pagination: {
@@ -28,6 +30,8 @@ export async function getProjects(params?: {
   if (params?.page) searchParams.set('offset', ((params.page - 1) * (params.limit || 12)).toString());
   if (params?.search) searchParams.set('search', params.search);
   if (params?.category) searchParams.set('category', params.category);
+  if (params?.sortBy) searchParams.set('sortBy', params.sortBy);
+  if (params?.sortOrder) searchParams.set('sortOrder', params.sortOrder);
   
   const response = await fetch(`${API_BASE}/projects?${searchParams}`);
   if (!response.ok) {

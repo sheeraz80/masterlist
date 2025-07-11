@@ -53,6 +53,8 @@ model Project {
   qualityScore        Float
   keyFeatures         String
   tags                String
+  technologyStack     String?
+  prerequisites       String?
   status              String        @default("active")
   priority            String        @default("medium")
   progress            Int           @default(0)

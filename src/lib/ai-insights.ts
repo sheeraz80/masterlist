@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { analyticsOptimizer, benchmarkAnalyticsOperation } from '@/lib/performance/analytics-optimizer';
 
 export interface ProjectInsight {
   projectId: string;
@@ -55,22 +56,55 @@ export async function generateProjectInsights(projectId: string): Promise<Projec
 
 export async function generateCategoryInsights(): Promise<CategoryInsight[]> {
   try {
-    const categoryStats = await prisma.project.groupBy({
-      by: ['category'],
-      _count: { category: true },
-      _avg: { revenuePotential: true },
+    const projects = await prisma.project.findMany({
+      select: {
+        category: true,
+        revenuePotential: true,
+        qualityScore: true,
+      }
     });
 
-    return categoryStats.map(stat => ({
-      category: stat.category,
-      totalProjects: stat._count.category,
-      avgRevenuePotential: parseFloat(stat._avg.revenuePotential || '0'),
-      trends: {
-        growth: calculateGrowthTrend(stat.category),
-        popularity: calculatePopularity(stat._count.category),
-        competitiveness: calculateCompetitiveness(stat.category),
-      },
-    }));
+    // Group by category manually since revenuePotential is a string
+    const categoryMap = new Map<string, { count: number; totalRevenue: number; totalQuality: number }>();
+    
+    projects.forEach(project => {
+      const current = categoryMap.get(project.category) || { count: 0, totalRevenue: 0, totalQuality: 0 };
+      
+      // Parse revenue potential
+      let revenue = 0;
+      if (project.revenuePotential) {
+        const revenueStr = project.revenuePotential.toLowerCase();
+        if (revenueStr.includes('k')) {
+          revenue = parseFloat(revenueStr.replace(/[^0-9.-]/g, '')) * 1000;
+        } else if (revenueStr.includes('m')) {
+          revenue = parseFloat(revenueStr.replace(/[^0-9.-]/g, '')) * 1000000;
+        } else {
+          revenue = parseFloat(revenueStr.replace(/[^0-9.-]/g, '')) || 0;
+        }
+      }
+      
+      categoryMap.set(project.category, {
+        count: current.count + 1,
+        totalRevenue: current.totalRevenue + revenue,
+        totalQuality: current.totalQuality + (project.qualityScore || 0)
+      });
+    });
+
+    const categoryStats: CategoryInsight[] = [];
+    for (const [category, stats] of categoryMap) {
+      categoryStats.push({
+        category,
+        totalProjects: stats.count,
+        avgRevenuePotential: stats.totalRevenue / stats.count,
+        trends: {
+          growth: calculateGrowthTrend(category),
+          popularity: calculatePopularity(stats.count),
+          competitiveness: calculateCompetitiveness(category),
+        },
+      });
+    }
+
+    return categoryStats.sort((a, b) => b.avgRevenuePotential - a.avgRevenuePotential);
   } catch (error) {
     console.error('Error generating category insights:', error);
     return [];
@@ -193,42 +227,93 @@ function calculateCompetitiveness(category: string): number {
 }
 
 // New function to generate comprehensive insights from real data
-export async function generateDataDrivenInsights() {
-  try {
-    // Get all projects with their data
-    const projects = await prisma.project.findMany({
-      select: {
-        id: true,
-        title: true,
-        category: true,
-        qualityScore: true,
-        technicalComplexity: true,
-        revenuePotential: true,
-        competitionLevel: true,
-        developmentTime: true,
-        tags: true,
-        createdAt: true,
-        status: true,
-      }
-    });
+export async function generateDataDrivenInsights(options: {
+  useCache?: boolean;
+  forceRefresh?: boolean;
+  includePerformanceMetrics?: boolean;
+} = {}) {
+  const { useCache = true, forceRefresh = false, includePerformanceMetrics = false } = options;
+  
+  return await benchmarkAnalyticsOperation(
+    async () => {
+      try {
+        // Use performance optimizer for better data retrieval
+        const optimizedData = await analyticsOptimizer.getOptimizedProjectAnalytics({
+          useCache,
+          forceRefresh,
+          timeRange: '30d',
+          includeDetailedMetrics: true
+        });
+
+        // Get all projects with their data
+        const projects = await prisma.project.findMany({
+          select: {
+            id: true,
+            title: true,
+            category: true,
+            qualityScore: true,
+            technicalComplexity: true,
+            revenuePotential: true,
+            competitionLevel: true,
+            developmentTime: true,
+            tags: true,
+            createdAt: true,
+            status: true,
+          }
+        });
 
     // Calculate real metrics
     const totalProjects = projects.length;
     const avgQualityScore = projects.reduce((sum, p) => sum + (p.qualityScore || 0), 0) / totalProjects;
     
-    // Parse revenue potential (it's stored as JSON string)
-    const projectsWithRevenue = projects.map(p => ({
-      ...p,
-      parsedRevenue: p.revenuePotential ? JSON.parse(p.revenuePotential) : { realistic: 0 }
-    }));
+    // Parse revenue potential (it's stored as a string like "$5K-20K MRR" or as JSON)
+    const projectsWithRevenue = projects.map(p => {
+      let revenue = 0;
+      if (p.revenuePotential) {
+        // First, try to parse as JSON (for older entries)
+        try {
+          const revenueObj = JSON.parse(p.revenuePotential);
+          // Use realistic value if it's an object with that property
+          if (revenueObj && typeof revenueObj === 'object' && revenueObj.realistic) {
+            revenue = revenueObj.realistic;
+          }
+        } catch (e) {
+          // If JSON parsing fails, parse as string format
+          const revenueStr = p.revenuePotential.toLowerCase();
+          // Extract numeric value
+          const matches = revenueStr.match(/\d+/g);
+          if (matches && matches.length > 0) {
+            // Take the average if it's a range
+            const values = matches.map(m => parseFloat(m));
+            const avgValue = values.reduce((a, b) => a + b, 0) / values.length;
+            
+            // Convert to yearly revenue
+            if (revenueStr.includes('k')) {
+              revenue = avgValue * 1000;
+            } else if (revenueStr.includes('m')) {
+              revenue = avgValue * 1000000;
+            } else {
+              revenue = avgValue;
+            }
+            
+            // Convert MRR to yearly
+            if (revenueStr.includes('mrr') || revenueStr.includes('monthly')) {
+              revenue = revenue * 12;
+            }
+          }
+        }
+      }
+      
+      return { ...p, parsedRevenue: revenue };
+    });
     
     const totalRevenuePotential = projectsWithRevenue.reduce((sum, p) => 
-      sum + (p.parsedRevenue.realistic || 0), 0
+      sum + p.parsedRevenue, 0
     );
     const avgRevenuePotential = totalRevenuePotential / totalProjects;
 
     // Category analysis with real data
-    const categoryAnalysis = projects.reduce((acc, project) => {
+    const categoryAnalysis = projectsWithRevenue.reduce((acc, project) => {
       const category = project.category || 'Uncategorized';
       if (!acc[category]) {
         acc[category] = {
@@ -240,8 +325,8 @@ export async function generateDataDrivenInsights() {
         };
       }
       
-      const revenue = project.revenuePotential ? 
-        JSON.parse(project.revenuePotential).realistic || 0 : 0;
+      // Use the already parsed revenue from projectsWithRevenue
+      const revenue = project.parsedRevenue;
       
       acc[category].count++;
       acc[category].totalQuality += project.qualityScore || 0;
@@ -289,7 +374,8 @@ export async function generateDataDrivenInsights() {
       return acc;
     }, {} as Record<string, number>);
 
-    return {
+    // Combine optimized data with calculated metrics
+    const result = {
       summary: {
         totalProjects,
         avgQualityScore,
@@ -307,12 +393,29 @@ export async function generateDataDrivenInsights() {
         average: projects.filter(p => (p.qualityScore || 0) >= 4 && (p.qualityScore || 0) < 6).length,
         poor: projects.filter(p => (p.qualityScore || 0) < 4).length
       },
-      projects // Include projects for additional analysis
+      projects, // Include projects for additional analysis
+      optimizedMetrics: {
+        cacheUsed: optimizedData.cacheKey ? true : false,
+        generatedAt: optimizedData.generatedAt,
+        dataFreshness: optimizedData.generatedAt
+      }
     };
-  } catch (error) {
-    console.error('Error generating data-driven insights:', error);
-    throw error;
-  }
+
+    // Add performance insights if requested
+    if (includePerformanceMetrics) {
+      const performanceInsights = await analyticsOptimizer.getPerformanceInsights();
+      result.performanceInsights = performanceInsights;
+    }
+
+    return result;
+      } catch (error) {
+        console.error('Error generating data-driven insights:', error);
+        throw error;
+      }
+    },
+    'data_driven_insights_generation',
+    { useCache, forceRefresh, includePerformanceMetrics }
+  );
 }
 
 // Service object for easier importing

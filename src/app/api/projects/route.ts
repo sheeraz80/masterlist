@@ -124,7 +124,40 @@ export const GET = withRateLimit(
       technical_complexity: project.technicalComplexity || 0,
       quality_score: project.qualityScore || 0,
       key_features: project.keyFeatures ? project.keyFeatures.split(',').map(f => f.trim()) : [],
-      tags: project.tags ? (project.tags.startsWith('[') ? JSON.parse(project.tags) : project.tags.split(',').map(t => t.trim())) : [],
+      tags: (() => {
+        if (!project.tags) return [];
+        try {
+          // Handle malformed tags like ["AI"], Productivity, Tools
+          if (project.tags.includes('[') && project.tags.includes(']')) {
+            // Extract JSON array part and remaining comma-separated parts
+            const jsonMatch = project.tags.match(/\[.*?\]/);
+            if (jsonMatch) {
+              const jsonPart = jsonMatch[0];
+              const remainingPart = project.tags.substring(jsonMatch.index! + jsonPart.length);
+              
+              try {
+                const jsonTags = JSON.parse(jsonPart);
+                const remainingTags = remainingPart
+                  .split(',')
+                  .map(t => t.trim())
+                  .filter(t => t.length > 0);
+                
+                return [...jsonTags, ...remainingTags];
+              } catch {
+                // If JSON parsing fails, fall back to comma split
+                return project.tags.split(',').map(t => t.trim().replace(/[\[\]"]/g, ''));
+              }
+            }
+          }
+          
+          // Standard comma-separated tags
+          return project.tags.split(',').map(t => t.trim());
+        } catch (error) {
+          console.error('Error parsing tags:', project.tags, error);
+          // Last resort - split by comma and clean up
+          return project.tags.split(',').map(t => t.trim().replace(/[\[\]"]/g, ''));
+        }
+      })(),
       priority: project.priority as 'low' | 'medium' | 'high' | 'critical',
       progress: project.progress,
       status: project.status as 'active' | 'completed' | 'archived',

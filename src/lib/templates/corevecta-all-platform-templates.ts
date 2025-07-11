@@ -6,6 +6,156 @@
 import { CoreVectaTemplate } from './corevecta-master-templates';
 
 /**
+ * Chrome Extension Master Template
+ */
+export const CHROME_EXTENSION_MASTER_TEMPLATE: CoreVectaTemplate = {
+  core: {
+    'manifest.json': {
+      content: `{
+  "manifest_version": 3,
+  "name": "{{PROJECT_NAME}}",
+  "version": "1.0.0",
+  "description": "{{PROJECT_DESCRIPTION}}",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "{{PROJECT_NAME}}"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}`
+    },
+    'popup.html': {
+      content: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 350px;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .btn {
+      background: #4285f4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .btn:hover {
+      background: #3367d6;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>{{PROJECT_NAME}}</h1>
+    <p>{{PROJECT_DESCRIPTION}}</p>
+  </div>
+  <button class="btn" id="actionBtn">Get Started</button>
+  <script src="popup.js"></script>
+</body>
+</html>`
+    },
+    'popup.js': {
+      content: `document.addEventListener('DOMContentLoaded', function() {
+  const actionBtn = document.getElementById('actionBtn');
+  
+  actionBtn.addEventListener('click', function() {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, {action: 'executeAction'});
+    });
+  });
+});`
+    },
+    'content.js': {
+      content: `// Content script for {{PROJECT_NAME}}
+console.log('{{PROJECT_NAME}} content script loaded');
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.action === 'executeAction') {
+    // Add your main functionality here
+    console.log('Executing main action');
+    sendResponse({status: 'success'});
+  }
+});`
+    },
+    'background.js': {
+      content: `// Background script for {{PROJECT_NAME}}
+console.log('{{PROJECT_NAME}} background script loaded');
+
+chrome.runtime.onInstalled.addListener(function() {
+  console.log('Extension installed');
+});`
+    }
+  },
+  docs: {
+    'README.md': {
+      content: `# {{PROJECT_NAME}}
+
+{{PROJECT_DESCRIPTION}}
+
+## Installation
+
+1. Clone this repository
+2. Open Chrome and navigate to chrome://extensions/
+3. Enable Developer mode
+4. Click "Load unpacked" and select this directory
+
+## Features
+
+- Modern Chrome Extension Manifest V3
+- Popup interface
+- Content script integration
+- Background service worker
+- Storage API integration
+
+## Development
+
+### Prerequisites
+- Chrome browser
+- Basic knowledge of JavaScript/HTML/CSS
+
+### Setup
+1. Make changes to the code
+2. Reload the extension in chrome://extensions/
+3. Test your changes
+
+## License
+MIT License`
+    }
+  },
+  config: {
+    packageManager: 'none',
+    buildCommand: 'zip -r extension.zip .',
+    devCommand: 'echo "Load unpacked extension in Chrome"',
+    testCommand: 'echo "Manual testing in Chrome required"'
+  }
+};
+
+/**
  * iOS App Master Template
  */
 export const IOS_APP_MASTER_TEMPLATE: CoreVectaTemplate = {
@@ -958,7 +1108,7 @@ jobs:
       run: |
         xcrun llvm-cov export \\
           -format="lcov" \\
-          -instr-profile \$(find . -name '*.profdata') \\
+          -instr-profile $(find . -name '*.profdata') \\
           .build/debug/{{PROJECT_NAME}}Tests \\
           > coverage.lcov
     
@@ -2479,10 +2629,10 @@ export default config;`,
 
 | Network | Contract Address | Explorer |
 |---------|-----------------|----------|
-| Ethereum | `0x...` | [Etherscan](https://etherscan.io/address/0x...) |
-| Arbitrum | `0x...` | [Arbiscan](https://arbiscan.io/address/0x...) |
-| Optimism | `0x...` | [Optimistic Etherscan](https://optimistic.etherscan.io/address/0x...) |
-| Base | `0x...` | [Basescan](https://basescan.org/address/0x...) |
+| Ethereum | \`0x...\` | [Etherscan](https://etherscan.io/address/0x...) |
+| Arbitrum | \`0x...\` | [Arbiscan](https://arbiscan.io/address/0x...) |
+| Optimism | \`0x...\` | [Optimistic Etherscan](https://optimistic.etherscan.io/address/0x...) |
+| Base | \`0x...\` | [Basescan](https://basescan.org/address/0x...) |
 
 ## 🛠️ Development
 

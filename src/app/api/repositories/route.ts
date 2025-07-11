@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { RepositoryService } from '@/lib/services/repository-service';
+import { enhancedRepositoryService } from '@/lib/services/enhanced-repository-service';
 import { withRateLimit, rateLimits } from '@/lib/middleware/rate-limit';
 import { optionalAuth } from '@/lib/middleware/auth';
 import { AuthUser } from '@/types';
@@ -50,7 +51,7 @@ export const POST = withRateLimit(
   optionalAuth(async (request: NextRequest, user: AuthUser | null) => {
     try {
       const body = await request.json();
-      const { projectId, templateName, repoName, description, isPrivate } = body;
+      const { projectId, templateName, repoName, description, isPrivate, useGitHub = true, fallbackToLocal = true } = body;
 
       if (!projectId) {
         return NextResponse.json(
@@ -84,15 +85,36 @@ export const POST = withRateLimit(
         );
       }
 
-      const repositoryService = new RepositoryService();
-      const repository = await repositoryService.createRepository(project, {
+      // Use enhanced repository service for better error handling
+      const result = await enhancedRepositoryService.createRepository(project, {
+        useGitHub,
+        fallbackToLocal,
         templateName,
-        repoName,
         description,
-        isPrivate: isPrivate ?? true
+        isPrivate: isPrivate ?? true,
+        includeReadme: true,
+        includeGitignore: true,
+        includeLicense: false
       });
 
-      return NextResponse.json(repository, { status: 201 });
+      if (!result.success) {
+        return NextResponse.json(
+          { 
+            error: result.error,
+            mode: result.mode,
+            warnings: result.warnings,
+            githubStatus: await enhancedRepositoryService.getGitHubStatus()
+          },
+          { status: 400 }
+        );
+      }
+
+      return NextResponse.json({
+        repository: result.repository,
+        githubUrl: result.githubUrl,
+        mode: result.mode,
+        warnings: result.warnings
+      }, { status: 201 });
     } catch (error) {
       console.error('Error creating repository:', error);
       return NextResponse.json(

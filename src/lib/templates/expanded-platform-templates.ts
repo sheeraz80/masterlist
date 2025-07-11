@@ -542,8 +542,8 @@ runs:
       shell: bash
       run: |
         echo "Generating report..."
-        echo "result=success" >> \$GITHUB_OUTPUT
-        echo "report-url=https://example.com/report" >> \$GITHUB_OUTPUT`
+        echo "result=success" >> $GITHUB_OUTPUT
+        echo "report-url=https://example.com/report" >> $GITHUB_OUTPUT`
     },
     'scripts/run.sh': {
       content: `#!/bin/bash
@@ -555,8 +555,8 @@ TARGET=\${1:-"."}
 OPTIONS=\${2:-"{}"}
 
 echo "🚀 Running {{PROJECT_NAME}}..."
-echo "Target: \$TARGET"
-echo "Options: \$OPTIONS"
+echo "Target: $TARGET"
+echo "Options: $OPTIONS"
 
 # Add your main logic here
 # This could call Node.js, Python, or any other runtime

@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { 
   GitBranch, Plus, Search, Filter, Download, RotateCcw,
   FolderTree, Code, Star, Activity, AlertCircle,
-  CheckCircle, Clock, Archive, Eye, Settings
+  CheckCircle, Clock, Archive, Eye, Settings, RefreshCw
 } from 'lucide-react';
 
 // UI Components
@@ -44,6 +44,7 @@ export default function RepositoriesPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [selectedRepo, setSelectedRepo] = useState<RepositoryWithDetails | null>(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   // Fetch repositories
   const { data: repositoriesData, isLoading: repositoriesLoading, refetch: refetchRepositories } = useQuery<RepositoriesResponse>({
@@ -109,6 +110,33 @@ export default function RepositoriesPage() {
           <Button variant="outline" onClick={() => refetchRepositories()}>
             <RotateCcw className="h-4 w-4 mr-2" />
             Refresh
+          </Button>
+          <Button 
+            variant="outline" 
+            onClick={async () => {
+              setIsSyncing(true);
+              try {
+                const response = await fetch('/api/repositories/sync-github', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' }
+                });
+                const result = await response.json();
+                if (result.success) {
+                  alert(`Sync completed! ${result.message}`);
+                  refetchRepositories();
+                } else {
+                  alert(`Sync failed: ${result.error}`);
+                }
+              } catch (error) {
+                alert('Failed to sync with GitHub');
+              } finally {
+                setIsSyncing(false);
+              }
+            }}
+            disabled={isSyncing}
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
+            {isSyncing ? 'Syncing...' : 'Sync with GitHub'}
           </Button>
           <Button onClick={() => setShowCreateDialog(true)}>
             <Plus className="h-4 w-4 mr-2" />

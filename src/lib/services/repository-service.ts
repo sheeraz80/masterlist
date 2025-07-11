@@ -427,7 +427,7 @@ export class RepositoryService {
           testCoverage: metrics.testCoverage,
           codeQuality: metrics.codeQuality,
           maintainabilityIndex: metrics.maintainabilityIndex,
-          dependencies: stats.languages,
+          dependencies: {},
           analyzer: 'github-api-basic',
           analysisType: 'QUICK'
         }

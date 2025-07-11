@@ -102,7 +102,7 @@ export default function EnhancedProjectsPage() {
     revenueRange: [0, 10000000],  // Increased max from 1M to 10M
     progressRange: [0, 100],
     status: [],
-    sortBy: 'quality_score',
+    sortBy: 'quality',
     sortOrder: 'desc'
   });
 
@@ -122,13 +122,24 @@ export default function EnhancedProjectsPage() {
   }, [categoryFromUrl]);
 
   // Data Fetching
+  // When filters are active, fetch more items to ensure we have enough after client-side filtering
+  const hasActiveFilters = 
+    filters.qualityRange[0] !== 0 || filters.qualityRange[1] !== 10 ||
+    filters.complexityRange[0] !== 0 || filters.complexityRange[1] !== 10 ||
+    filters.revenueRange[0] !== 0 || filters.revenueRange[1] !== 10000000 ||
+    filters.tags.length > 0 || filters.status.length > 0;
+  
+  const fetchLimit = hasActiveFilters ? 100 : itemsPerPage;
+  
   const { data: projectsData, isLoading, error, refetch } = useQuery({
-    queryKey: ['projects', currentPage, itemsPerPage, filters],
+    queryKey: ['projects', currentPage, fetchLimit, filters],
     queryFn: () => getProjects({
-      page: currentPage,
-      limit: itemsPerPage,
+      page: hasActiveFilters ? 1 : currentPage,
+      limit: fetchLimit,
       search: filters.search || undefined,
       category: filters.category !== 'all' ? filters.category : undefined,
+      sortBy: filters.sortBy,
+      sortOrder: filters.sortOrder,
     }),
   });
 
@@ -142,7 +153,7 @@ export default function EnhancedProjectsPage() {
   const pagination = projectsData?.pagination || { page: 1, limit: 12, total: 0, total_pages: 0 };
 
   // Enhanced Filtering
-  const filteredProjects = useMemo(() => {
+  const allFilteredProjects = useMemo(() => {
     let filtered = [...projects];
 
     // Quality filter
@@ -193,7 +204,7 @@ export default function EnhancedProjectsPage() {
       let aVal, bVal;
       
       switch (filters.sortBy) {
-        case 'quality_score':
+        case 'quality':
           aVal = a.quality_score || 0;
           bVal = b.quality_score || 0;
           break;
@@ -227,26 +238,37 @@ export default function EnhancedProjectsPage() {
 
     return filtered;
   }, [projects, filters]);
+  
+  // Paginate filtered results when filters are active
+  const filteredProjects = useMemo(() => {
+    if (!hasActiveFilters) {
+      return allFilteredProjects;
+    }
+    
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return allFilteredProjects.slice(startIndex, endIndex);
+  }, [allFilteredProjects, hasActiveFilters, currentPage, itemsPerPage]);
 
   // Calculate Metrics
   const metrics: ProjectMetrics = useMemo(() => {
-    const totalRevenue = filteredProjects.reduce((sum, p) => 
+    const totalRevenue = allFilteredProjects.reduce((sum, p) => 
       sum + (p.revenue_potential?.realistic || 0), 0
     );
     
-    const avgQuality = filteredProjects.length > 0
-      ? filteredProjects.reduce((sum, p) => sum + (p.quality_score || 0), 0) / filteredProjects.length
+    const avgQuality = allFilteredProjects.length > 0
+      ? allFilteredProjects.reduce((sum, p) => sum + (p.quality_score || 0), 0) / allFilteredProjects.length
       : 0;
 
     // Projects don't have progress field, so we'll simulate completion rate
     const completedProjects = 0; // Will be based on status field when available
-    const completionRate = filteredProjects.length > 0
+    const completionRate = allFilteredProjects.length > 0
       ? Math.random() * 30 + 40 // Simulated 40-70% completion rate
       : 0;
 
     // Calculate trending categories
     const categoryGrowth: Record<string, number> = {};
-    filteredProjects.forEach(project => {
+    allFilteredProjects.forEach(project => {
       const category = project.category;
       categoryGrowth[category] = (categoryGrowth[category] || 0) + 1;
     });
@@ -254,7 +276,7 @@ export default function EnhancedProjectsPage() {
     const trending = Object.entries(categoryGrowth)
       .map(([category, count]) => ({
         category,
-        growth: (count / filteredProjects.length) * 100
+        growth: (count / allFilteredProjects.length) * 100
       }))
       .sort((a, b) => b.growth - a.growth)
       .slice(0, 3);
@@ -267,14 +289,14 @@ export default function EnhancedProjectsPage() {
     if (trending[0]?.growth > 30) insights.push(`${trending[0].category} is dominating your portfolio`);
 
     return {
-      totalProjects: filteredProjects.length,
+      totalProjects: allFilteredProjects.length,
       avgQuality,
       totalRevenue,
       completionRate,
       trending,
       insights
     };
-  }, [filteredProjects]);
+  }, [allFilteredProjects]);
 
   // Handlers
   const handleFilterChange = (key: keyof ProjectFilters, value: any) => {
@@ -307,8 +329,8 @@ export default function EnhancedProjectsPage() {
   // Tab categories for quick filtering
   const tabCategories = [
     { id: 'all', label: 'All Projects', icon: Layers },
-    { id: 'high-quality', label: 'High Quality', icon: Star, filter: { qualityRange: [8, 10] } },
-    { id: 'quick-wins', label: 'Quick Wins', icon: Zap, filter: { complexityRange: [1, 3], qualityRange: [7, 10] } },
+    { id: 'high-quality', label: 'High Quality', icon: Star, filter: { qualityRange: [8, 10], sortBy: 'quality', sortOrder: 'desc' } },
+    { id: 'quick-wins', label: 'Quick Wins', icon: Zap, filter: { complexityRange: [0, 3], qualityRange: [7, 10] } },
     { id: 'high-revenue', label: 'High Revenue', icon: DollarSign, filter: { revenueRange: [50000, 1000000] } },
     { id: 'in-progress', label: 'In Progress', icon: Clock, filter: { status: ['in-progress'] } },
     { id: 'ai-powered', label: 'AI Powered', icon: Brain, filter: { tags: ['AI'] } },
@@ -343,10 +365,13 @@ export default function EnhancedProjectsPage() {
   console.log('Debug info:', {
     projectsData,
     projects: projects.length,
+    allFilteredProjects: allFilteredProjects.length,
     filteredProjects: filteredProjects.length,
     isLoading,
     error,
     filters,
+    hasActiveFilters,
+    fetchLimit,
     sampleProject: projects[0]
   });
 
@@ -402,8 +427,8 @@ export default function EnhancedProjectsPage() {
             <CardContent>
               <div className="text-2xl font-bold">{metrics.totalProjects}</div>
               <p className="text-xs text-muted-foreground">
-                {filteredProjects.length !== projects.length && 
-                  `${projects.length - filteredProjects.length} filtered`}
+                {allFilteredProjects.length !== projects.length && 
+                  `${projects.length - allFilteredProjects.length} filtered`}
               </p>
             </CardContent>
           </Card>
@@ -485,15 +510,33 @@ export default function EnhancedProjectsPage() {
                 value={tab.id}
                 onClick={() => {
                   if (tab.filter) {
-                    setFilters(prev => ({ ...prev, ...tab.filter }));
-                  } else {
+                    // Reset all filters to defaults first, then apply tab-specific filters
                     setFilters(prev => ({
-                      ...prev,
+                      search: prev.search, // Keep search
+                      category: prev.category, // Keep category
+                      tags: [],
                       qualityRange: [0, 10],
-                      complexityRange: [1, 10],
-                      revenueRange: [0, 1000000],
+                      complexityRange: [0, 10],
+                      revenueRange: [0, 10000000],
+                      progressRange: [0, 100],
                       status: [],
-                      tags: []
+                      sortBy: 'quality',
+                      sortOrder: 'desc',
+                      ...tab.filter // Apply tab-specific filters
+                    }));
+                  } else {
+                    // For "All Projects" tab, reset filters but keep search and category
+                    setFilters(prev => ({
+                      search: prev.search,
+                      category: prev.category,
+                      tags: [],
+                      qualityRange: [0, 10],
+                      complexityRange: [0, 10],
+                      revenueRange: [0, 10000000],
+                      progressRange: [0, 100],
+                      status: [],
+                      sortBy: 'quality',
+                      sortOrder: 'desc'
                     }));
                   }
                 }}
@@ -534,7 +577,7 @@ export default function EnhancedProjectsPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="quality_score">Quality Score</SelectItem>
+                <SelectItem value="quality">Quality Score</SelectItem>
                 <SelectItem value="revenue">Revenue</SelectItem>
                 <SelectItem value="complexity">Complexity</SelectItem>
                 <SelectItem value="progress">Progress</SelectItem>
@@ -700,7 +743,7 @@ export default function EnhancedProjectsPage() {
                           revenueRange: [0, 10000000],
                           progressRange: [0, 100],
                           status: [],
-                          sortBy: 'quality_score',
+                          sortBy: 'quality',
                           sortOrder: 'desc'
                         });
                       }}
@@ -960,8 +1003,8 @@ export default function EnhancedProjectsPage() {
         <div className="flex justify-center">
           <Pagination
             currentPage={currentPage}
-            totalPages={pagination.total_pages}
-            totalItems={pagination.total}
+            totalPages={hasActiveFilters ? Math.ceil(allFilteredProjects.length / itemsPerPage) : pagination.total_pages}
+            totalItems={hasActiveFilters ? allFilteredProjects.length : pagination.total}
             itemsPerPage={itemsPerPage}
             onPageChange={setCurrentPage}
             onItemsPerPageChange={setItemsPerPage}

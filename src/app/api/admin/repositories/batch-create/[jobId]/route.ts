@@ -11,7 +11,7 @@ interface Params {
 // Get specific batch job status
 export async function GET(request: NextRequest, { params }: Params) {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const authToken = cookieStore.get('auth-token');
     
     if (!authToken) {
@@ -67,7 +67,7 @@ export async function GET(request: NextRequest, { params }: Params) {
 // Cancel a running job
 export async function DELETE(request: NextRequest, { params }: Params) {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const authToken = cookieStore.get('auth-token');
     
     if (!authToken) {

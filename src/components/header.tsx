@@ -18,7 +18,9 @@ import {
   LogOut,
   User,
   Layers,
-  Globe
+  Globe,
+  MoreHorizontal,
+  Menu
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -33,23 +35,71 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ConnectionStatus } from '@/components/connection-status';
+import { useState } from 'react';
 
 const navItems = [
-  { href: '/', label: 'Dashboard', icon: Home },
-  { href: '/projects', label: 'Projects', icon: FileText },
-  { href: '/repositories', label: 'Repositories', icon: GitBranch },
-  { href: '/deployments', label: 'Deployments', icon: Globe },
-  { href: '/categories', label: 'Categories', icon: Layers },
-  { href: '/search', label: 'Search', icon: Search },
-  { href: '/analytics', label: 'Analytics', icon: BarChart3 },
-  { href: '/qa', label: 'QA', icon: Shield },
-  { href: '/insights', label: 'Insights', icon: Lightbulb },
-  { href: '/collaborate', label: 'Collaborate', icon: Users },
+  { href: '/', label: 'Dashboard', icon: Home, priority: 1 },
+  { href: '/projects', label: 'Projects', icon: FileText, priority: 1 },
+  { href: '/repositories', label: 'Repositories', icon: GitBranch, priority: 2 },
+  { href: '/deployments', label: 'Deployments', icon: Globe, priority: 3 },
+  { href: '/categories', label: 'Categories', icon: Layers, priority: 3 },
+  { href: '/search', label: 'Search', icon: Search, priority: 2 },
+  { href: '/analytics', label: 'Analytics', icon: BarChart3, priority: 2 },
+  { href: '/qa', label: 'QA', icon: Shield, priority: 1 },
+  { href: '/insights', label: 'Insights', icon: Lightbulb, priority: 3 },
+  { href: '/collaborate', label: 'Collaborate', icon: Users, priority: 3 },
 ];
 
 export function Header() {
   const pathname = usePathname();
   const { user, logout, loading } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Separate items by priority for responsive display
+  const priorityItems = navItems.filter(item => item.priority === 1);
+  const secondaryItems = navItems.filter(item => item.priority === 2);
+  const moreItems = navItems.filter(item => item.priority === 3);
+
+  const NavLink = ({ item, onClick }: { item: typeof navItems[0], onClick?: () => void }) => {
+    const Icon = item.icon;
+    const isActive = pathname === item.href || 
+      (item.href !== '/' && pathname.startsWith(item.href));
+    
+    return (
+      <Link
+        href={item.href}
+        onClick={onClick}
+        className="relative px-3 py-2 text-sm font-medium transition-colors rounded-lg group"
+      >
+        <motion.div
+          className={cn(
+            "flex items-center space-x-2",
+            isActive 
+              ? "text-primary" 
+              : "text-muted-foreground hover:text-foreground"
+          )}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Icon className="h-4 w-4" />
+          <span>{item.label}</span>
+        </motion.div>
+        
+        {isActive && (
+          <motion.div
+            layoutId="navbar-indicator"
+            className="absolute inset-0 bg-primary/10 rounded-lg -z-10"
+            initial={false}
+            transition={{
+              type: "spring",
+              stiffness: 500,
+              damping: 30
+            }}
+          />
+        )}
+      </Link>
+    );
+  };
 
   return (
     <motion.header
@@ -58,8 +108,8 @@ export function Header() {
       className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
     >
       <div className="container flex h-16 items-center">
-        <div className="mr-8 flex">
-          <Link href="/" className="mr-8 flex items-center space-x-2 group">
+        <div className="flex flex-1 items-center">
+          <Link href="/" className="mr-4 lg:mr-8 flex items-center space-x-2 group">
             <motion.div
               whileHover={{ rotate: 360 }}
               transition={{ duration: 0.5 }}
@@ -71,71 +121,89 @@ export function Header() {
             </span>
           </Link>
           
-          <nav className="flex items-center space-x-1">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathname === item.href || 
-                (item.href !== '/' && pathname.startsWith(item.href));
-              
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="relative px-3 py-2 text-sm font-medium transition-colors rounded-lg group"
-                >
-                  <motion.div
-                    className={cn(
-                      "flex items-center space-x-2",
-                      isActive 
-                        ? "text-primary" 
-                        : "text-muted-foreground hover:text-foreground"
-                    )}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Icon className="h-4 w-4" />
-                    <span>{item.label}</span>
-                  </motion.div>
-                  
-                  {isActive && (
-                    <motion.div
-                      layoutId="navbar-indicator"
-                      className="absolute inset-0 bg-primary/10 rounded-lg -z-10"
-                      initial={false}
-                      transition={{
-                        type: "spring",
-                        stiffness: 500,
-                        damping: 30
-                      }}
-                    />
-                  )}
-                  
-                  <motion.div
-                    className="absolute inset-x-0 bottom-0 h-0.5 bg-primary"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: isActive ? 1 : 0 }}
-                    whileHover={{ scaleX: 1 }}
-                    transition={{ duration: 0.2 }}
-                  />
-                </Link>
-              );
-            })}
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-1">
+            {/* Priority items always visible */}
+            {priorityItems.map((item) => (
+              <NavLink key={item.href} item={item} />
+            ))}
+            
+            {/* Secondary items visible on xl screens */}
+            <div className="hidden xl:flex items-center space-x-1">
+              {secondaryItems.map((item) => (
+                <NavLink key={item.href} item={item} />
+              ))}
+            </div>
+            
+            {/* More dropdown for remaining items */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="px-3">
+                  <MoreHorizontal className="h-4 w-4" />
+                  <span className="ml-2 hidden xl:inline">More</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-48">
+                {/* Show secondary items on lg screens */}
+                <div className="xl:hidden">
+                  {secondaryItems.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = pathname === item.href || 
+                      (item.href !== '/' && pathname.startsWith(item.href));
+                    return (
+                      <DropdownMenuItem key={item.href} asChild>
+                        <Link href={item.href} className={cn(isActive && "text-primary")}>
+                          <Icon className="mr-2 h-4 w-4" />
+                          <span>{item.label}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    );
+                  })}
+                  <DropdownMenuSeparator className="xl:hidden" />
+                </div>
+                
+                {/* Always show more items */}
+                {moreItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname === item.href || 
+                    (item.href !== '/' && pathname.startsWith(item.href));
+                  return (
+                    <DropdownMenuItem key={item.href} asChild>
+                      <Link href={item.href} className={cn(isActive && "text-primary")}>
+                        <Icon className="mr-2 h-4 w-4" />
+                        <span>{item.label}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </nav>
+          
+          {/* Mobile menu button */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="lg:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
         </div>
         
-        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <div className="w-full flex-1 md:w-auto md:flex-none">
+        <div className="flex items-center justify-end space-x-2 ml-auto">
+          <div className="hidden md:block">
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="relative max-w-sm"
+              className="relative"
             >
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
                 type="search"
                 placeholder="Quick search..."
-                className="w-full pl-10 pr-4 py-2 text-sm rounded-full border bg-muted/50 focus:bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+                className="w-48 lg:w-64 pl-10 pr-4 py-2 text-sm rounded-full border bg-muted/50 focus:bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && e.currentTarget.value.trim()) {
                     window.location.href = `/search?q=${encodeURIComponent(e.currentTarget.value.trim())}`;
@@ -233,6 +301,58 @@ export function Header() {
           </nav>
         </div>
       </div>
+      
+      {/* Mobile Navigation Menu */}
+      {mobileMenuOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          className="lg:hidden border-t bg-background/95 backdrop-blur"
+        >
+          <div className="container py-4 space-y-2">
+            {/* Mobile Search */}
+            <div className="relative mb-4 md:hidden">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input
+                type="search"
+                placeholder="Quick search..."
+                className="w-full pl-10 pr-4 py-2 text-sm rounded-full border bg-muted/50 focus:bg-background focus:outline-none focus:ring-2 focus:ring-primary/20"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && e.currentTarget.value.trim()) {
+                    window.location.href = `/search?q=${encodeURIComponent(e.currentTarget.value.trim())}`;
+                    setMobileMenuOpen(false);
+                  }
+                }}
+              />
+            </div>
+            
+            {/* Mobile Nav Links */}
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href || 
+                (item.href !== '/' && pathname.startsWith(item.href));
+              
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={cn(
+                    "flex items-center space-x-3 px-4 py-2 rounded-lg transition-colors",
+                    isActive 
+                      ? "bg-primary/10 text-primary" 
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span className="text-sm font-medium">{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </motion.div>
+      )}
     </motion.header>
   );
 }

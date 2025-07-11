@@ -81,7 +81,7 @@ export function ProjectCard({ project, viewMode = 'grid' }: ProjectCardProps) {
                 <div className="flex items-center gap-6 text-sm">
                   <div className="flex items-center gap-1">
                     <Star className="h-4 w-4 text-yellow-500" />
-                    <span className="font-medium">{project.quality_score}/10</span>
+                    <span className="font-medium">{project.quality_score.toFixed(1)}/10</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <DollarSign className="h-4 w-4 text-green-500" />
@@ -89,7 +89,7 @@ export function ProjectCard({ project, viewMode = 'grid' }: ProjectCardProps) {
                   </div>
                   <div className="flex items-center gap-1">
                     <Code className="h-4 w-4 text-blue-500" />
-                    <span className="font-medium">{project.technical_complexity}/10</span>
+                    <span className="font-medium">{project.technical_complexity.toFixed(1)}/10</span>
                   </div>
                   <Badge variant="outline">{project.category}</Badge>
                 </div>
@@ -97,7 +97,7 @@ export function ProjectCard({ project, viewMode = 'grid' }: ProjectCardProps) {
               
               <div className="flex flex-col items-end gap-3">
                 <div className={cn("px-3 py-1 rounded-full text-sm font-medium", qualityColor)}>
-                  Quality: {project.quality_score}
+                  Quality: {project.quality_score.toFixed(1)}
                 </div>
                 <Button asChild>
                   <Link href={`/projects/${project.id}`}>
@@ -179,7 +179,7 @@ export function ProjectCard({ project, viewMode = 'grid' }: ProjectCardProps) {
                 {project.category}
               </Badge>
               <span className={cn("text-xs px-2 py-0.5 rounded-full font-medium", qualityColor)}>
-                Quality: {project.quality_score}
+                Quality: {project.quality_score.toFixed(1)}
               </span>
             </div>
           </div>
@@ -207,7 +207,7 @@ export function ProjectCard({ project, viewMode = 'grid' }: ProjectCardProps) {
                 Complexity
               </div>
               <div className="font-semibold text-sm">
-                {project.technical_complexity}/10
+                {project.technical_complexity.toFixed(1)}/10
               </div>
             </div>
           </div>
