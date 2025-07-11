@@ -65,15 +65,67 @@ export const authOptions: NextAuthOptions = {
 };
 
 // Helper functions for backward compatibility
-export async function getCurrentUser() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.email) return null;
+export async function getCurrentUser(request?: any) {
+  // If request is provided, try to get user from JWT token (for API routes)
+  if (request) {
+    try {
+      // Try to get token from Authorization header
+      const authHeader = request.headers.get('authorization');
+      let token = authHeader?.replace('Bearer ', '');
+      
+      // If not in header, try cookies
+      if (!token) {
+        const cookieHeader = request.headers.get('cookie');
+        if (cookieHeader) {
+          const cookies = cookieHeader.split(';').reduce((acc: any, cookie: string) => {
+            const [key, value] = cookie.trim().split('=');
+            acc[key] = value;
+            return acc;
+          }, {});
+          token = cookies['auth-token'] || cookies['session-token'];
+        }
+      }
+      
+      if (token) {
+        try {
+          // Verify JWT token
+          const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret') as any;
+          
+          // Get user from database
+          const user = await prisma.user.findUnique({
+            where: { id: decoded.id }
+          });
+          
+          if (user) {
+            return {
+              id: user.id,
+              email: user.email,
+              name: user.name,
+              role: user.role
+            };
+          }
+        } catch (jwtError) {
+          // Invalid token, continue to NextAuth fallback
+        }
+      }
+    } catch (error) {
+      // Continue to NextAuth fallback
+    }
+  }
   
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email }
-  });
-  
-  return user;
+  // Fallback to NextAuth session (for server components)
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email) return null;
+    
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email }
+    });
+    
+    return user;
+  } catch (error) {
+    return null;
+  }
 }
 
 export async function login(email: string, password: string) {
