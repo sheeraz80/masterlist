@@ -1,11 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import { createGitHubClient, createRepository as createGitHubRepo } from '@/lib/github';
 import { logError } from '@/lib/logger';
-import type { 
-  Repository, 
-  Project,
-  CreateRepositoryOptions
-} from '@/types/repository';
+import type { Repository } from '@/types/repository';
+import type { Project } from '@/types';
 
 export interface GitHubConfiguration {
   isConfigured: boolean;
@@ -19,6 +16,7 @@ export interface GitHubConfiguration {
 export interface RepositoryCreationOptions {
   useGitHub: boolean;
   fallbackToLocal: boolean;
+  repositoryName?: string;
   templateName?: string;
   description?: string;
   isPrivate?: boolean;
@@ -83,7 +81,7 @@ export class EnhancedRepositoryService {
       const octokit = createGitHubClient();
       
       // Test basic API access
-      const userResponse = await octokit.rest.user.getAuthenticated();
+      const userResponse = await octokit.rest.users.getAuthenticated();
       
       // Test organization access if configured
       if (this.gitHubConfig.organizationName) {
@@ -120,7 +118,7 @@ export class EnhancedRepositoryService {
         this.gitHubConfig.errorMessage = `GitHub connection failed: ${error.message}`;
       }
       
-      logError('GitHub connection validation failed', error);
+      logError(error as Error, { context: 'GitHub connection validation failed' });
     }
 
     return this.gitHubConfig;
@@ -154,7 +152,7 @@ export class EnhancedRepositoryService {
         const result = await this.createGitHubRepository(project, options);
         return result;
       } catch (error: any) {
-        logError('GitHub repository creation failed', error);
+        logError(error as Error, { context: 'GitHub repository creation failed' });
         warnings.push(`GitHub creation failed: ${error.message}`);
         
         if (!options.fallbackToLocal) {
@@ -190,7 +188,7 @@ export class EnhancedRepositoryService {
         mode: 'local'
       };
     } catch (error: any) {
-      logError('Local repository creation failed', error);
+      logError(error as Error, { context: 'Local repository creation failed' });
       return {
         success: false,
         error: `Repository creation failed: ${error.message}`,
@@ -206,7 +204,8 @@ export class EnhancedRepositoryService {
     options: RepositoryCreationOptions
   ): Promise<RepositoryCreationResult> {
     try {
-      const repoName = this.generateRepositoryName(project);
+      // Use provided name if available, otherwise generate one
+      const repoName = options.repositoryName || this.generateRepositoryName(project);
       const description = options.description || this.generateRepositoryDescription(project);
       
       // Create repository on GitHub
@@ -400,7 +399,7 @@ export class EnhancedRepositoryService {
       };
 
     } catch (error: any) {
-      logError('Failed to link existing repository', error);
+      logError(error as Error, { context: 'Failed to link existing repository' });
       
       if (error.status === 404) {
         return {
@@ -561,7 +560,7 @@ export class EnhancedRepositoryService {
 
     // Simple inference based on project title and tags
     const title = project.title.toLowerCase();
-    const tags = JSON.parse(project.tags || '[]');
+    const tags = typeof project.tags === 'string' ? JSON.parse(project.tags || '[]') : project.tags || [];
     
     for (const subcategory of subcategories) {
       if (title.includes(subcategory) || tags.includes(subcategory)) {

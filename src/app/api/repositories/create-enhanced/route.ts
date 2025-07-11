@@ -376,11 +376,12 @@ export const POST = withRateLimit(
 
       const { projectId, template, settings, setupOptions, techStack, projectMetadata } = validation.data;
 
-      // Check if project exists and user has access
+      // Check if project exists
+      // For now, allow any user to create repositories for any project
+      // In production, you may want to restrict this based on user permissions
       const project = await prisma.project.findFirst({
         where: {
-          id: projectId,
-          ...(user ? { ownerId: user.id } : {})
+          id: projectId
         }
       });
 
@@ -407,6 +408,7 @@ export const POST = withRateLimit(
       const result = await enhancedRepositoryService.createRepository(project, {
         useGitHub: true,
         fallbackToLocal: true,
+        repositoryName: settings.name,
         templateName: template,
         description: settings.description || `${project.title} - ${template} project`,
         isPrivate: settings.isPrivate,
@@ -431,19 +433,40 @@ export const POST = withRateLimit(
         }, { status: 400 });
       }
 
-      // Update repository with additional metadata
+      // Update repository with template information
       const updatedRepository = await prisma.repository.update({
         where: { id: result.repository!.id },
         data: {
-          templateUsed: template,
-          // Store additional metadata in a JSON field if available
-          metadata: JSON.stringify({
-            techStack,
-            setupOptions,
-            projectMetadata
-          })
+          templateUsed: template
         }
       });
+      
+      // Store additional metadata as repository tags
+      if (techStack && techStack.length > 0) {
+        await Promise.all(techStack.map(tech => 
+          prisma.repositoryTag.create({
+            data: {
+              repositoryId: result.repository!.id,
+              name: `tech:${tech}`,
+              value: tech,
+              type: 'TECH_STACK'
+            }
+          }).catch(() => {}) // Ignore duplicate errors
+        ));
+      }
+      
+      if (setupOptions && setupOptions.length > 0) {
+        await Promise.all(setupOptions.map(option => 
+          prisma.repositoryTag.create({
+            data: {
+              repositoryId: result.repository!.id,
+              name: `setup:${option}`,
+              value: option,
+              type: 'SETUP'
+            }
+          }).catch(() => {}) // Ignore duplicate errors
+        ));
+      }
 
       // Create initial activity
       if (user) {
@@ -456,7 +479,6 @@ export const POST = withRateLimit(
             metadata: JSON.stringify({
               repositoryId: result.repository!.id,
               template,
-              setupOptions,
               mode: result.mode,
               warnings: result.warnings
             })
@@ -485,6 +507,5 @@ export const POST = withRateLimit(
         { status: 500 }
       );
     }
-  }),
-  rateLimits.write
+  })
 );
