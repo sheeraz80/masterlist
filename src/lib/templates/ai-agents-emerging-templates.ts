@@ -20,25 +20,25 @@ export const AI_AGENTS_EMERGING_TEMPLATES = {
           lint: 'eslint src/**/*.ts'
         },
         dependencies: {
-          'langchain': '^0.1.25',
-          '@langchain/openai': '^0.0.25',
-          '@langchain/community': '^0.0.30',
-          '@langchain/core': '^0.1.40',
-          'zod': '^3.22.0',
-          'dotenv': '^16.4.0',
-          'express': '^4.18.2',
+          'langchain': '^0.3.0',
+          '@langchain/openai': '^0.3.0',
+          '@langchain/community': '^0.3.0',
+          '@langchain/core': '^0.3.0',
+          'zod': '^3.23.0',
+          'dotenv': '^16.4.5',
+          'express': '^4.21.0',
           'cors': '^2.8.5',
-          'chromadb': '^1.7.0'
+          'chromadb': '^1.8.0'
         },
         devDependencies: {
-          '@types/node': '^20.11.0',
+          '@types/node': '^22.0.0',
           '@types/express': '^4.17.21',
           '@types/cors': '^2.8.17',
-          'typescript': '^5.3.0',
-          'tsx': '^4.7.0',
+          'typescript': '^5.8.0',
+          'tsx': '^4.19.0',
           'jest': '^29.7.0',
-          '@types/jest': '^29.5.11',
-          'eslint': '^8.56.0'
+          '@types/jest': '^29.5.12',
+          'eslint': '^9.0.0'
         }
       }
     },
@@ -220,14 +220,14 @@ export const webScraperTool = new DynamicTool({
           test: 'jest'
         },
         dependencies: {
-          'openai': '^4.28.0',
+          'openai': '^4.67.0',
           'pinecone-client': '^1.1.0',
-          'cheerio': '^1.0.0-rc.12',
-          'puppeteer': '^22.0.0',
+          'cheerio': '^1.0.0',
+          'puppeteer': '^23.0.0',
           'node-fetch': '^3.3.0',
-          'zod': '^3.22.0',
-          'bull': '^4.12.0',
-          'redis': '^4.6.0'
+          'zod': '^3.23.0',
+          'bull': '^4.16.0',
+          'redis': '^4.7.0'
         }
       }
     },

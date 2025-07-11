@@ -4,6 +4,7 @@
  */
 
 import { Project } from '@prisma/client';
+import { EnhancedPromptSections } from './enhanced-prompt-sections';
 
 export interface EnhancedProject extends Project {
   complexity: 'basic' | 'intermediate' | 'advanced' | 'enterprise';
@@ -39,6 +40,10 @@ export class CoreVectaPromptGenerator {
     const quality = this.generateQualityStandards(project);
     const security = this.generateSecurityRequirements(project);
     const testing = this.generateTestingRequirements(project);
+    
+    // Enhanced sections for Gold Standard compliance
+    const enhancedSections = this.generateEnhancedSections(project);
+    
     const documentation = this.generateDocumentationRequirements(project);
     const deployment = this.generateDeploymentRequirements(project);
     const business = this.generateBusinessRequirements(project);
@@ -52,6 +57,7 @@ ${features}
 ${quality}
 ${security}
 ${testing}
+${enhancedSections}
 ${documentation}
 ${deployment}
 ${business}
@@ -344,6 +350,57 @@ ${deliverables.business.map((d, i) => `${i + 1}. ${d}`).join('\n')}
 - Documentation complete
 - Accessibility compliant (WCAG ${project.quality_requirements.accessibility})
 - Production deployment ready`;
+  }
+
+  private static generateEnhancedSections(project: EnhancedProject): string {
+    // Only include enhanced sections for intermediate and above complexity
+    if (project.complexity === 'basic') {
+      return '';
+    }
+
+    const sections = [];
+    
+    // Always include cross-browser for web-based projects
+    if (project.category.includes('Extension') || project.category.includes('Web')) {
+      sections.push(EnhancedPromptSections.getCrossBrowserSection());
+    }
+    
+    // Include advanced testing for intermediate and above
+    if (project.complexity !== 'basic') {
+      sections.push(EnhancedPromptSections.getAdvancedTestingSection());
+    }
+    
+    // Include analytics for advanced projects
+    if (project.complexity === 'advanced' || project.complexity === 'enterprise') {
+      sections.push(EnhancedPromptSections.getAnalyticsMonitoringSection());
+    }
+    
+    // Include i18n for advanced projects
+    if (project.complexity === 'advanced' || project.complexity === 'enterprise') {
+      sections.push(EnhancedPromptSections.getI18nSection());
+    }
+    
+    // Include advanced CI/CD for advanced projects
+    if (project.complexity === 'advanced' || project.complexity === 'enterprise') {
+      sections.push(EnhancedPromptSections.getAdvancedCICDSection());
+    }
+    
+    // Include advanced security for all non-basic projects
+    if (project.complexity !== 'basic') {
+      sections.push(EnhancedPromptSections.getAdvancedSecuritySection());
+    }
+    
+    // Include monetization for projects with revenue models
+    if (project.revenueModel && project.revenueModel !== 'None') {
+      sections.push(EnhancedPromptSections.getMonetizationSection());
+    }
+    
+    // Include store optimization for consumer-facing projects
+    if (project.category.includes('Extension') || project.category.includes('App')) {
+      sections.push(EnhancedPromptSections.getStoreOptimizationSection());
+    }
+    
+    return sections.join('\n\n');
   }
 
   private static generateFooter(project: EnhancedProject): string {
