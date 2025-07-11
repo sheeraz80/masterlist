@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { GitHubClient } from '@/lib/github/github-client';
+import { CodeAnalysisService } from './code-analysis-service';
 import type { 
   Repository, 
   RepoStatus, 
@@ -45,12 +46,14 @@ const SUBCATEGORY_MAPPING = {
 
 export class RepositoryService {
   private githubClient: GitHubClient;
+  private codeAnalysisService: CodeAnalysisService;
 
   constructor() {
     this.githubClient = new GitHubClient(
       GITHUB_CONFIG.accessToken,
       GITHUB_CONFIG.organizationName
     );
+    this.codeAnalysisService = new CodeAnalysisService(GITHUB_CONFIG.accessToken);
   }
 
   // Repository Creation and Management
@@ -391,28 +394,26 @@ export class RepositoryService {
 
   // Code Analysis Integration
   async analyzeRepository(repositoryId: string): Promise<CodeMetrics> {
-    // This is a placeholder - we'll implement detailed code analysis later
-    // For now, return basic metrics from GitHub API
-    
     const repository = await this.getRepository(repositoryId);
     if (!repository || !repository.githubOwner || !repository.githubName) {
       throw new Error('Repository not found or not linked to GitHub');
     }
 
     try {
-      const stats = await this.githubClient.getRepositoryStats(
+      // Use the actual code analysis service for real metrics
+      const analysisResult = await this.codeAnalysisService.analyzeRepository(
         repository.githubOwner,
         repository.githubName
       );
 
       const metrics: CodeMetrics = {
-        linesOfCode: 0, // TODO: Calculate from cloned repo
-        fileCount: 0,   // TODO: Calculate from cloned repo
-        directoryCount: 0, // TODO: Calculate from cloned repo
-        complexity: 5,  // TODO: Calculate using complexity analysis tools
-        testCoverage: 0, // TODO: Parse coverage reports
-        codeQuality: 7.5, // TODO: Calculate using quality metrics
-        maintainabilityIndex: 8.0 // TODO: Calculate maintainability
+        linesOfCode: analysisResult.linesOfCode,
+        fileCount: analysisResult.fileCount,
+        directoryCount: analysisResult.directoryCount,
+        complexity: analysisResult.complexity,
+        testCoverage: analysisResult.testCoverage,
+        codeQuality: analysisResult.codeQuality,
+        maintainabilityIndex: analysisResult.maintainabilityIndex
       };
 
       // Store analysis results

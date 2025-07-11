@@ -246,18 +246,69 @@ export default function VisualProjectBuilder() {
     setIsGenerating(true);
     
     try {
-      // Here we would call the actual project generation API
-      await new Promise(resolve => setTimeout(resolve, 3000)); // Simulate API call
-      
-      // In a real implementation, this would:
-      // 1. Send projectConfig to backend
-      // 2. Generate project files based on selected features
-      // 3. Return download link or redirect to project page
-      
-      alert('Project generated successfully! Check your downloads folder.');
+      // Call the actual project generation API
+      const response = await fetch('/api/project-builder/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(projectConfig),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Create a blob from the base64 zip content
+        const binaryString = atob(result.download.content);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: result.download.contentType });
+        
+        // Create download link
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = result.download.filename;
+        link.click();
+        
+        // Clean up
+        URL.revokeObjectURL(url);
+        
+        // Show success message
+        const successDiv = document.createElement('div');
+        successDiv.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+        successDiv.textContent = `Project "${projectConfig.basic.title}" generated successfully!`;
+        document.body.appendChild(successDiv);
+        
+        // Remove message after 5 seconds
+        setTimeout(() => {
+          document.body.removeChild(successDiv);
+        }, 5000);
+        
+        // Optionally redirect to project page
+        if (result.projectId) {
+          setTimeout(() => {
+            window.location.href = `/projects/${result.projectId}`;
+          }, 2000);
+        }
+      } else {
+        throw new Error(result.error || 'Failed to generate project');
+      }
     } catch (error) {
       console.error('Error generating project:', error);
-      alert('Error generating project. Please try again.');
+      
+      // Show error message
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'fixed bottom-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+      errorDiv.textContent = `Error: ${error instanceof Error ? error.message : 'Failed to generate project'}`;
+      document.body.appendChild(errorDiv);
+      
+      // Remove message after 5 seconds
+      setTimeout(() => {
+        document.body.removeChild(errorDiv);
+      }, 5000);
     } finally {
       setIsGenerating(false);
     }
