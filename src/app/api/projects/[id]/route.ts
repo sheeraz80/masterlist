@@ -84,20 +84,61 @@ export const GET = withRateLimit(
       category: project.category,
       target_users: project.targetUsers,
       revenue_model: project.revenueModel,
-      revenue_potential: JSON.parse(project.revenuePotential || '{}'),
+      revenue_potential: (() => {
+        try {
+          if (!project.revenuePotential) return {};
+          if (typeof project.revenuePotential === 'object') return project.revenuePotential;
+          return JSON.parse(project.revenuePotential);
+        } catch {
+          return { conservative: 0, realistic: 0, optimistic: 0 };
+        }
+      })(),
       development_time: project.developmentTime,
       competition_level: project.competitionLevel,
       technical_complexity: project.technicalComplexity,
       quality_score: project.qualityScore,
-      key_features: JSON.parse(project.keyFeatures || '[]'),
-      tags: JSON.parse(project.tags || '[]'),
+      key_features: (() => {
+        try {
+          if (!project.keyFeatures) return [];
+          if (Array.isArray(project.keyFeatures)) return project.keyFeatures;
+          if (project.keyFeatures.startsWith('[')) return JSON.parse(project.keyFeatures);
+          return project.keyFeatures.split(',').map(f => f.trim());
+        } catch {
+          return [];
+        }
+      })(),
+      tags: (() => {
+        try {
+          if (!project.tags) return [];
+          if (Array.isArray(project.tags)) return project.tags;
+          if (project.tags.startsWith('[')) return JSON.parse(project.tags);
+          return project.tags.split(',').map(t => t.trim());
+        } catch {
+          return [];
+        }
+      })(),
       status: project.status,
       created_at: project.createdAt,
       updated_at: project.updatedAt,
       owner: project.owner,
       comments: project.comments,
       activities: project.activities,
-      _count: project._count
+      _count: project._count,
+      // New platform enhancement fields
+      complexity: project.complexity || 'basic',
+      feature_modules: project.feature_modules || [],
+      testing_coverage: project.testing_coverage || 0,
+      security_score: project.security_score || 0,
+      documentation_level: project.documentation_level || 'basic',
+      deployment_ready: project.deployment_ready || false,
+      monitoring_enabled: project.monitoring_enabled || false,
+      internationalization_ready: project.internationalization_ready || false,
+      accessibility_score: project.accessibility_score || 0,
+      business_metrics: project.business_metrics || {},
+      corevecta_certified: project.corevecta_certified || false,
+      certification_level: project.certification_level || null,
+      quality_audit_date: project.quality_audit_date,
+      estimated_development_hours: project.estimated_development_hours
     };
 
     return NextResponse.json(transformedProject);
